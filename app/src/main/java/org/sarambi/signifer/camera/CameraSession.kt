@@ -1,0 +1,166 @@
+package org.sarambi.signifer.camera
+
+import android.content.Context
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import org.sarambi.signifer.decode.CodeScanner
+import org.sarambi.signifer.decode.DecodeMetrics
+import org.sarambi.signifer.decode.DecodedCode
+import org.sarambi.signifer.decode.ScanDebouncer
+
+/** La camara y su ciclo de vida. */
+class CameraSession(
+    private val context: Context,
+    private val scanner: CodeScanner,
+    private val onCode: (DecodedCode) -> Unit,
+) {
+    /** Cuanto cuesta cada fotograma. */
+    val metrics = DecodeMetrics()
+
+    private val debouncer = ScanDebouncer()
+
+    private var provider: ProcessCameraProvider? = null
+    private var camera: Camera? = null
+    private var executor: ExecutorService? = null
+    private var analyzing = true
+
+    /** Instante de la primera lectura desde que arranco la sesion, en milisegundos. */
+    var firstCodeMillis: Long = 0
+        private set
+
+    private var startedAt = 0L
+
+    val hasTorch: Boolean
+        get() = camera?.cameraInfo?.hasFlashUnit() == true
+
+    var torchOn: Boolean = false
+        private set
+
+    /** Enlaza la camara al ciclo de vida. */
+    fun start(owner: LifecycleOwner, preview: PreviewView, onFailure: (Throwable) -> Unit) {
+        startedAt = System.nanoTime()
+        firstCodeMillis = 0
+        val future = ProcessCameraProvider.getInstance(context)
+        future.addListener({
+            val cameraProvider = runCatching { future.get() }.getOrElse {
+                onFailure(it)
+                return@addListener
+            }
+            runCatching { bind(cameraProvider, owner, preview) }.onFailure(onFailure)
+        }, ContextCompat.getMainExecutor(context))
+    }
+
+    private fun bind(
+        cameraProvider: ProcessCameraProvider,
+        owner: LifecycleOwner,
+        previewView: PreviewView,
+    ) {
+        provider = cameraProvider
+        cameraProvider.unbindAll()
+
+        val analysisExecutor = Executors.newSingleThreadExecutor()
+        executor = analysisExecutor
+
+        val preview = Preview.Builder().build().apply {
+            surfaceProvider = previewView.surfaceProvider
+        }
+
+        val resolution = ResolutionSelector.Builder()
+            .setResolutionStrategy(
+                ResolutionStrategy(
+                    android.util.Size(ANALYSIS_WIDTH, ANALYSIS_HEIGHT),
+                    ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER,
+                ),
+            )
+            .build()
+
+        val analysis = ImageAnalysis.Builder()
+            .setResolutionSelector(resolution)
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .build()
+
+        analysis.setAnalyzer(analysisExecutor) { image ->
+            // El fotograma se cierra siempre: uno sin cerrar congela el analizador para siempre, y
+            // el error no aparece hasta el tercer fotograma.
+            try {
+                if (analyzing) analyze(image)
+            } finally {
+                image.close()
+            }
+        }
+
+        camera = cameraProvider.bindToLifecycle(
+            owner,
+            CameraSelector.DEFAULT_BACK_CAMERA,
+            preview,
+            analysis,
+        )
+        torchOn = false
+    }
+
+    private fun analyze(image: androidx.camera.core.ImageProxy) {
+        val codes = scanner.decode(image)
+        metrics.record(scanner.lastDecodeMicros)
+        if (codes.isEmpty()) return
+
+        val code = codes.first()
+        if (!debouncer.accept(code.text, System.currentTimeMillis())) return
+
+        if (firstCodeMillis == 0L) {
+            firstCodeMillis = (System.nanoTime() - startedAt) / 1_000_000
+        }
+        ContextCompat.getMainExecutor(context).execute { onCode(code) }
+    }
+
+    /** Deja de analizar sin soltar la camara. */
+    fun pauseAnalysis() {
+        analyzing = false
+    }
+
+    /** Vuelve a analizar y olvida lo ya leido. */
+    fun resumeAnalysis() {
+        debouncer.reset()
+        analyzing = true
+    }
+
+    fun toggleTorch(): Boolean {
+        val control = camera?.cameraControl ?: return false
+        if (!hasTorch) return false
+        torchOn = !torchOn
+        control.enableTorch(torchOn)
+        return torchOn
+    }
+
+    /** Zoom lineal, de 0 a 1. */
+    fun setZoom(ratio: Float) {
+        camera?.cameraControl?.setLinearZoom(ratio.coerceIn(0f, 1f))
+    }
+
+    /** Suelta la camara y el hilo de analisis. */
+    fun stop() {
+        provider?.unbindAll()
+        provider = null
+        camera = null
+        torchOn = false
+        analyzing = true
+        debouncer.reset()
+        executor?.shutdown()
+        executor = null
+    }
+
+    private companion object {
+        /** Resolucion del analisis. */
+        const val ANALYSIS_WIDTH = 1280
+        const val ANALYSIS_HEIGHT = 720
+    }
+}

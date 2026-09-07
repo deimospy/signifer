@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_tagline">Lê o sinal</string>
+    <string name="yes">Sim</string>
+
+    <string name="nav_scan">Ler</string>
+    <string name="nav_create">Criar</string>
+    <string name="nav_history">Histórico</string>
+
+    <string name="scan_hint">Apontar a câmera para o código</string>
+    <string name="scan_permission_title">O Signifer precisa da câmera</string>
+    <string name="scan_permission_body">Apenas para ler códigos. Nada sai do telefone: o aplicativo não declara permissão de rede, então o sistema o impede de abrir uma conexão.</string>
+    <string name="scan_permission_denied">Sem permissão de câmera não há leitura ao vivo. Pode ser ativada nas configurações do sistema. Enquanto isso, dá para ler a partir de uma imagem.</string>
+    <string name="scan_permission_grant">Permitir a câmera</string>
+    <string name="action_torch">Lanterna</string>
+    <string name="action_pick_image">Ler de uma imagem</string>
+    <string name="action_scan_settings">Ajustes de leitura</string>
+    <string name="camera_unavailable">Não foi possível abrir a câmera</string>
+    <string name="image_unreadable">Não foi possível abrir a imagem</string>
+    <string name="image_without_code">Nenhum código nessa imagem</string>
+
+    <string name="settings_title">Ajustes de leitura</string>
+    <string name="settings_formats_note">Os vinte formatos já vêm compilados: ativá-los não ocupa espaço, mas cada um ativo custa tempo em cada quadro.</string>
+    <string name="settings_try_harder">Procurar com mais esforço</string>
+    <string name="settings_try_invert">Ler códigos invertidos</string>
+    <string name="settings_vibrate">Vibrar ao ler</string>
+    <string name="settings_beep">Apitar ao ler</string>
+    <string name="settings_save_history">Guardar no histórico</string>
+    <string name="settings_save_sensitive">Guardar também o que leva senhas</string>
+    <string name="settings_save_sensitive_note">Desligado, uma rede Wi-Fi com senha não fica guardada, a não ser que se peça na própria tela de resultado.</string>
+    <string name="settings_formats">Formatos</string>
+    <string name="settings_preset_all">Os vinte</string>
+    <string name="settings_preset_matrix">Matriciais</string>
+    <string name="settings_preset_qr">Só QR</string>
+
+    <string name="family_matrix">Matriciais</string>
+    <string name="family_retail">Comércio</string>
+    <string name="family_industrial">Indústria e logística</string>
+
+    <string name="kind_text">Texto</string>
+    <string name="kind_website">Site</string>
+    <string name="kind_wifi">Rede Wi-Fi</string>
+    <string name="kind_contact">Contato</string>
+    <string name="kind_email">E-mail</string>
+    <string name="kind_phone">Telefone</string>
+    <string name="kind_sms">SMS</string>
+    <string name="kind_location">Localização</string>
+    <string name="kind_event">Evento</string>
+
+    <string name="result_destination">Destino</string>
+    <string name="level_none">Nada encontrado</string>
+    <string name="level_caution">Vale olhar</string>
+    <string name="level_warning">Conferir antes de agir</string>
+    <string name="level_blocked">Não se abre daqui</string>
+
+    <string name="action_open_website">Abrir o site</string>
+    <string name="action_connect_wifi">Adicionar a rede</string>
+    <string name="action_add_contact">Salvar o contato</string>
+    <string name="action_send_email">Escrever o e-mail</string>
+    <string name="action_dial">Discar o número</string>
+    <string name="action_send_sms">Escrever o SMS</string>
+    <string name="action_open_map">Ver no mapa</string>
+    <string name="action_add_event">Adicionar à agenda</string>
+    <string name="action_search_web">Buscar o texto</string>
+    <string name="action_copy">Copiar</string>
+    <string name="action_share">Compartilhar</string>
+    <string name="action_copied">Copiado</string>
+    <string name="action_no_handler">Nenhum aplicativo deste telefone faz isso</string>
+    <string name="action_refused">O destino deixou de ser seguro: nada foi feito</string>
+    <string name="action_save_sensitive">Guardar no histórico</string>
+    <string name="action_saved">Guardado</string>
+
+    <string name="field_network">Rede</string>
+    <string name="field_security">Segurança</string>
+    <string name="field_password">Senha</string>
+    <string name="field_password_hidden">Vai dentro do código</string>
+    <string name="field_hidden">Rede oculta</string>
+    <string name="field_name">Nome</string>
+    <string name="field_organization">Organização</string>
+    <string name="field_title">Cargo</string>
+    <string name="field_mobile">Celular</string>
+    <string name="field_phone">Telefone</string>
+    <string name="field_email">E-mail</string>
+    <string name="field_address">Endereço</string>
+    <string name="field_note">Nota</string>
+    <string name="field_subject">Assunto</string>
+    <string name="field_body">Mensagem</string>
+    <string name="field_coordinates">Coordenadas</string>
+    <string name="field_place">Lugar</string>
+    <string name="field_summary">Título</string>
+    <string name="field_starts">Começa</string>
+    <string name="field_ends">Termina</string>
+
+    <string name="wifi_open">Aberta</string>
+    <string name="wifi_wep">WEP</string>
+    <string name="wifi_wpa">WPA / WPA2</string>
+    <string name="wifi_sae">WPA3</string>
+
+    <string name="risk_blocked_scheme">O esquema pode executar código</string>
+    <string name="risk_blocked_scheme_body">Este endereço não abre uma página: pede ao sistema que execute algo. O Signifer não o entrega; dá para copiar e examinar.</string>
+    <string name="risk_unknown_scheme">Esquema fora da lista</string>
+    <string name="risk_unknown_scheme_body">A lista de esquemas que podem ser abertos é fechada. O que não está nela é bloqueado, em vez de manter uma lista de proibidos que sempre fica atrás do que aparecer amanhã.</string>
+    <string name="risk_insecure_transport">Viaja sem criptografia</string>
+    <string name="risk_insecure_transport_body">Começa com http, não https. Quem compartilha a rede pode ler e alterar o que for enviado.</string>
+    <string name="risk_embedded_credentials">Leva usuário e senha dentro</string>
+    <string name="risk_embedded_credentials_body">O endereço inclui credenciais antes do servidor. É a forma clássica de disfarçá-lo: o que vem antes do arroba não é aonde se chega.</string>
+    <string name="risk_missing_host">Não diz a que servidor vai</string>
+    <string name="risk_missing_host_body">O endereço não tem servidor, então não há destino a conferir.</string>
+    <string name="risk_loopback_host">Aponta para este mesmo telefone</string>
+    <string name="risk_loopback_host_body">O destino é o próprio aparelho. Um código colado na rua não tem motivo para pedir isso.</string>
+    <string name="risk_private_network">Aponta para a rede local</string>
+    <string name="risk_private_network_body">Leva a um equipamento da rede em que se está agora: um roteador, uma câmera, um painel de administração.</string>
+    <string name="risk_raw_ip">O servidor é um número, não um nome</string>
+    <string name="risk_raw_ip_body">Um endereço IP em vez de um domínio impede saber de quem é o servidor.</string>
+    <string name="risk_confusable_host">O nome do servidor pode estar disfarçado</string>
+    <string name="risk_confusable_host_body">Usa punycode ou mistura alfabetos. Há letras de outros alfabetos idênticas às latinas: um «а» cirílico em apple.com parece igual e leva a outro lugar.</string>
+    <string name="risk_excessive_subdomains">Encadeia subdomínios</string>
+    <string name="risk_excessive_subdomains_body">Um nome longo com muitos pontos faz o começo parecer o domínio real. Quem decide é o do final.</string>
+    <string name="risk_shortened">O destino real está escondido</string>
+    <string name="risk_shortened_body">É um encurtador: o endereço que se vê não é aonde se chega. O Signifer não o resolve porque não tem rede, então o destino só aparece ao abrir.</string>
+    <string name="risk_executable">Baixa algo que instala ou executa</string>
+    <string name="risk_executable_body">O link termina em um arquivo de instalação. Um código colado na rua que instala um aplicativo é a fraude mais barata que existe.</string>
+    <string name="risk_bidirectional">Leva caracteres que invertem o texto</string>
+    <string name="risk_bidirectional_body">Há caracteres invisíveis que mudam a ordem em que o texto é lido. Servem para um arquivo que instala parecer uma imagem.</string>
+    <string name="risk_unusual_port">Escuta em uma porta incomum</string>
+    <string name="risk_unusual_port_body">O servidor não atende na porta habitual do protocolo.</string>
+
+    <string name="warning_risky_destination">O destino tem achados</string>
+    <string name="warning_risky_destination_body">Cada um está explicado abaixo.</string>
+    <string name="warning_unknown_network">É uma rede alheia</string>
+    <string name="warning_unknown_network_body">Quem administra uma rede vê o tráfego que não vai criptografado e pode desviá-lo para outro lugar.</string>
+    <string name="warning_weak_network">A criptografia é fraca, ou não existe</string>
+    <string name="warning_weak_network_body">Uma rede aberta ou com WEP não protege nada: qualquer pessoa por perto pode ler o que passa por ela.</string>
+    <string name="warning_contact_url">O contato traz um endereço com achados</string>
+    <string name="warning_contact_url_body">Salvar o contato salva também esse endereço.</string>
+    <string name="warning_prepared_message">A mensagem já vem escrita</string>
+    <string name="warning_prepared_message_body">O texto do SMS estava dentro do código. Enviá-lo pode custar dinheiro, e o número pode ser de tarifa especial.</string>
+
+</resources>

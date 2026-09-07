@@ -8,6 +8,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from grid import BONE, INK, SIZE, check_symmetry, rectangles  # noqa: E402
+from icons import ICONS  # noqa: E402
 from pngwriter import rgba, write_png  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
@@ -36,6 +37,42 @@ def vector(path, viewport, scale, offset, color, name):
     ]
     with open(name, "w", encoding="utf-8", newline="\n") as handle:
         handle.write("\n".join(lines))
+
+
+def merge(matrix):
+    """Los modulos encendidos de una matriz, fusionados en rectangulos."""
+    size = len(matrix)
+    runs = []
+    for r, row in enumerate(matrix):
+        c = 0
+        while c < len(row):
+            if row[c] == "#":
+                start = c
+                while c < len(row) and row[c] == "#":
+                    c += 1
+                runs.append([r, start, c - start, 1])
+            else:
+                c += 1
+    merged = []
+    for run in runs:
+        for done in merged:
+            if done[1] == run[1] and done[2] == run[2] and done[0] + done[3] == run[0]:
+                done[3] += 1
+                break
+        else:
+            merged.append(run)
+    return [tuple(m) for m in merged], size
+
+
+def icon_path(matrix, scale, offset):
+    parts = []
+    for row, col, width, height in merge(matrix)[0]:
+        x = offset + col * scale
+        y = offset + row * scale
+        w = width * scale
+        h = height * scale
+        parts.append(f"M{fmt(x)},{fmt(y)}h{fmt(w)}v{fmt(h)}h{fmt(-w)}z")
+    return "".join(parts)
 
 
 def path_data(scale, offset):
@@ -121,6 +158,10 @@ def main():
     if not check_symmetry():
         raise SystemExit("la grilla perdio la simetria de rotacion")
 
+    for name, matrix in ICONS.items():
+        if len(matrix) != 12 or any(len(row) != 12 for row in matrix):
+            raise SystemExit(f"la matriz del icono «{name}» no es de 12 x 12")
+
     ink = rgba(INK)
     bone = rgba(BONE)
 
@@ -150,6 +191,12 @@ def main():
         write_png(os.path.join(folder, "ic_launcher.png"), square, size, size)
         round_icon = circle(size, ink, bone, 0.66)
         write_png(os.path.join(folder, "ic_launcher_round.png"), round_icon, size, size)
+
+    for name, matrix in sorted(ICONS.items()):
+        vector(
+            icon_path(matrix, 24.0 / 12.0, 0.0), 24, 1, 0, "#FF000000",
+            os.path.join(RES, "drawable", f"ic_{name}.xml"),
+        )
 
     store = rounded_square(512, 0, ink, bone, 0.72)
     write_png(os.path.join(os.path.dirname(os.path.abspath(__file__)), "store_icon_512.png"), store, 512, 512)

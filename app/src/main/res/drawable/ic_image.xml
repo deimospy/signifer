@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generado por tools/brand/generate.py. No editar a mano. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M0,0h24v2h-24zM0,2h2v16h-2zM22,2h2v12h-2zM10,4h4v4h-4zM14,10h4v2h-4zM12,12h8v2h-8zM6,14h4v2h-4zM12,14h12v2h-12zM4,16h8v2h-8zM14,16h10v2h-10zM0,18h14v2h-14zM16,18h8v2h-8zM0,20h2v2h-2zM22,20h2v2h-2zM0,22h24v2h-24z" />
+</vector>

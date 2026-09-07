@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_tagline">Read the sign</string>
+    <string name="yes">Yes</string>
+
+    <string name="nav_scan">Scan</string>
+    <string name="nav_create">Create</string>
+    <string name="nav_history">History</string>
+
+    <string name="scan_hint">Point the camera at the code</string>
+    <string name="scan_permission_title">Signifer needs the camera</string>
+    <string name="scan_permission_body">Only to read codes. Nothing leaves the phone: the app declares no network permission, so the system will not let it open a connection.</string>
+    <string name="scan_permission_denied">Live scanning needs the camera permission. Turn it on in the system settings. In the meantime, codes can be read from an image.</string>
+    <string name="scan_permission_grant">Allow the camera</string>
+    <string name="action_torch">Torch</string>
+    <string name="action_pick_image">Read from an image</string>
+    <string name="action_scan_settings">Scanning settings</string>
+    <string name="camera_unavailable">The camera could not be opened</string>
+    <string name="image_unreadable">The image could not be opened</string>
+    <string name="image_without_code">No code in that image</string>
+
+    <string name="settings_title">Scanning settings</string>
+    <string name="settings_formats_note">All twenty formats ship compiled in: turning them on costs no space, but every active one costs time on every frame.</string>
+    <string name="settings_try_harder">Search harder</string>
+    <string name="settings_try_invert">Read inverted codes</string>
+    <string name="settings_vibrate">Vibrate on read</string>
+    <string name="settings_beep">Beep on read</string>
+    <string name="settings_save_history">Save to history</string>
+    <string name="settings_save_sensitive">Also save what carries passwords</string>
+    <string name="settings_save_sensitive_note">While off, a Wi-Fi network with a password is not stored unless you ask for it on the result screen itself.</string>
+    <string name="settings_formats">Formats</string>
+    <string name="settings_preset_all">All twenty</string>
+    <string name="settings_preset_matrix">Matrix</string>
+    <string name="settings_preset_qr">QR only</string>
+
+    <string name="family_matrix">Matrix</string>
+    <string name="family_retail">Retail</string>
+    <string name="family_industrial">Industry and logistics</string>
+
+    <string name="kind_text">Text</string>
+    <string name="kind_website">Website</string>
+    <string name="kind_wifi">Wi-Fi network</string>
+    <string name="kind_contact">Contact</string>
+    <string name="kind_email">Email</string>
+    <string name="kind_phone">Phone</string>
+    <string name="kind_sms">SMS</string>
+    <string name="kind_location">Location</string>
+    <string name="kind_event">Event</string>
+
+    <string name="result_destination">Destination</string>
+    <string name="level_none">Nothing found</string>
+    <string name="level_caution">Worth a look</string>
+    <string name="level_warning">Check before acting</string>
+    <string name="level_blocked">Not opened from here</string>
+
+    <string name="action_open_website">Open the site</string>
+    <string name="action_connect_wifi">Add the network</string>
+    <string name="action_add_contact">Save the contact</string>
+    <string name="action_send_email">Write the email</string>
+    <string name="action_dial">Dial the number</string>
+    <string name="action_send_sms">Write the SMS</string>
+    <string name="action_open_map">See on the map</string>
+    <string name="action_add_event">Add to the calendar</string>
+    <string name="action_search_web">Search for the text</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_share">Share</string>
+    <string name="action_copied">Copied</string>
+    <string name="action_no_handler">No app on this phone can do that</string>
+    <string name="action_refused">The destination stopped being safe: nothing was done</string>
+    <string name="action_save_sensitive">Save to history</string>
+    <string name="action_saved">Saved</string>
+
+    <string name="field_network">Network</string>
+    <string name="field_security">Security</string>
+    <string name="field_password">Password</string>
+    <string name="field_password_hidden">Carried inside the code</string>
+    <string name="field_hidden">Hidden network</string>
+    <string name="field_name">Name</string>
+    <string name="field_organization">Organisation</string>
+    <string name="field_title">Job title</string>
+    <string name="field_mobile">Mobile</string>
+    <string name="field_phone">Phone</string>
+    <string name="field_email">Email</string>
+    <string name="field_address">Address</string>
+    <string name="field_note">Note</string>
+    <string name="field_subject">Subject</string>
+    <string name="field_body">Message</string>
+    <string name="field_coordinates">Coordinates</string>
+    <string name="field_place">Place</string>
+    <string name="field_summary">Title</string>
+    <string name="field_starts">Starts</string>
+    <string name="field_ends">Ends</string>
+
+    <string name="wifi_open">Open</string>
+    <string name="wifi_wep">WEP</string>
+    <string name="wifi_wpa">WPA / WPA2</string>
+    <string name="wifi_sae">WPA3</string>
+
+    <string name="risk_blocked_scheme">The scheme can run code</string>
+    <string name="risk_blocked_scheme_body">This address does not open a page: it asks the system to run something. Signifer does not hand it over; it can be copied and inspected.</string>
+    <string name="risk_unknown_scheme">Scheme not on the list</string>
+    <string name="risk_unknown_scheme_body">The list of schemes that may be opened is closed. Anything not on it is blocked, rather than keeping a list of banned ones that always trails whatever shows up tomorrow.</string>
+    <string name="risk_insecure_transport">Travels unencrypted</string>
+    <string name="risk_insecure_transport_body">It starts with http, not https. Anyone sharing the network can read and change what is sent.</string>
+    <string name="risk_embedded_credentials">Carries a username and password</string>
+    <string name="risk_embedded_credentials_body">The address includes credentials before the server. It is the classic way to disguise it: what comes before the at sign is not where you end up.</string>
+    <string name="risk_missing_host">No server given</string>
+    <string name="risk_missing_host_body">The address has no server, so there is no destination to check.</string>
+    <string name="risk_loopback_host">Points at this very phone</string>
+    <string name="risk_loopback_host_body">The destination is the device itself. A code stuck on a wall has no reason to ask for that.</string>
+    <string name="risk_private_network">Points at the local network</string>
+    <string name="risk_private_network_body">It leads to a machine on whichever network you are on right now: a router, a camera, an admin panel.</string>
+    <string name="risk_raw_ip">The server is a number, not a name</string>
+    <string name="risk_raw_ip_body">An IP address instead of a domain makes it impossible to tell whose server it is.</string>
+    <string name="risk_confusable_host">The server name may be disguised</string>
+    <string name="risk_confusable_host_body">It uses punycode or mixes alphabets. Letters from other scripts look identical to Latin ones: a Cyrillic «а» in apple.com looks the same and leads somewhere else.</string>
+    <string name="risk_excessive_subdomains">Chains subdomains</string>
+    <string name="risk_excessive_subdomains_body">A long name with many dots makes the beginning look like the real domain. The one that decides is the one at the end.</string>
+    <string name="risk_shortened">The real destination is hidden</string>
+    <string name="risk_shortened_body">It is a shortener: the address shown is not where you land. Signifer cannot resolve it because it has no network, so the destination only appears once opened.</string>
+    <string name="risk_executable">Downloads something that installs or runs</string>
+    <string name="risk_executable_body">The link ends in an installer file. A code stuck on a wall that installs an app is the cheapest fraud there is.</string>
+    <string name="risk_bidirectional">Carries characters that reverse the text</string>
+    <string name="risk_bidirectional_body">Invisible characters change the order in which text reads. They make a file that installs look like a picture.</string>
+    <string name="risk_unusual_port">Listens on an unusual port</string>
+    <string name="risk_unusual_port_body">The server does not answer on the usual port for the protocol.</string>
+
+    <string name="warning_risky_destination">The destination has findings</string>
+    <string name="warning_risky_destination_body">Each one is explained below.</string>
+    <string name="warning_unknown_network">This is someone else\'s network</string>
+    <string name="warning_unknown_network_body">Whoever runs a network sees any traffic that is not encrypted, and can redirect it elsewhere.</string>
+    <string name="warning_weak_network">Weak encryption, or none</string>
+    <string name="warning_weak_network_body">An open network, or one on WEP, protects nothing: anyone nearby can read what goes through it.</string>
+    <string name="warning_contact_url">The contact carries an address with findings</string>
+    <string name="warning_contact_url_body">Saving the contact saves that address too.</string>
+    <string name="warning_prepared_message">The message is already written</string>
+    <string name="warning_prepared_message_body">The SMS text came inside the code. Sending it may cost money, and the number may be a premium-rate one.</string>
+
+</resources>
