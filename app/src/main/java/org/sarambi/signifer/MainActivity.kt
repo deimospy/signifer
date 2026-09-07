@@ -13,6 +13,7 @@ import org.sarambi.signifer.decode.CodeFormat
 import org.sarambi.signifer.decode.DecodedCode
 import org.sarambi.signifer.settings.ScanPreferences
 import org.sarambi.signifer.ui.PlaceholderFragment
+import org.sarambi.signifer.ui.create.CreateFragment
 import org.sarambi.signifer.ui.ResultSheet
 import org.sarambi.signifer.ui.ScanFragment
 
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
     }
 
     private fun create(tag: String): Fragment = when (tag) {
-        TAG_CREATE -> PlaceholderFragment.of(getString(R.string.nav_create))
+        TAG_CREATE -> CreateFragment()
         TAG_HISTORY -> PlaceholderFragment.of(getString(R.string.nav_history))
         else -> ScanFragment()
     }
@@ -88,6 +89,10 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
 
     /** Un toque corto al leer. */
     private fun vibrate() {
+        runCatching { doVibrate() }
+    }
+
+    private fun doVibrate() {
         val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             (getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
         } else {

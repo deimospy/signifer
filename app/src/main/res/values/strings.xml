@@ -138,4 +138,40 @@
     <string name="warning_prepared_message">El mensaje ya viene escrito</string>
     <string name="warning_prepared_message_body">El texto del SMS estaba dentro del código. Enviarlo puede costar dinero, y el número puede ser de tarificación especial.</string>
 
+    <string name="create_preview">Vista previa del código</string>
+    <string name="create_preview_empty">Se dibuja al completar el formulario</string>
+    <string name="create_format">Formato</string>
+    <string name="create_correction">Corrección de errores</string>
+    <string name="create_incomplete">Falta completar el formulario</string>
+    <string name="create_failed">No se pudo generar el código</string>
+    <string name="correction_low" formatted="false">Baja — recupera el 7 %</string>
+    <string name="correction_medium" formatted="false">Media — recupera el 15 %</string>
+    <string name="correction_quartile" formatted="false">Alta — recupera el 25 %</string>
+    <string name="correction_high" formatted="false">Máxima — recupera el 30 %</string>
+    <string name="action_export">Exportar</string>
+    <string name="export_png">PNG de %1$d px</string>
+    <string name="export_svg">SVG, sin pérdida a cualquier tamaño</string>
+    <string name="export_done">Archivo guardado</string>
+    <string name="export_failed">No se pudo guardar el archivo</string>
+    <string name="list_or"> o </string>
+
+    <string name="problem_not_numeric">%1$s solo admite dígitos</string>
+    <string name="problem_wrong_length">%1$s necesita %2$s dígitos</string>
+    <string name="problem_odd_length">ITF codifica los dígitos de dos en dos: hace falta un número par</string>
+    <string name="problem_unsupported_character">%1$s no admite alguno de esos caracteres</string>
+    <string name="problem_check_digit">El dígito de control no cuadra con el resto</string>
+    <string name="problem_too_long">Eso no cabe en un %1$s que se pueda leer</string>
+
+    <string name="form_text">Texto</string>
+    <string name="form_url">Dirección</string>
+    <string name="form_first_name">Nombre</string>
+    <string name="form_last_name">Apellido</string>
+    <string name="form_latitude">Latitud</string>
+    <string name="form_longitude">Longitud</string>
+    <string name="form_all_day">Todo el día</string>
+    <string name="form_start_date">Empieza el</string>
+    <string name="form_start_time">A las</string>
+    <string name="form_end_date">Termina el</string>
+    <string name="form_end_time">A las</string>
+
 </resources>

@@ -122,9 +122,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/primary_action"
+            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:minHeight="56dp"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Signifer.Module"
             tools:text="Abrir el sitio" />
 

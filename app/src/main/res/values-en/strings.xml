@@ -137,4 +137,40 @@
     <string name="warning_prepared_message">The message is already written</string>
     <string name="warning_prepared_message_body">The SMS text came inside the code. Sending it may cost money, and the number may be a premium-rate one.</string>
 
+    <string name="create_preview">Code preview</string>
+    <string name="create_preview_empty">Drawn once the form is complete</string>
+    <string name="create_format">Format</string>
+    <string name="create_correction">Error correction</string>
+    <string name="create_incomplete">The form is not complete yet</string>
+    <string name="create_failed">The code could not be generated</string>
+    <string name="correction_low" formatted="false">Low — recovers 7 %</string>
+    <string name="correction_medium" formatted="false">Medium — recovers 15 %</string>
+    <string name="correction_quartile" formatted="false">High — recovers 25 %</string>
+    <string name="correction_high" formatted="false">Highest — recovers 30 %</string>
+    <string name="action_export">Export</string>
+    <string name="export_png">PNG at %1$d px</string>
+    <string name="export_svg">SVG, lossless at any size</string>
+    <string name="export_done">File saved</string>
+    <string name="export_failed">The file could not be saved</string>
+    <string name="list_or"> or </string>
+
+    <string name="problem_not_numeric">%1$s only takes digits</string>
+    <string name="problem_wrong_length">%1$s needs %2$s digits</string>
+    <string name="problem_odd_length">ITF encodes digits in pairs, so it needs an even count</string>
+    <string name="problem_unsupported_character">%1$s does not take one of those characters</string>
+    <string name="problem_check_digit">The check digit does not match the rest</string>
+    <string name="problem_too_long">That does not fit in a %1$s anyone could read</string>
+
+    <string name="form_text">Text</string>
+    <string name="form_url">Address</string>
+    <string name="form_first_name">First name</string>
+    <string name="form_last_name">Last name</string>
+    <string name="form_latitude">Latitude</string>
+    <string name="form_longitude">Longitude</string>
+    <string name="form_all_day">All day</string>
+    <string name="form_start_date">Starts on</string>
+    <string name="form_start_time">At</string>
+    <string name="form_end_date">Ends on</string>
+    <string name="form_end_time">At</string>
+
 </resources>
