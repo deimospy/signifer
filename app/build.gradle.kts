@@ -17,9 +17,13 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    val abiSplits = providers.gradleProperty("signifer.abiSplits")
+        .getOrElse("true")
+        .toBoolean()
+
     splits {
         abi {
-            isEnable = true
+            isEnable = abiSplits
             isUniversalApk = false
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")

@@ -49,15 +49,14 @@ está esperando.
 
 ## 5. Idiomas
 
-Tres de salida: **español, inglés y portugués**, con las 181 cadenas
-traducibles al 100 % en los tres. La sincronía no se vigila a mano: el análisis
-estático falla la compilación si falta una traducción, y el paquete solo
-incluye esos tres idiomas.
+**Cerrada en tres: español, inglés y portugués.** Las 181 cadenas traducibles
+están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
+estático falla la compilación si falta una traducción. El paquete solo incluye
+esos tres, así que ninguna dependencia cuela los suyos.
 
-**El guaraní sigue pendiente** y sigue siendo buen candidato: es cooficial en
-Paraguay y no lo trae ningún lector de códigos. No se ha hecho porque traducir
-sin hablar el idioma produce texto que nadie usa; hace falta alguien que lo
-hable.
+No hay más idiomas previstos. Añadir uno es añadir un archivo y mantenerlo al
+día para siempre; se hará cuando haya una razón concreta y alguien que hable
+el idioma, no por tener más banderas en la ficha.
 
 ## Decisiones que no estaban abiertas y aun así hubo que tomar
 

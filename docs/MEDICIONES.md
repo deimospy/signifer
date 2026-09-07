@@ -31,6 +31,29 @@ arquitectura. Cifras en KB.
 | Historial sobre el SQLite del sistema | 2584 | 2507 | 2639 | 2617 |
 | Integración con el sistema y análisis en verde | 2593 | 2515 | 2648 | 2626 |
 
+## Lo que descarga un teléfono desde la tienda
+
+El paquete que se sube a Google Play es un App Bundle, y la tienda entrega a
+cada teléfono solo su arquitectura, su densidad de pantalla y su idioma. Eso es
+menos que el APK dividido, que lleva todas las densidades y los tres idiomas.
+
+Medido con `bundletool get-size total` sobre `app-release.aab`:
+
+| Arquitectura | Descarga |
+|---|---|
+| armeabi-v7a | 1987 – 2015 KB |
+| **arm64-v8a** | **2064 – 2094 KB** |
+| x86_64 | 2097 – 2125 KB |
+| x86 | 2117 – 2147 KB |
+
+```
+gradlew :app:bundleRelease -Psignifer.abiSplits=false
+```
+
+La propiedad hace falta porque el App Bundle divide por arquitectura por su
+cuenta y no puede convivir con los splits de APK, que siguen sirviendo para
+distribuir fuera de la tienda.
+
 ## Composición de arm64-v8a
 
 Sin comprimir, en KB.
