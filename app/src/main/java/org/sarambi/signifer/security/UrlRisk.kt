@@ -66,6 +66,18 @@ enum class UrlRiskReason {
 
     /** El servidor encadena subdominios para ocultar el dominio real. */
     EXCESSIVE_SUBDOMAINS,
+
+    /** El destino real esta detras de un acortador y no puede verse. */
+    SHORTENED_DESTINATION,
+
+    /** La direccion apunta a un archivo que se instala o se ejecuta. */
+    EXECUTABLE_DOWNLOAD,
+
+    /** La direccion lleva caracteres que invierten como se lee el texto. */
+    BIDIRECTIONAL_CONTROL,
+
+    /** El servidor escucha en un puerto que no es el del protocolo. */
+    UNUSUAL_PORT,
 }
 
 /** Gravedad de un hallazgo. */
@@ -181,6 +193,12 @@ fun assessUrl(value: String): UrlRiskAssessment {
 
     if (isConfusableHost(host)) reasons += UrlRiskReason.CONFUSABLE_HOST
     if (countLabels(lowerHost) > 4) reasons += UrlRiskReason.EXCESSIVE_SUBDOMAINS
+    if (isShortener(lowerHost)) reasons += UrlRiskReason.SHORTENED_DESTINATION
+    if (hasBidirectionalControl(trimmed)) reasons += UrlRiskReason.BIDIRECTIONAL_CONTROL
+    if (isExecutableTarget(trimmed)) reasons += UrlRiskReason.EXECUTABLE_DOWNLOAD
+
+    val port = parsed?.port ?: -1
+    if (port != -1 && port != 80 && port != 443) reasons += UrlRiskReason.UNUSUAL_PORT
 
     return UrlRiskAssessment(
         disposition = UrlDisposition.ACTIONABLE,
@@ -197,6 +215,8 @@ private val SEVERE_REASONS = setOf(
     UrlRiskReason.LOOPBACK_HOST,
     UrlRiskReason.PRIVATE_NETWORK_HOST,
     UrlRiskReason.INSECURE_TRANSPORT,
+    UrlRiskReason.EXECUTABLE_DOWNLOAD,
+    UrlRiskReason.BIDIRECTIONAL_CONTROL,
 )
 
 private fun levelFor(reasons: List<UrlRiskReason>): UrlRiskLevel = when {
@@ -249,3 +269,54 @@ private fun isIpAddress(host: String): Boolean =
 
 private fun countLabels(host: String): Int =
     host.split('.').count { it.isNotEmpty() }
+
+/** Acortadores conocidos. */
+private val SHORTENER_HOSTS = setOf(
+    "bit.ly",
+    "buff.ly",
+    "cutt.ly",
+    "goo.gl",
+    "is.gd",
+    "lnkd.in",
+    "ow.ly",
+    "rb.gy",
+    "rebrand.ly",
+    "s.id",
+    "shorturl.at",
+    "t.co",
+    "t.ly",
+    "tiny.cc",
+    "tinyurl.com",
+)
+
+/** Extensiones que el sistema instala o ejecuta en lugar de mostrar. */
+private val EXECUTABLE_EXTENSIONS = setOf(
+    "apk", "apks", "xapk", "aab",
+    "exe", "msi", "bat", "cmd", "com", "scr", "ps1", "vbs",
+    "jar", "dmg", "pkg", "deb", "rpm", "sh", "run",
+)
+
+/** Caracteres que cambian como se lee el texto. */
+private val BIDIRECTIONAL_CONTROLS = setOf(
+    '\u200E', '\u200F', '\u061C',
+    '\u202A', '\u202B', '\u202C', '\u202D', '\u202E',
+    '\u2066', '\u2067', '\u2068', '\u2069',
+)
+
+/** Si el servidor solo redirige a otro sitio que no puede verse. */
+fun isShortener(host: String): Boolean = host.lowercase() in SHORTENER_HOSTS
+
+/** Si la direccion lleva caracteres que invierten como se lee el texto. */
+fun hasBidirectionalControl(value: String): Boolean =
+    value.any { it in BIDIRECTIONAL_CONTROLS }
+
+/** Si la direccion apunta a un archivo que se instala o se ejecuta. */
+fun isExecutableTarget(value: String): Boolean {
+    val withoutScheme = value.substringAfter("://", value)
+    val path = withoutScheme.substringAfter('/', "")
+        .substringBefore('?')
+        .substringBefore('#')
+    val last = path.substringAfterLast('/')
+    if ('.' !in last) return false
+    return last.substringAfterLast('.').lowercase() in EXECUTABLE_EXTENSIONS
+}
