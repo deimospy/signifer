@@ -49,9 +49,10 @@ está esperando.
 
 ## 5. Idiomas
 
-Tres de salida: **español, inglés y portugués**, con las 158 cadenas
-sincronizadas y comprobadas por el análisis estático, que falla la compilación
-si falta una traducción.
+Tres de salida: **español, inglés y portugués**, con las 181 cadenas
+traducibles al 100 % en los tres. La sincronía no se vigila a mano: el análisis
+estático falla la compilación si falta una traducción, y el paquete solo
+incluye esos tres idiomas.
 
 **El guaraní sigue pendiente** y sigue siendo buen candidato: es cooficial en
 Paraguay y no lo trae ningún lector de códigos. No se ha hecho porque traducir
