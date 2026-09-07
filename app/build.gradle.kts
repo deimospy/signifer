@@ -109,4 +109,5 @@ dependencies {
     implementation(libs.camera.view)
 
     testImplementation(libs.junit)
+    testImplementation(libs.json)
 }

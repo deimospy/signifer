@@ -173,4 +173,25 @@
     <string name="form_end_date">Termina em</string>
     <string name="form_end_time">Às</string>
 
+    <string name="history_search">Buscar no histórico</string>
+    <string name="history_menu">Opções do histórico</string>
+    <string name="history_favorite">Favorito</string>
+    <string name="history_only_favorites">Favoritos</string>
+    <string name="history_empty">Ainda não há nada lido</string>
+    <string name="history_no_matches">Nada corresponde a essa busca</string>
+    <string name="history_delete_one">Apagar esta entrada?</string>
+    <string name="history_delete">Apagar</string>
+    <string name="history_clear">Esvaziar o histórico</string>
+    <string name="history_clear_note">Apaga tudo, menos os favoritos.</string>
+    <string name="history_export">Exportar um backup</string>
+    <string name="history_import">Importar um backup</string>
+    <string name="history_retention">Por quanto tempo se guarda</string>
+    <string name="history_imported">Foram adicionadas %1$d entradas</string>
+    <string name="history_imported_altered">Foram adicionadas %1$d entradas, mas a impressão do arquivo não bate com o conteúdo</string>
+    <string name="history_import_failed">Esse arquivo não é um backup do Signifer</string>
+    <string name="retention_thirty">30 dias</string>
+    <string name="retention_ninety">90 dias</string>
+    <string name="retention_forever">Sempre</string>
+    <string name="retention_note">Os favoritos nunca expiram, seja qual for o prazo.</string>
+
 </resources>

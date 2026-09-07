@@ -7,13 +7,20 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.sarambi.signifer.content.CodeContent
+import org.sarambi.signifer.content.parseContent
+import org.sarambi.signifer.history.HistoryOrigin
+import org.sarambi.signifer.history.HistoryStore
 import org.sarambi.signifer.databinding.ActivityMainBinding
 import org.sarambi.signifer.decode.CodeFormat
 import org.sarambi.signifer.decode.DecodedCode
 import org.sarambi.signifer.settings.ScanPreferences
-import org.sarambi.signifer.ui.PlaceholderFragment
 import org.sarambi.signifer.ui.create.CreateFragment
+import org.sarambi.signifer.ui.history.HistoryFragment
 import org.sarambi.signifer.ui.ResultSheet
 import org.sarambi.signifer.ui.ScanFragment
 
@@ -65,7 +72,7 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
 
     private fun create(tag: String): Fragment = when (tag) {
         TAG_CREATE -> CreateFragment()
-        TAG_HISTORY -> PlaceholderFragment.of(getString(R.string.nav_history))
+        TAG_HISTORY -> HistoryFragment()
         else -> ScanFragment()
     }
 
@@ -73,7 +80,23 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         if (supportFragmentManager.findFragmentByTag(TAG_RESULT) != null) return
 
         if (preferences.vibrateOnRead) vibrate()
+        remember(code)
         ResultSheet.of(code.text, code.format).show(supportFragmentManager, TAG_RESULT)
+    }
+
+    /** Guarda la lectura, si toca. */
+    private fun remember(code: DecodedCode) {
+        if (!preferences.saveHistory) return
+        val content = parseContent(code.text)
+        if (content.isSensitive && !preferences.saveSensitive) return
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val store = HistoryStore(applicationContext)
+                store.save(code.text, code.format, HistoryOrigin.SCANNED)
+                store.close()
+            }
+        }
     }
 
     override fun onResultDismissed() {
@@ -81,7 +104,13 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
     }
 
     override fun onSaveRequested(content: CodeContent, format: CodeFormat) {
-        // El historial llega en su propia fase.
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val store = HistoryStore(applicationContext)
+                store.save(content.encode(), format, HistoryOrigin.SCANNED)
+                store.close()
+            }
+        }
     }
 
     private fun scanFragment(): ScanFragment? =

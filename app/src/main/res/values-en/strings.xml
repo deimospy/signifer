@@ -173,4 +173,25 @@
     <string name="form_end_date">Ends on</string>
     <string name="form_end_time">At</string>
 
+    <string name="history_search">Search the history</string>
+    <string name="history_menu">History options</string>
+    <string name="history_favorite">Favourite</string>
+    <string name="history_only_favorites">Favourites</string>
+    <string name="history_empty">Nothing read yet</string>
+    <string name="history_no_matches">Nothing matches that search</string>
+    <string name="history_delete_one">Delete this entry?</string>
+    <string name="history_delete">Delete</string>
+    <string name="history_clear">Empty the history</string>
+    <string name="history_clear_note">Everything goes except the favourites.</string>
+    <string name="history_export">Export a backup</string>
+    <string name="history_import">Import a backup</string>
+    <string name="history_retention">How long it is kept</string>
+    <string name="history_imported">%1$d entries added</string>
+    <string name="history_imported_altered">%1$d entries added, but the file digest does not match its contents</string>
+    <string name="history_import_failed">That file is not a Signifer backup</string>
+    <string name="retention_thirty">30 days</string>
+    <string name="retention_ninety">90 days</string>
+    <string name="retention_forever">Forever</string>
+    <string name="retention_note">Favourites never expire, whatever the limit.</string>
+
 </resources>

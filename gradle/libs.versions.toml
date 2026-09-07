@@ -12,6 +12,7 @@ material = "1.12.0"
 zxingcpp = "2.3.0"
 zxingcore = "3.5.3"
 junit = "4.13.2"
+json = "20240303"
 
 [libraries]
 # Lectura: C++20, sin dependencias de terceros, Apache-2.0.
@@ -34,6 +35,7 @@ camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = 
 camera-view = { module = "androidx.camera:camera-view", version.ref = "camera" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
+json = { module = "org.json:json", version.ref = "json" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
