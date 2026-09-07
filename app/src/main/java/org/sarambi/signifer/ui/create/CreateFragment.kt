@@ -41,6 +41,9 @@ import org.sarambi.signifer.encode.WriteResult
 import org.sarambi.signifer.encode.ZxingCoreWriter
 import org.sarambi.signifer.encode.quietModulesFor
 import org.sarambi.signifer.encode.toSvg
+import org.sarambi.signifer.history.HistoryOrigin
+import org.sarambi.signifer.history.HistoryStore
+import org.sarambi.signifer.settings.ScanPreferences
 import org.sarambi.signifer.ui.titleOf
 
 /** La pantalla de creacion. */
@@ -395,6 +398,25 @@ class CreateFragment : Fragment() {
         val views = binding ?: return
         val message = if (written) R.string.export_done else R.string.export_failed
         Snackbar.make(views.root, message, Snackbar.LENGTH_LONG).show()
+        if (written) remember()
+    }
+
+    /** Guarda en el historial lo que se acaba de crear. */
+    private fun remember() {
+        val content = current ?: return
+        val preferences = ScanPreferences(requireContext())
+        if (!preferences.saveHistory) return
+        if (content.isSensitive && !preferences.saveSensitive) return
+
+        val payload = content.encode()
+        val chosenFormat = format
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val store = HistoryStore(requireContext().applicationContext)
+                store.save(payload, chosenFormat, HistoryOrigin.CREATED)
+                store.close()
+            }
+        }
     }
 
     /** Compartir. */
@@ -409,6 +431,7 @@ class CreateFragment : Fragment() {
             return
         }
         SharedImages.share(requireContext(), uri)
+        remember()
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()

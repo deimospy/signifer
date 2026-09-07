@@ -1,6 +1,7 @@
 package org.sarambi.signifer
 
 import android.content.Intent
+import android.media.MediaActionSound
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -143,6 +144,7 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
 
     override fun onCodeRead(code: DecodedCode) {
         if (preferences.vibrateOnRead) vibrate()
+        if (preferences.beepOnRead) beep()
 
         if (returningResult) {
             setResult(RESULT_OK, LegacyScanIntent.result(code.text, code.format, code.bytes))
@@ -189,6 +191,15 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         runCatching { doVibrate() }
     }
 
+    /** Un chasquido corto al leer. */
+    private fun beep() {
+        runCatching {
+            val sound = MediaActionSound()
+            sound.play(MediaActionSound.SHUTTER_CLICK)
+            binding.root.postDelayed({ sound.release() }, SOUND_RELEASE_MILLIS)
+        }
+    }
+
     private fun doVibrate() {
         val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             (getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
@@ -223,5 +234,6 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         private const val STATE_TAG = "destination"
 
         private const val HAPTIC_MILLIS = 40L
+        private const val SOUND_RELEASE_MILLIS = 1_000L
     }
 }

@@ -29,6 +29,7 @@ arquitectura. Cifras en KB.
 | Lectura con CameraX y pantalla de resultado | 2432 | 2354 | 2486 | 2465 |
 | Generación de los trece formatos | 2559 | 2481 | 2613 | 2592 |
 | Historial sobre el SQLite del sistema | 2584 | 2507 | 2639 | 2617 |
+| Integración con el sistema y análisis en verde | 2593 | 2515 | 2648 | 2626 |
 
 ## Composición de arm64-v8a
 
@@ -41,6 +42,7 @@ Sin comprimir, en KB.
 | Lectura con CameraX y pantalla de resultado | 1629 | 1807 | 534 | 539 |
 | Generación de los trece formatos | 1629 | 2031 | 540 | 549 |
 | Historial sobre el SQLite del sistema | 1629 | 2063 | 544 | 560 |
+| Integración con el sistema y análisis en verde | 1629 | 2067 | 546 | 569 |
 
 El componente nativo es `libzxingcpp_android.so`, que trae los veinte
 decodificadores compilados. Activarlos no cuesta espacio; cuesta tiempo por
@@ -53,10 +55,15 @@ añadió más de mil líneas y el paquete no se movió ni un kilobyte: R8 borra 
 que ninguna pantalla usa todavía. El coste aparece cuando la interfaz lo llama,
 repartido entre las dos filas siguientes.
 
-**Lo que pesa es el marco, no la aplicación.** Del paquete de arm64, el
-decodificador nativo son 1629 KB y todo lo demás son 955 KB, de los cuales la
+**Lo que pesa es el marco, no la aplicación.** Del paquete final de arm64, el
+decodificador nativo son 1629 KB y todo lo demás son 964 KB, de los cuales la
 mayor parte es Material y CameraX. El código propio compilado no llega a los
 400 KB.
+
+**La integración con el sistema costó 9 KB.** El azulejo del panel, los atajos
+del icono, la recepción de imágenes compartidas y la respuesta al intent
+heredado de ZXing, todo junto. Es lo que ningún competidor libre tiene reunido,
+y es lo más barato del proyecto.
 
 ## Decisiones que ya movieron la aguja
 

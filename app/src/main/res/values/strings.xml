@@ -204,4 +204,7 @@
     <string name="shortcut_create_long">Crear un código</string>
     <string name="shortcut_history_long">Ver el historial</string>
 
+    <string name="history_only_scanned">Leídos</string>
+    <string name="history_only_created">Creados</string>
+
 </resources>

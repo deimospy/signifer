@@ -67,15 +67,27 @@ class ScanFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (hasCameraPermission()) startCamera() else requestPermissionOnce()
-    }
-
     override fun onStop() {
         super.onStop()
         session?.stop()
         session = null
+    }
+
+    /** La camara se suelta tambien al cambiar de pestana. */
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden) {
+            session?.stop()
+            session = null
+        } else if (isResumed && hasCameraPermission()) {
+            startCamera()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isHidden) return
+        if (hasCameraPermission()) startCamera() else requestPermissionOnce()
     }
 
     override fun onDestroyView() {

@@ -25,6 +25,7 @@ import org.sarambi.signifer.databinding.FragmentHistoryBinding
 import org.sarambi.signifer.history.HistoryBackup
 import org.sarambi.signifer.history.HistoryEntry
 import org.sarambi.signifer.history.HistoryFilter
+import org.sarambi.signifer.history.HistoryOrigin
 import org.sarambi.signifer.history.HistoryStore
 import org.sarambi.signifer.history.Retention
 import org.sarambi.signifer.settings.ScanPreferences
@@ -110,7 +111,9 @@ class HistoryFragment : Fragment() {
             val entries = withContext(Dispatchers.IO) { store.entries(current) }
             val views = binding ?: return@launch
             adapter.submit(entries)
-            views.empty.visibility = if (entries.isEmpty()) View.VISIBLE else View.GONE
+            val emptiness = if (entries.isEmpty()) View.VISIBLE else View.GONE
+            views.empty.visibility = emptiness
+            views.emptyMark.visibility = emptiness
             views.empty.setText(
                 if (current.isEmpty) R.string.history_empty else R.string.history_no_matches,
             )
@@ -127,6 +130,23 @@ class HistoryFragment : Fragment() {
             }
         }
         views.filters.addView(favorites)
+
+        for ((label, origin) in listOf(
+            R.string.history_only_scanned to HistoryOrigin.SCANNED,
+            R.string.history_only_created to HistoryOrigin.CREATED,
+        )) {
+            val chip = Chip(requireContext()).apply {
+                setText(label)
+                isCheckable = true
+                setOnCheckedChangeListener { _, checked ->
+                    filter = filter.copy(
+                        origins = if (checked) filter.origins + origin else filter.origins - origin,
+                    )
+                    refresh()
+                }
+            }
+            views.filters.addView(chip)
+        }
 
         for (kind in ContentKind.entries) {
             val chip = Chip(requireContext()).apply {

@@ -203,4 +203,7 @@
     <string name="shortcut_create_long">Create a code</string>
     <string name="shortcut_history_long">Open the history</string>
 
+    <string name="history_only_scanned">Scanned</string>
+    <string name="history_only_created">Created</string>
+
 </resources>
