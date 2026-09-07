@@ -7,6 +7,7 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import org.sarambi.signifer.R
 
 /** El marco de lectura sobre la vista previa. */
@@ -20,7 +21,7 @@ class ScanFrameView @JvmOverloads constructor(
     }
 
     private val corner = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = context.getColor(R.color.signum_bone)
+        color = ContextCompat.getColor(context, R.color.signum_bone)
     }
 
     private val window = RectF()

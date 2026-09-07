@@ -10,6 +10,7 @@ import android.net.Uri
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.provider.Settings
+import androidx.core.net.toUri
 import org.sarambi.signifer.R
 import org.sarambi.signifer.content.CalendarEvent
 import org.sarambi.signifer.content.CodeContent
@@ -59,7 +60,7 @@ object CodeActions {
 
         if (assessUrl(target).disposition != UrlDisposition.ACTIONABLE) return Outcome.Refused
 
-        return launch(context, Intent(Intent.ACTION_VIEW, Uri.parse(target)))
+        return launch(context, Intent(Intent.ACTION_VIEW, target.toUri()))
     }
 
     /** Wi-Fi. */
@@ -120,7 +121,7 @@ object CodeActions {
 
     private fun sendEmail(context: Context, content: CodeContent): Outcome {
         val message = content as? EmailMessage ?: return Outcome.Refused
-        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
+        val intent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri()).apply {
             putExtra(Intent.EXTRA_EMAIL, arrayOf(message.address))
             putExtra(Intent.EXTRA_SUBJECT, message.subject)
             putExtra(Intent.EXTRA_TEXT, message.body)
@@ -146,7 +147,7 @@ object CodeActions {
 
     private fun openMap(context: Context, content: CodeContent): Outcome {
         val point = content as? GeoPoint ?: return Outcome.Refused
-        return launch(context, Intent(Intent.ACTION_VIEW, Uri.parse(point.encode())))
+        return launch(context, Intent(Intent.ACTION_VIEW, point.encode().toUri()))
     }
 
     private fun addEvent(context: Context, content: CodeContent): Outcome {

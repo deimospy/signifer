@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_tagline">Read the sign</string>
     <string name="yes">Yes</string>
 
     <string name="nav_scan">Scan</string>
@@ -186,8 +185,14 @@
     <string name="history_export">Export a backup</string>
     <string name="history_import">Import a backup</string>
     <string name="history_retention">How long it is kept</string>
-    <string name="history_imported">%1$d entries added</string>
-    <string name="history_imported_altered">%1$d entries added, but the file digest does not match its contents</string>
+    <plurals name="history_imported">
+        <item quantity="one">%1$d entry added</item>
+        <item quantity="other">%1$d entries added</item>
+    </plurals>
+    <plurals name="history_imported_altered">
+        <item quantity="one">%1$d entry added, but the file digest does not match its contents</item>
+        <item quantity="other">%1$d entries added, but the file digest does not match its contents</item>
+    </plurals>
     <string name="history_import_failed">That file is not a Signifer backup</string>
     <string name="retention_thirty">30 days</string>
     <string name="retention_ninety">90 days</string>

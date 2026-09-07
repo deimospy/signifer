@@ -217,6 +217,7 @@ class ResultSheet : BottomSheetDialogFragment() {
         } else {
             views.primaryAction.visibility = View.VISIBLE
             views.primaryAction.setText(labelOf(primary))
+            views.primaryAction.setIconResource(iconOf(primary))
             views.primaryAction.setOnClickListener { run(primary, content) }
         }
 
@@ -253,6 +254,15 @@ class ResultSheet : BottomSheetDialogFragment() {
         val drawable = view.drawable?.mutate() ?: return
         DrawableCompat.setTint(drawable, color)
         view.setImageDrawable(drawable)
+    }
+
+    /** El icono de la accion principal. */
+    private fun iconOf(action: CodeAction): Int = when (action) {
+        CodeAction.OPEN_WEBSITE -> R.drawable.ic_open
+        CodeAction.SEARCH_WEB -> R.drawable.ic_search
+        CodeAction.COPY -> R.drawable.ic_copy
+        CodeAction.SHARE -> R.drawable.ic_share
+        else -> R.drawable.ic_check
     }
 
     @StringRes

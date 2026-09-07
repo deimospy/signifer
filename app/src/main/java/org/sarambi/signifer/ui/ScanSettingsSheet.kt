@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.widget.TextViewCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.sarambi.signifer.R
 import org.sarambi.signifer.databinding.SheetScanSettingsBinding
@@ -69,7 +70,8 @@ class ScanSettingsSheet : BottomSheetDialogFragment() {
         for (family in CodeFamily.entries) {
             val header = TextView(host.context).apply {
                 setText(labelOf(family))
-                setTextAppearance(
+                TextViewCompat.setTextAppearance(
+                    this,
                     com.google.android.material.R.style.TextAppearance_Material3_TitleSmall,
                 )
                 setPadding(0, dp(16), 0, dp(4))

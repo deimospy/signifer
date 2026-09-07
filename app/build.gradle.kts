@@ -80,6 +80,14 @@ android {
         warningsAsErrors = true
         abortOnError = true
         checkDependencies = false
+
+        disable += setOf(
+            // Las versiones del stack son una decision del proyecto, tomada compilando.
+            "GradleDependency",
+            "AndroidGradlePluginVersion",
+            "NewerVersionAvailable",
+            "Overdraw",
+        )
     }
 
     testOptions {

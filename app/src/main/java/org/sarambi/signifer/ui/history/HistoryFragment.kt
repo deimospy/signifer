@@ -156,6 +156,7 @@ class HistoryFragment : Fragment() {
 
     private fun confirmDelete(entry: HistoryEntry) {
         MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_delete)
             .setTitle(R.string.history_delete_one)
             .setMessage(entry.text.take(120))
             .setNegativeButton(android.R.string.cancel, null)
@@ -176,6 +177,7 @@ class HistoryFragment : Fragment() {
             getString(R.string.history_clear),
         )
         MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_filter)
             .setItems(options) { _, index ->
                 when (index) {
                     0 -> exportBackup.launch("signifer-historial.json")
@@ -212,6 +214,7 @@ class HistoryFragment : Fragment() {
 
     private fun confirmClear() {
         MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_delete)
             .setTitle(R.string.history_clear)
             .setMessage(R.string.history_clear_note)
             .setNegativeButton(android.R.string.cancel, null)
@@ -270,11 +273,12 @@ class HistoryFragment : Fragment() {
             refresh()
             val (added, digestMatches) = outcome
             val views = binding ?: return@launch
-            val message = if (digestMatches) {
-                getString(R.string.history_imported, added)
+            val plural = if (digestMatches) {
+                R.plurals.history_imported
             } else {
-                getString(R.string.history_imported_altered, added)
+                R.plurals.history_imported_altered
             }
+            val message = resources.getQuantityString(plural, added, added)
             Snackbar.make(views.root, message, Snackbar.LENGTH_LONG).show()
         }
     }

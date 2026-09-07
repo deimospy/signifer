@@ -199,7 +199,12 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         if (!vibrator.hasVibrator()) return
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(HAPTIC_MILLIS, DEFAULT_AMPLITUDE))
+            vibrator.vibrate(
+                VibrationEffect.createOneShot(
+                    HAPTIC_MILLIS,
+                    VibrationEffect.DEFAULT_AMPLITUDE,
+                ),
+            )
         } else {
             @Suppress("DEPRECATION")
             vibrator.vibrate(HAPTIC_MILLIS)
@@ -218,6 +223,5 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         private const val STATE_TAG = "destination"
 
         private const val HAPTIC_MILLIS = 40L
-        private const val DEFAULT_AMPLITUDE = VibrationEffect.DEFAULT_AMPLITUDE
     }
 }

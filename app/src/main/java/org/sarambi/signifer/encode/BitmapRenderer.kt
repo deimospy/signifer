@@ -2,6 +2,7 @@ package org.sarambi.signifer.encode
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import androidx.core.graphics.createBitmap
 import org.sarambi.signifer.decode.CodeFormat
 
 /** De matriz a imagen. */
@@ -39,7 +40,7 @@ object BitmapRenderer {
             }
         }
 
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(width, height)
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
         return bitmap
     }

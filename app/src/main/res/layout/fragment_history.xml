@@ -74,6 +74,20 @@
         tools:itemCount="4"
         tools:listitem="@layout/item_history" />
 
+    <ImageView
+        android:id="@+id/empty_mark"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:alpha="0.25"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_signum"
+        app:layout_constraintBottom_toTopOf="@id/empty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/list"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:tint="?attr/colorOnSurfaceVariant" />
+
     <TextView
         android:id="@+id/empty"
         android:layout_width="0dp"
@@ -83,9 +97,10 @@
         android:text="@string/history_empty"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorOnSurfaceVariant"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="@id/list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/list" />
+        app:layout_constraintTop_toBottomOf="@id/empty_mark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

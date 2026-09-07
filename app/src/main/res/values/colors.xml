@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="signum_ink">#FF1F5A64</color>
     <color name="signum_bone">#FFF2EDE3</color>
-    <color name="signum_bronze">#FFB08D57</color>
 
     <color name="light_primary">#FF1F5A64</color>
     <color name="light_on_primary">#FFFFFFFF</color>

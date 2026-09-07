@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Signifer</string>
-    <string name="app_tagline">Lee la señal</string>
+    <string name="app_name" translatable="false">Signifer</string>
     <string name="yes">Sí</string>
 
     <string name="nav_scan">Leer</string>
@@ -187,8 +186,14 @@
     <string name="history_export">Exportar un respaldo</string>
     <string name="history_import">Importar un respaldo</string>
     <string name="history_retention">Cuánto se conserva</string>
-    <string name="history_imported">Se añadieron %1$d entradas</string>
-    <string name="history_imported_altered">Se añadieron %1$d entradas, pero la huella del archivo no cuadra con su contenido</string>
+    <plurals name="history_imported">
+        <item quantity="one">Se añadió %1$d entrada</item>
+        <item quantity="other">Se añadieron %1$d entradas</item>
+    </plurals>
+    <plurals name="history_imported_altered">
+        <item quantity="one">Se añadió %1$d entrada, pero la huella del archivo no cuadra con su contenido</item>
+        <item quantity="other">Se añadieron %1$d entradas, pero la huella del archivo no cuadra con su contenido</item>
+    </plurals>
     <string name="history_import_failed">Ese archivo no es un respaldo de Signifer</string>
     <string name="retention_thirty">30 días</string>
     <string name="retention_ninety">90 días</string>
