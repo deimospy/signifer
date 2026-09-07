@@ -19,6 +19,8 @@ DENSITIES = (("mdpi", 48), ("hdpi", 72), ("xhdpi", 96), ("xxhdpi", 144), ("xxxhd
 
 SUPERSAMPLE = 4
 
+NEWLINE = chr(10)
+
 
 def vector(path, viewport, scale, offset, color, name):
     lines = [
@@ -154,6 +156,31 @@ def circle(size, ink, bone, inset_scale):
     return rounded_square(size, size / 2.0, ink, bone, inset_scale)
 
 
+def shortcut(matrix, name):
+    """Un icono de atajo: circulo de tinta con los modulos en hueso encima."""
+    scale = 28.0 / 12.0
+    offset = (48 - 28) / 2.0
+    lines = [
+        '<?xml version="1.0" encoding="utf-8"?>',
+        "<!-- Generado por tools/brand/generate.py. No editar a mano. -->",
+        '<vector xmlns:android="http://schemas.android.com/apk/res/android"',
+        '    android:width="48dp"',
+        '    android:height="48dp"',
+        '    android:viewportWidth="48"',
+        '    android:viewportHeight="48">',
+        "    <path",
+        f'        android:fillColor="{INK}"',
+        '        android:pathData="M24,0A24,24 0 1,1 24,48A24,24 0 1,1 24,0z" />',
+        "    <path",
+        f'        android:fillColor="{BONE}"',
+        '        android:pathData="' + icon_path(matrix, scale, offset) + '" />',
+        "</vector>",
+        "",
+    ]
+    with open(name, "w", encoding="utf-8", newline=NEWLINE) as handle:
+        handle.write(NEWLINE.join(lines))
+
+
 def main():
     if not check_symmetry():
         raise SystemExit("la grilla perdio la simetria de rotacion")
@@ -196,6 +223,12 @@ def main():
         vector(
             icon_path(matrix, 24.0 / 12.0, 0.0), 24, 1, 0, "#FF000000",
             os.path.join(RES, "drawable", f"ic_{name}.xml"),
+        )
+
+    for name in ("scan", "create", "history"):
+        shortcut(
+            ICONS[name],
+            os.path.join(RES, "drawable", f"ic_shortcut_{name}.xml"),
         )
 
     store = rounded_square(512, 0, ink, bone, 0.72)

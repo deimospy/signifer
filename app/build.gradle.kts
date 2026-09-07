@@ -40,7 +40,10 @@ android {
             )
         }
         debug {
-            applicationIdSuffix = ".debug"
+            // Sin sufijo de identificador: los atajos del lanzador declaran el paquete de destino
+            // en un recurso XML, que no admite marcadores, y con sufijo dejarian de abrir nada en
+            // las compilaciones de desarrollo.
+            isMinifyEnabled = false
         }
     }
 

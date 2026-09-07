@@ -194,4 +194,8 @@
     <string name="retention_forever">Forever</string>
     <string name="retention_note">Favourites never expire, whatever the limit.</string>
 
+    <string name="shortcut_scan_long">Scan a code</string>
+    <string name="shortcut_create_long">Create a code</string>
+    <string name="shortcut_history_long">Open the history</string>
+
 </resources>

@@ -195,4 +195,8 @@
     <string name="retention_forever">Siempre</string>
     <string name="retention_note">Los favoritos no caducan nunca, sea cual sea el plazo.</string>
 
+    <string name="shortcut_scan_long">Leer un código</string>
+    <string name="shortcut_create_long">Crear un código</string>
+    <string name="shortcut_history_long">Ver el historial</string>
+
 </resources>

@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.sarambi.signifer.R
 import org.sarambi.signifer.camera.CameraSession
 import org.sarambi.signifer.databinding.FragmentScanBinding
+import org.sarambi.signifer.decode.CodeFormat
 import org.sarambi.signifer.decode.DecodedCode
 import org.sarambi.signifer.decode.ScanOptions
 import org.sarambi.signifer.decode.ZxingCppScanner
@@ -101,7 +102,10 @@ class ScanFragment : Fragment() {
         views.permissionPanel.visibility = View.GONE
         views.frame.visibility = View.VISIBLE
 
-        scanner.options = preferences.scanOptions()
+        scanner.options = preferences.scanOptions().let { options ->
+            val imposed = (activity as? CodeSink)?.requestedFormats
+            if (imposed.isNullOrEmpty()) options else options.copy(formats = imposed)
+        }
         val camera = CameraSession(
             context = requireContext().applicationContext,
             scanner = scanner,
@@ -134,6 +138,11 @@ class ScanFragment : Fragment() {
         )
     }
 
+    /** Lee una imagen que llega de fuera: compartida o abierta con la aplicacion. */
+    fun decodeUri(uri: Uri) {
+        decodeImage(uri)
+    }
+
     private fun decodeImage(uri: Uri) {
         val views = binding ?: return
         val bitmap = runCatching {
@@ -147,7 +156,10 @@ class ScanFragment : Fragment() {
             return
         }
 
-        val stillScanner = ZxingCppScanner(ScanOptions.STILL.copy(formats = preferences.formats()))
+        val imposed = (activity as? CodeSink)?.requestedFormats
+        val stillScanner = ZxingCppScanner(
+            ScanOptions.STILL.copy(formats = imposed?.ifEmpty { null } ?: preferences.formats()),
+        )
         val codes = stillScanner.decode(bitmap)
         bitmap.recycle()
 
@@ -166,5 +178,8 @@ class ScanFragment : Fragment() {
     /** Quien recibe una lectura. */
     interface CodeSink {
         fun onCodeRead(code: DecodedCode)
+
+        /** Formatos que pide quien abrio la aplicacion. */
+        val requestedFormats: Set<CodeFormat>?
     }
 }
