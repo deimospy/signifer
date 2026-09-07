@@ -32,7 +32,7 @@ class DecodeMetrics {
         var seen = 0L
         for (index in buckets.indices) {
             seen += buckets[index]
-            if (seen >= target) return upperBoundOf(index)
+            if (seen >= target) return minOf(upperBoundOf(index), worstMicros)
         }
         return worstMicros
     }

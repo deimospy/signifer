@@ -92,6 +92,12 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
+        unitTests.all {
+            it.systemProperty(
+                "signifer.benchmark",
+                System.getProperty("signifer.benchmark") ?: "false",
+            )
+        }
     }
 }
 
@@ -121,4 +127,7 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.json)
+
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.runner)
 }

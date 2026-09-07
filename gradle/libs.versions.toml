@@ -13,6 +13,8 @@ zxingcpp = "2.3.0"
 zxingcore = "3.5.3"
 junit = "4.13.2"
 json = "20240303"
+androidx-test-junit = "1.2.1"
+androidx-test-runner = "1.6.2"
 
 [libraries]
 # Lectura: C++20, sin dependencias de terceros, Apache-2.0.
@@ -36,6 +38,8 @@ camera-view = { module = "androidx.camera:camera-view", version.ref = "camera" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 json = { module = "org.json:json", version.ref = "json" }
+androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

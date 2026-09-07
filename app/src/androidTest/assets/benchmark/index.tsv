@@ -1,0 +1,150 @@
+qr-url__limpio.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__pequeno.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__muy-pequeno.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__desenfoque-leve.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__desenfoque-fuerte.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__girado-5.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__girado-15.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__girado-45.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__perspectiva.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__contraste-bajo.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__ruido.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__sombra.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__invertido.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__danado.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-url__borde-recortado.png	QR_CODE	https://ejemplo.org/ficha/12345
+qr-wifi__limpio.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__pequeno.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__muy-pequeno.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__desenfoque-leve.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__desenfoque-fuerte.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__girado-5.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__girado-15.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__girado-45.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__perspectiva.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__contraste-bajo.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__ruido.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__sombra.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__invertido.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__danado.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-wifi__borde-recortado.png	QR_CODE	WIFI:T:WPA;S:Sarambi;P:abrelasesamo;;
+qr-largo__limpio.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__pequeno.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__muy-pequeno.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__desenfoque-leve.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__desenfoque-fuerte.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__girado-5.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__girado-15.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__girado-45.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__perspectiva.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__contraste-bajo.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__ruido.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__sombra.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__invertido.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__danado.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+qr-largo__borde-recortado.png	QR_CODE	BEGIN:VCARD\nVERSION:3.0\nN:Roche;Ana;;;\nFN:Ana Roche\nORG:Sarambi\nTEL;TYPE=CELL:+595981000111\nEMAIL:ana@ejemplo.org\nEND:VCARD
+datamatrix__limpio.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__pequeno.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__muy-pequeno.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__desenfoque-leve.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__desenfoque-fuerte.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__girado-5.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__girado-15.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__girado-45.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__perspectiva.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__contraste-bajo.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__ruido.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__sombra.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__invertido.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__danado.png	DATA_MATRIX	SIGNIFER-2026-0001
+datamatrix__borde-recortado.png	DATA_MATRIX	SIGNIFER-2026-0001
+aztec__limpio.png	AZTEC	https://ejemplo.org/aztec
+aztec__pequeno.png	AZTEC	https://ejemplo.org/aztec
+aztec__muy-pequeno.png	AZTEC	https://ejemplo.org/aztec
+aztec__desenfoque-leve.png	AZTEC	https://ejemplo.org/aztec
+aztec__desenfoque-fuerte.png	AZTEC	https://ejemplo.org/aztec
+aztec__girado-5.png	AZTEC	https://ejemplo.org/aztec
+aztec__girado-15.png	AZTEC	https://ejemplo.org/aztec
+aztec__girado-45.png	AZTEC	https://ejemplo.org/aztec
+aztec__perspectiva.png	AZTEC	https://ejemplo.org/aztec
+aztec__contraste-bajo.png	AZTEC	https://ejemplo.org/aztec
+aztec__ruido.png	AZTEC	https://ejemplo.org/aztec
+aztec__sombra.png	AZTEC	https://ejemplo.org/aztec
+aztec__invertido.png	AZTEC	https://ejemplo.org/aztec
+aztec__danado.png	AZTEC	https://ejemplo.org/aztec
+aztec__borde-recortado.png	AZTEC	https://ejemplo.org/aztec
+pdf417__limpio.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__pequeno.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__muy-pequeno.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__desenfoque-leve.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__desenfoque-fuerte.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__girado-5.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__girado-15.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__girado-45.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__perspectiva.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__contraste-bajo.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__ruido.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__sombra.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__invertido.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__danado.png	PDF_417	SIGNIFER PDF417 2026
+pdf417__borde-recortado.png	PDF_417	SIGNIFER PDF417 2026
+ean13__limpio.png	EAN_13	7501234567893
+ean13__pequeno.png	EAN_13	7501234567893
+ean13__muy-pequeno.png	EAN_13	7501234567893
+ean13__desenfoque-leve.png	EAN_13	7501234567893
+ean13__desenfoque-fuerte.png	EAN_13	7501234567893
+ean13__girado-5.png	EAN_13	7501234567893
+ean13__girado-15.png	EAN_13	7501234567893
+ean13__girado-45.png	EAN_13	7501234567893
+ean13__perspectiva.png	EAN_13	7501234567893
+ean13__contraste-bajo.png	EAN_13	7501234567893
+ean13__ruido.png	EAN_13	7501234567893
+ean13__sombra.png	EAN_13	7501234567893
+ean13__invertido.png	EAN_13	7501234567893
+ean13__danado.png	EAN_13	7501234567893
+ean13__borde-recortado.png	EAN_13	7501234567893
+code128__limpio.png	CODE_128	SIGNIFER-128-2026
+code128__pequeno.png	CODE_128	SIGNIFER-128-2026
+code128__muy-pequeno.png	CODE_128	SIGNIFER-128-2026
+code128__desenfoque-leve.png	CODE_128	SIGNIFER-128-2026
+code128__desenfoque-fuerte.png	CODE_128	SIGNIFER-128-2026
+code128__girado-5.png	CODE_128	SIGNIFER-128-2026
+code128__girado-15.png	CODE_128	SIGNIFER-128-2026
+code128__girado-45.png	CODE_128	SIGNIFER-128-2026
+code128__perspectiva.png	CODE_128	SIGNIFER-128-2026
+code128__contraste-bajo.png	CODE_128	SIGNIFER-128-2026
+code128__ruido.png	CODE_128	SIGNIFER-128-2026
+code128__sombra.png	CODE_128	SIGNIFER-128-2026
+code128__invertido.png	CODE_128	SIGNIFER-128-2026
+code128__danado.png	CODE_128	SIGNIFER-128-2026
+code128__borde-recortado.png	CODE_128	SIGNIFER-128-2026
+code39__limpio.png	CODE_39	SIGNIFER39
+code39__pequeno.png	CODE_39	SIGNIFER39
+code39__muy-pequeno.png	CODE_39	SIGNIFER39
+code39__desenfoque-leve.png	CODE_39	SIGNIFER39
+code39__desenfoque-fuerte.png	CODE_39	SIGNIFER39
+code39__girado-5.png	CODE_39	SIGNIFER39
+code39__girado-15.png	CODE_39	SIGNIFER39
+code39__girado-45.png	CODE_39	SIGNIFER39
+code39__perspectiva.png	CODE_39	SIGNIFER39
+code39__contraste-bajo.png	CODE_39	SIGNIFER39
+code39__ruido.png	CODE_39	SIGNIFER39
+code39__sombra.png	CODE_39	SIGNIFER39
+code39__invertido.png	CODE_39	SIGNIFER39
+code39__danado.png	CODE_39	SIGNIFER39
+code39__borde-recortado.png	CODE_39	SIGNIFER39
+itf__limpio.png	ITF	12345678901234
+itf__pequeno.png	ITF	12345678901234
+itf__muy-pequeno.png	ITF	12345678901234
+itf__desenfoque-leve.png	ITF	12345678901234
+itf__desenfoque-fuerte.png	ITF	12345678901234
+itf__girado-5.png	ITF	12345678901234
+itf__girado-15.png	ITF	12345678901234
+itf__girado-45.png	ITF	12345678901234
+itf__perspectiva.png	ITF	12345678901234
+itf__contraste-bajo.png	ITF	12345678901234
+itf__ruido.png	ITF	12345678901234
+itf__sombra.png	ITF	12345678901234
+itf__invertido.png	ITF	12345678901234
+itf__danado.png	ITF	12345678901234
+itf__borde-recortado.png	ITF	12345678901234
