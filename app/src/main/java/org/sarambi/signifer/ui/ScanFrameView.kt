@@ -29,7 +29,8 @@ class ScanFrameView @JvmOverloads constructor(
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        val side = (minOf(width, height) * WINDOW_FRACTION)
+        val fraction = if (width > height) LANDSCAPE_FRACTION else WINDOW_FRACTION
+        val side = (minOf(width, height) * fraction)
         val left = (width - side) / 2f
         val top = (height - side) / 2f
         window.set(left, top, left + side, top + side)
@@ -82,6 +83,7 @@ class ScanFrameView @JvmOverloads constructor(
     private companion object {
         const val SCRIM_COLOR = 0x99000000.toInt()
         const val WINDOW_FRACTION = 0.72f
+        const val LANDSCAPE_FRACTION = 0.60f
         const val MODULE_FRACTION = 0.035f
         const val ARM_MODULES = 4f
     }
