@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Signifer" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorOnPrimary">@color/dark_on_primary</item>
+        <item name="colorPrimaryContainer">@color/dark_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/dark_on_primary_container</item>
+        <item name="colorSecondary">@color/dark_secondary</item>
+        <item name="colorOnSecondary">@color/dark_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/dark_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/dark_on_secondary_container</item>
+        <item name="colorTertiary">@color/dark_tertiary</item>
+        <item name="colorOnTertiary">@color/dark_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/dark_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/dark_on_tertiary_container</item>
+        <item name="colorError">@color/dark_error</item>
+        <item name="colorOnError">@color/dark_on_error</item>
+        <item name="colorErrorContainer">@color/dark_error_container</item>
+        <item name="colorOnErrorContainer">@color/dark_on_error_container</item>
+        <item name="android:colorBackground">@color/dark_background</item>
+        <item name="colorOnBackground">@color/dark_on_background</item>
+        <item name="colorSurface">@color/dark_surface</item>
+        <item name="colorOnSurface">@color/dark_on_surface</item>
+        <item name="colorSurfaceVariant">@color/dark_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/dark_on_surface_variant</item>
+        <item name="colorSurfaceContainer">@color/dark_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/dark_surface_container_high</item>
+        <item name="colorOutline">@color/dark_outline</item>
+        <item name="colorOutlineVariant">@color/dark_outline_variant</item>
+        <item name="colorSurfaceInverse">@color/dark_inverse_surface</item>
+        <item name="colorOnSurfaceInverse">@color/dark_inverse_on_surface</item>
+        <item name="colorPrimaryInverse">@color/dark_inverse_primary</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+    </style>
+
+</resources>

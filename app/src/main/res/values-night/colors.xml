@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="risk_none">#FF8ED8AC</color>
+    <color name="risk_none_container">#FF14432C</color>
+    <color name="risk_caution">#FFEBC950</color>
+    <color name="risk_caution_container">#FF463500</color>
+    <color name="risk_warning">#FFFFB68E</color>
+    <color name="risk_warning_container">#FF5A2000</color>
+    <color name="risk_blocked">#FFFFB4AB</color>
+    <color name="risk_blocked_container">#FF690005</color>
+</resources>
