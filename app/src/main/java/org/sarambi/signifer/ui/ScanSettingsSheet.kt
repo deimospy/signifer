@@ -54,6 +54,8 @@ class ScanSettingsSheet : BottomSheetDialogFragment() {
         views.presetMatrix.setOnClickListener { applyPreset(CodeFormat.MATRIX_ONLY) }
         views.presetQr.setOnClickListener { applyPreset(CodeFormat.QR_ONLY) }
 
+        views.about.setOnClickListener { AboutSheet().show(parentFragmentManager, "about") }
+
         buildFormatList(views.formats)
     }
 

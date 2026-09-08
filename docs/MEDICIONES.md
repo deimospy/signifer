@@ -30,6 +30,7 @@ arquitectura. Cifras en KB.
 | Generación de los trece formatos | 2559 | 2481 | 2613 | 2592 |
 | Historial sobre el SQLite del sistema | 2584 | 2507 | 2639 | 2617 |
 | Integración con el sistema y análisis en verde | 2593 | 2515 | 2648 | 2626 |
+| Logotipo en el código, ficha y lenguaje claro | 2614 | 2536 | 2668 | 2646 |
 
 ## Lo que descarga un teléfono desde la tienda
 
@@ -82,6 +83,12 @@ repartido entre las dos filas siguientes.
 decodificador nativo son 1629 KB y todo lo demás son 964 KB, de los cuales la
 mayor parte es Material y CameraX. El código propio compilado no llega a los
 400 KB.
+
+**El logotipo en el centro del código costó 18 KB**, contando también la ficha
+de la aplicación, los iconos nuevos y los textos en lenguaje claro. Es barato
+porque no trajo nada: el selector de imágenes ya estaba para leer desde la
+galería, y el decodificador ya estaba para la cámara. Poner un dibujo encima y
+releer el resultado es aritmética sobre piezas que ya viajaban en el binario.
 
 **La integración con el sistema costó 9 KB.** El azulejo del panel, los atajos
 del icono, la recepción de imágenes compartidas y la respuesta al intent

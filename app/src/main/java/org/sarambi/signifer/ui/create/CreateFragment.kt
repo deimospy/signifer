@@ -3,6 +3,8 @@ package org.sarambi.signifer.ui.create
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -34,10 +37,13 @@ import org.sarambi.signifer.content.ContentKind
 import org.sarambi.signifer.content.validate
 import org.sarambi.signifer.databinding.FragmentCreateBinding
 import org.sarambi.signifer.decode.CodeFormat
+import org.sarambi.signifer.decode.ScanOptions
+import org.sarambi.signifer.decode.ZxingCppScanner
 import org.sarambi.signifer.encode.BitmapRenderer
 import org.sarambi.signifer.encode.Correction
 import org.sarambi.signifer.encode.WRITABLE_FORMATS
 import org.sarambi.signifer.encode.WriteResult
+import org.sarambi.signifer.encode.LogoOverlay
 import org.sarambi.signifer.encode.ZxingCoreWriter
 import org.sarambi.signifer.encode.quietModulesFor
 import org.sarambi.signifer.encode.toSvg
@@ -59,6 +65,16 @@ class CreateFragment : Fragment() {
     private var current: CodeContent? = null
     private var currentMatrix: org.sarambi.signifer.encode.CodeMatrix? = null
 
+    /** El logotipo del centro, ya reducido, y cuanto ocupa. */
+    private var logo: Bitmap? = null
+    private var logoSize = LogoOverlay.Size.MEDIUM
+
+    /** Si el logotipo dejo el codigo ilegible. */
+    private var logoBreaksCode = false
+
+    /** El lector con el que la aplicacion se comprueba a si misma. */
+    private val verifier = ZxingCppScanner(ScanOptions.STILL)
+
     private val exportPng = registerForActivityResult(
         ActivityResultContracts.CreateDocument("image/png"),
     ) { uri -> uri?.let { writePng(it, pendingSize) } }
@@ -68,6 +84,10 @@ class CreateFragment : Fragment() {
     ) { uri -> uri?.let { writeSvg(it) } }
 
     private var pendingSize = EXPORT_SIZES.first()
+
+    private val pickLogo = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia(),
+    ) { uri -> uri?.let(::loadLogo) }
     private var preview: Job? = null
 
     override fun onCreateView(
@@ -91,6 +111,26 @@ class CreateFragment : Fragment() {
 
         views.share.setOnClickListener { share() }
         views.export.setOnClickListener { chooseExport() }
+
+        views.addLogo.setOnClickListener {
+            pickLogo.launch(
+                PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    .build(),
+            )
+        }
+        views.removeLogo.setOnClickListener { clearLogo() }
+        views.logoSizes.check(R.id.logo_medium)
+        views.logoSizes.addOnButtonCheckedListener { _, checked, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            logoSize = when (checked) {
+                R.id.logo_small -> LogoOverlay.Size.SMALL
+                R.id.logo_large -> LogoOverlay.Size.LARGE
+                else -> LogoOverlay.Size.MEDIUM
+            }
+            refresh()
+        }
+        refreshLogoVisibility()
     }
 
     override fun onDestroyView() {
@@ -130,23 +170,73 @@ class CreateFragment : Fragment() {
         }
     }
 
+    /** El selector de resistencia. */
     private fun buildCorrectionChooser(views: FragmentCreateBinding) {
-        val labels = CORRECTIONS.map { getString(it.second) }
-        views.correction.setAdapter(
-            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, labels),
-        )
-        views.correction.setText(getString(CORRECTIONS[1].second), false)
+        val adapter = ChoiceAdapter(requireContext(), CORRECTIONS.map { it.second })
+        views.correction.setAdapter(adapter)
+        views.correction.setText(getString(CORRECTIONS[1].second.title), false)
         views.correction.setOnItemClickListener { _, _, position, _ ->
             correction = CORRECTIONS[position].first
+            views.correction.setText(getString(CORRECTIONS[position].second.title), false)
             refresh()
         }
         refreshCorrectionVisibility()
+    }
+
+    /** Carga el logotipo elegido, ya reducido. */
+    private fun loadLogo(uri: android.net.Uri) {
+        val loaded = runCatching {
+            val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            requireContext().contentResolver.openInputStream(uri).use {
+                BitmapFactory.decodeStream(it, null, bounds)
+            }
+            val options = BitmapFactory.Options().apply {
+                inSampleSize = LogoOverlay.sampleSizeFor(
+                    bounds.outWidth,
+                    bounds.outHeight,
+                    LogoOverlay.MAX_LOGO_SIDE,
+                )
+            }
+            requireContext().contentResolver.openInputStream(uri).use {
+                BitmapFactory.decodeStream(it, null, options)
+            }
+        }.getOrNull()
+
+        if (loaded == null) {
+            binding?.let {
+                Snackbar.make(it.root, R.string.image_unreadable, Snackbar.LENGTH_LONG).show()
+            }
+            return
+        }
+
+        logo = LogoOverlay.fit(loaded, LogoOverlay.MAX_LOGO_SIDE)
+        correction = Correction.HIGH
+        binding?.correction?.setText(getString(CORRECTIONS[3].second.title), false)
+        refreshLogoVisibility()
+        refresh()
+    }
+
+    private fun clearLogo() {
+        logo = null
+        refreshLogoVisibility()
+        refresh()
+    }
+
+    private fun refreshLogoVisibility() {
+        val views = binding ?: return
+        val supported = LogoOverlay.supports(format)
+        val hasLogo = logo != null
+
+        views.addLogo.visibility = if (supported && !hasLogo) View.VISIBLE else View.GONE
+        views.logoPanel.visibility = if (supported && hasLogo) View.VISIBLE else View.GONE
+        logo?.let { views.logoPreview.setImageBitmap(it) }
     }
 
     /** Solo QR y Aztec tienen nivel de correccion que elegir. */
     private fun refreshCorrectionVisibility() {
         val supported = format == CodeFormat.QR_CODE || format == CodeFormat.AZTEC
         binding?.correctionLayout?.visibility = if (supported) View.VISIBLE else View.GONE
+        refreshLogoVisibility()
     }
 
     private fun rebuildForm() {
@@ -291,14 +381,30 @@ class CreateFragment : Fragment() {
             val current = binding ?: return@launch
             when (result) {
                 is WriteResult.Written -> {
-                    val bitmap = withContext(Dispatchers.Default) {
-                        BitmapRenderer.render(result.matrix, chosenFormat, PREVIEW_PIXELS)
+                    val mark = logo
+                    val drawn = withContext(Dispatchers.Default) {
+                        val plain = BitmapRenderer.render(result.matrix, chosenFormat, PREVIEW_PIXELS)
+                        val finished = if (mark == null) {
+                            plain
+                        } else {
+                            LogoOverlay.draw(plain, mark, logoSize)
+                        }
+                        val readable = mark == null ||
+                            verifier.decode(finished).any { it.text == payload }
+                        finished to readable
                     }
                     currentMatrix = result.matrix
-                    current.problem.visibility = View.GONE
                     current.previewPlaceholder.visibility = View.GONE
                     current.preview.visibility = View.VISIBLE
-                    current.preview.setImageBitmap(bitmap)
+                    current.preview.setImageBitmap(drawn.first)
+
+                    if (drawn.second) {
+                        current.problem.visibility = View.GONE
+                    } else {
+                        current.problem.visibility = View.VISIBLE
+                        current.problem.setText(R.string.logo_unreadable)
+                    }
+                    logoBreaksCode = !drawn.second
                 }
                 is WriteResult.Rejected -> showProblem(current, describe(result))
                 WriteResult.Failed -> showProblem(current, getString(R.string.create_failed))
@@ -339,6 +445,7 @@ class CreateFragment : Fragment() {
 
     private fun chooseExport() {
         if (currentMatrix == null) return
+        if (refuseIfUnreadable()) return
         val options = EXPORT_SIZES.map { getString(R.string.export_png, it) } +
             getString(R.string.export_svg)
 
@@ -372,7 +479,7 @@ class CreateFragment : Fragment() {
 
     private fun writePng(uri: Uri, size: Int) {
         val matrix = currentMatrix ?: return
-        val bitmap = BitmapRenderer.render(matrix, format, size)
+        val bitmap = compose(matrix, size)
         val written = runCatching {
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
@@ -384,7 +491,11 @@ class CreateFragment : Fragment() {
 
     private fun writeSvg(uri: Uri) {
         val matrix = currentMatrix ?: return
-        val svg = matrix.toSvg(quietModules = quietModulesFor(format))
+        val svg = matrix.toSvg(
+            quietModules = quietModulesFor(format),
+            logo = logo?.let(::asDataUri),
+            logoFraction = if (logo == null) 0f else logoSize.fraction,
+        )
         val written = runCatching {
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
                 stream.write(svg.toByteArray(Charsets.UTF_8))
@@ -392,6 +503,29 @@ class CreateFragment : Fragment() {
             } ?: false
         }.getOrDefault(false)
         report(written)
+    }
+
+    /** El logotipo como `data:` para incrustarlo en el SVG. */
+    private fun asDataUri(mark: Bitmap): String {
+        val stream = java.io.ByteArrayOutputStream()
+        mark.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val encoded = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
+        return "data:image/png;base64,$encoded"
+    }
+
+    /** El codigo al tamano pedido, con el logotipo encima si lo hay. */
+    private fun compose(matrix: org.sarambi.signifer.encode.CodeMatrix, side: Int): Bitmap {
+        val plain = BitmapRenderer.render(matrix, format, side)
+        val mark = logo ?: return plain
+        return LogoOverlay.draw(plain, mark, logoSize)
+    }
+
+    /** Se niega a exportar un codigo que no se lee. */
+    private fun refuseIfUnreadable(): Boolean {
+        if (!logoBreaksCode) return false
+        val views = binding ?: return true
+        Snackbar.make(views.root, R.string.logo_unreadable, Snackbar.LENGTH_LONG).show()
+        return true
     }
 
     private fun report(written: Boolean) {
@@ -422,7 +556,8 @@ class CreateFragment : Fragment() {
     /** Compartir. */
     private fun share() {
         val matrix = currentMatrix ?: return
-        val bitmap = BitmapRenderer.render(matrix, format, EXPORT_SIZES.first())
+        if (refuseIfUnreadable()) return
+        val bitmap = compose(matrix, EXPORT_SIZES.first())
         val uri = SharedImages.write(requireContext(), bitmap, "signifer.png")
         bitmap.recycle()
 
@@ -444,10 +579,26 @@ class CreateFragment : Fragment() {
         val EXPORT_SIZES = listOf(512, 1024, 2048)
 
         val CORRECTIONS = listOf(
-            Correction.LOW to R.string.correction_low,
-            Correction.MEDIUM to R.string.correction_medium,
-            Correction.QUARTILE to R.string.correction_quartile,
-            Correction.HIGH to R.string.correction_high,
+            Correction.LOW to ChoiceAdapter.Choice(
+                R.string.correction_low,
+                R.string.correction_low_note,
+                R.drawable.ic_resist_1,
+            ),
+            Correction.MEDIUM to ChoiceAdapter.Choice(
+                R.string.correction_medium,
+                R.string.correction_medium_note,
+                R.drawable.ic_resist_2,
+            ),
+            Correction.QUARTILE to ChoiceAdapter.Choice(
+                R.string.correction_quartile,
+                R.string.correction_quartile_note,
+                R.drawable.ic_resist_3,
+            ),
+            Correction.HIGH to ChoiceAdapter.Choice(
+                R.string.correction_high,
+                R.string.correction_high_note,
+                R.drawable.ic_resist_4,
+            ),
         )
     }
 }

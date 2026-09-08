@@ -19,23 +19,25 @@
     <string name="image_unreadable">The image could not be opened</string>
     <string name="image_without_code">No code in that image</string>
 
-    <string name="settings_title">Scanning settings</string>
-    <string name="settings_formats_note">All twenty formats ship compiled in: turning them on costs no space, but every active one costs time on every frame.</string>
-    <string name="settings_try_harder">Search harder</string>
-    <string name="settings_try_invert">Read inverted codes</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_formats_note">The fewer formats it looks for, the faster it reads. If you only scan QR codes, turn the rest off.</string>
+    <string name="settings_try_harder">Try harder on every frame</string>
+    <string name="settings_try_harder_note">Slower. In our tests it did not read a single extra code, but it may help with badly damaged ones.</string>
+    <string name="settings_try_invert">Read codes in negative</string>
+    <string name="settings_try_invert_note">Light codes on a dark background.</string>
     <string name="settings_vibrate">Vibrate on read</string>
-    <string name="settings_beep">Beep on read</string>
+    <string name="settings_beep">Sound on read</string>
     <string name="settings_save_history">Save to history</string>
-    <string name="settings_save_sensitive">Also save what carries passwords</string>
+    <string name="settings_save_sensitive">Also save passwords</string>
     <string name="settings_save_sensitive_note">While off, a Wi-Fi network with a password is not stored unless you ask for it on the result screen itself.</string>
     <string name="settings_formats">Formats</string>
-    <string name="settings_preset_all">All twenty</string>
-    <string name="settings_preset_matrix">Matrix</string>
+    <string name="settings_preset_all">All</string>
+    <string name="settings_preset_matrix">Square</string>
     <string name="settings_preset_qr">QR only</string>
 
-    <string name="family_matrix">Matrix</string>
-    <string name="family_retail">Retail</string>
-    <string name="family_industrial">Industry and logistics</string>
+    <string name="family_matrix">Square, like QR</string>
+    <string name="family_retail">Shop products</string>
+    <string name="family_industrial">Industry and shipping</string>
 
     <string name="kind_text">Text</string>
     <string name="kind_website">Website</string>
@@ -48,10 +50,10 @@
     <string name="kind_event">Event</string>
 
     <string name="result_destination">Destination</string>
-    <string name="level_none">Nothing found</string>
+    <string name="level_none">All clear</string>
     <string name="level_caution">Worth a look</string>
     <string name="level_warning">Check before acting</string>
-    <string name="level_blocked">Not opened from here</string>
+    <string name="level_blocked">Blocked for safety</string>
 
     <string name="action_open_website">Open the site</string>
     <string name="action_connect_wifi">Add the network</string>
@@ -139,16 +141,20 @@
     <string name="create_preview">Code preview</string>
     <string name="create_preview_empty">Drawn once the form is complete</string>
     <string name="create_format">Format</string>
-    <string name="create_correction">Error correction</string>
+    <string name="create_correction">Damage resistance</string>
     <string name="create_incomplete">The form is not complete yet</string>
     <string name="create_failed">The code could not be generated</string>
-    <string name="correction_low" formatted="false">Low — recovers 7 %</string>
-    <string name="correction_medium" formatted="false">Medium — recovers 15 %</string>
-    <string name="correction_quartile" formatted="false">High — recovers 25 %</string>
-    <string name="correction_high" formatted="false">Highest — recovers 30 %</string>
+    <string name="correction_low">Minimal</string>
+    <string name="correction_low_note">The simplest code. Screens only.</string>
+    <string name="correction_medium">Normal</string>
+    <string name="correction_medium_note">For screens and clean paper.</string>
+    <string name="correction_quartile">High</string>
+    <string name="correction_quartile_note">For labels, boxes and outdoors.</string>
+    <string name="correction_high">Maximum</string>
+    <string name="correction_high_note">Survives stains, tears and a logo on top.</string>
     <string name="action_export">Export</string>
     <string name="export_png">PNG at %1$d px</string>
-    <string name="export_svg">SVG, lossless at any size</string>
+    <string name="export_svg">SVG · to print at any size</string>
     <string name="export_done">File saved</string>
     <string name="export_failed">The file could not be saved</string>
     <string name="list_or"> or </string>
@@ -205,5 +211,29 @@
 
     <string name="history_only_scanned">Scanned</string>
     <string name="history_only_created">Created</string>
+
+    <string name="logo_add">Put a logo in the middle</string>
+    <string name="logo_added">Logo in the middle</string>
+    <string name="logo_remove">Remove the logo</string>
+    <string name="logo_small">Small</string>
+    <string name="logo_medium">Medium</string>
+    <string name="logo_large">Large</string>
+    <string name="logo_note">Resistance was set to maximum so the code still reads with the logo on top. Signifer checks it by reading it back.</string>
+    <string name="logo_unreadable">The logo covers too much and the code stops reading. Try a smaller one.</string>
+
+    <string name="about_title">About Signifer</string>
+    <string name="about_version">Version %1$s (%2$d)</string>
+    <string name="about_what">Reads twenty kinds of code and creates thirteen. Everything happens inside the phone.</string>
+    <string name="about_offline">Works without internet</string>
+    <string name="about_offline_body">The app asks for no network permission, so Android will not let it connect even if it wanted to. It is not a promise: the system enforces it.</string>
+    <string name="about_no_tracking">It does not follow you</string>
+    <string name="about_no_tracking_body">Nothing you scan leaves the phone. There are no statistics, not even anonymous ones.</string>
+    <string name="about_no_ads">No ads, no purchases</string>
+    <string name="about_no_ads_body">There is no paid version and no locked features.</string>
+    <string name="about_no_storage">It does not look at your photos</string>
+    <string name="about_no_storage_body">When you read from an image, you pick it yourself in the system picker and the app only receives that one.</string>
+    <string name="about_author">Created by</string>
+    <string name="about_license">Licence</string>
+    <string name="about_licenses">Third-party software</string>
 
 </resources>

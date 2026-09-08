@@ -30,12 +30,24 @@ class CodeMatrix(
     }
 }
 
+private const val LOGO_PADDING = 0.10f
+
+/** Un numero sin decimales sobrantes: el SVG no gana nada con «120.00». */
+private fun fmt(value: Float): String {
+    val rounded = Math.round(value * 100) / 100.0
+    return if (rounded == Math.floor(rounded)) rounded.toInt().toString() else rounded.toString()
+}
+
 /** El codigo en SVG. */
 fun CodeMatrix.toSvg(
     modulePixels: Int = 8,
     quietModules: Int = 4,
     foreground: String = "#000000",
     background: String = "#FFFFFF",
+
+    /** El logotipo del centro, ya como `data:image/png;base64,...`. */
+    logo: String? = null,
+    logoFraction: Float = 0f,
 ): String {
     val totalWidth = (width + quietModules * 2) * modulePixels
     val totalHeight = (height + quietModules * 2) * modulePixels

@@ -19,23 +19,25 @@
     <string name="image_unreadable">Não foi possível abrir a imagem</string>
     <string name="image_without_code">Nenhum código nessa imagem</string>
 
-    <string name="settings_title">Ajustes de leitura</string>
-    <string name="settings_formats_note">Os vinte formatos já vêm compilados: ativá-los não ocupa espaço, mas cada um ativo custa tempo em cada quadro.</string>
-    <string name="settings_try_harder">Procurar com mais esforço</string>
-    <string name="settings_try_invert">Ler códigos invertidos</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_formats_note">Quanto menos formatos procurar, mais rápido lê. Se você só escaneia QR, desligue o resto.</string>
+    <string name="settings_try_harder">Insistir mais em cada tentativa</string>
+    <string name="settings_try_harder_note">Fica mais lento. Nos nossos testes não leu nem um código a mais, mas pode ajudar com códigos muito danificados.</string>
+    <string name="settings_try_invert">Ler códigos em negativo</string>
+    <string name="settings_try_invert_note">Códigos claros sobre fundo escuro.</string>
     <string name="settings_vibrate">Vibrar ao ler</string>
-    <string name="settings_beep">Apitar ao ler</string>
+    <string name="settings_beep">Som ao ler</string>
     <string name="settings_save_history">Guardar no histórico</string>
-    <string name="settings_save_sensitive">Guardar também o que leva senhas</string>
+    <string name="settings_save_sensitive">Guardar também as senhas</string>
     <string name="settings_save_sensitive_note">Desligado, uma rede Wi-Fi com senha não fica guardada, a não ser que se peça na própria tela de resultado.</string>
     <string name="settings_formats">Formatos</string>
-    <string name="settings_preset_all">Os vinte</string>
-    <string name="settings_preset_matrix">Matriciais</string>
+    <string name="settings_preset_all">Todos</string>
+    <string name="settings_preset_matrix">Quadrados</string>
     <string name="settings_preset_qr">Só QR</string>
 
-    <string name="family_matrix">Matriciais</string>
-    <string name="family_retail">Comércio</string>
-    <string name="family_industrial">Indústria e logística</string>
+    <string name="family_matrix">Quadrados, tipo QR</string>
+    <string name="family_retail">Produtos de loja</string>
+    <string name="family_industrial">Indústria e envios</string>
 
     <string name="kind_text">Texto</string>
     <string name="kind_website">Site</string>
@@ -48,10 +50,10 @@
     <string name="kind_event">Evento</string>
 
     <string name="result_destination">Destino</string>
-    <string name="level_none">Nada encontrado</string>
+    <string name="level_none">Tudo em ordem</string>
     <string name="level_caution">Vale olhar</string>
     <string name="level_warning">Conferir antes de agir</string>
-    <string name="level_blocked">Não se abre daqui</string>
+    <string name="level_blocked">Bloqueado por segurança</string>
 
     <string name="action_open_website">Abrir o site</string>
     <string name="action_connect_wifi">Adicionar a rede</string>
@@ -139,16 +141,20 @@
     <string name="create_preview">Prévia do código</string>
     <string name="create_preview_empty">É desenhado ao completar o formulário</string>
     <string name="create_format">Formato</string>
-    <string name="create_correction">Correção de erros</string>
+    <string name="create_correction">Resistência a danos</string>
     <string name="create_incomplete">Falta completar o formulário</string>
     <string name="create_failed">Não foi possível gerar o código</string>
-    <string name="correction_low" formatted="false">Baixa — recupera 7 %</string>
-    <string name="correction_medium" formatted="false">Média — recupera 15 %</string>
-    <string name="correction_quartile" formatted="false">Alta — recupera 25 %</string>
-    <string name="correction_high" formatted="false">Máxima — recupera 30 %</string>
+    <string name="correction_low">Mínima</string>
+    <string name="correction_low_note">O código mais simples. Só para tela.</string>
+    <string name="correction_medium">Normal</string>
+    <string name="correction_medium_note">Para tela e papel limpo.</string>
+    <string name="correction_quartile">Alta</string>
+    <string name="correction_quartile_note">Para etiquetas, caixas e ambientes externos.</string>
+    <string name="correction_high">Máxima</string>
+    <string name="correction_high_note">Aguenta manchas, rasgos e um logo por cima.</string>
     <string name="action_export">Exportar</string>
     <string name="export_png">PNG de %1$d px</string>
-    <string name="export_svg">SVG, sem perda em qualquer tamanho</string>
+    <string name="export_svg">SVG · para imprimir em qualquer tamanho</string>
     <string name="export_done">Arquivo salvo</string>
     <string name="export_failed">Não foi possível salvar o arquivo</string>
     <string name="list_or"> ou </string>
@@ -207,5 +213,29 @@
 
     <string name="history_only_scanned">Lidos</string>
     <string name="history_only_created">Criados</string>
+
+    <string name="logo_add">Colocar um logo no meio</string>
+    <string name="logo_added">Logo no meio</string>
+    <string name="logo_remove">Tirar o logo</string>
+    <string name="logo_small">Pequeno</string>
+    <string name="logo_medium">Médio</string>
+    <string name="logo_large">Grande</string>
+    <string name="logo_note">A resistência foi ao máximo para o código continuar legível com o logo. O Signifer confere lendo de volta.</string>
+    <string name="logo_unreadable">O logo cobre demais e o código deixa de ser lido. Tente um menor.</string>
+
+    <string name="about_title">Sobre o Signifer</string>
+    <string name="about_version">Versão %1$s (%2$d)</string>
+    <string name="about_what">Lê vinte tipos de código e cria treze. Tudo acontece dentro do telefone.</string>
+    <string name="about_offline">Funciona sem internet</string>
+    <string name="about_offline_body">O aplicativo não pede permissão de rede, então o Android não o deixa conectar nem se quisesse. Não é uma promessa: é o sistema que impede.</string>
+    <string name="about_no_tracking">Não te segue</string>
+    <string name="about_no_tracking_body">Nada do que você escaneia sai do telefone. Não há estatísticas, nem anônimas.</string>
+    <string name="about_no_ads">Sem anúncios nem compras</string>
+    <string name="about_no_ads_body">Não há versão paga nem recursos bloqueados.</string>
+    <string name="about_no_storage">Não olha suas fotos</string>
+    <string name="about_no_storage_body">Quando você lê de uma imagem, escolhe você mesmo no seletor do sistema e o aplicativo recebe só aquela.</string>
+    <string name="about_author">Criado por</string>
+    <string name="about_license">Licença</string>
+    <string name="about_licenses">Software de terceiros</string>
 
 </resources>
