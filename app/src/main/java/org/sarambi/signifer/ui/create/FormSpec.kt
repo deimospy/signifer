@@ -16,6 +16,7 @@ import org.sarambi.signifer.content.SmsMessage
 import org.sarambi.signifer.content.Website
 import org.sarambi.signifer.content.WifiNetwork
 import org.sarambi.signifer.content.WifiSecurity
+import org.sarambi.signifer.content.parseCoordinate
 
 enum class FieldType {
     TEXT,
@@ -161,8 +162,8 @@ fun contentFrom(kind: ContentKind, values: Map<String, String>): CodeContent {
         ContentKind.SMS -> SmsMessage(value("number"), value("message"))
 
         ContentKind.LOCATION -> GeoPoint(
-            latitude = value("latitude").toDoubleOrNull() ?: Double.NaN,
-            longitude = value("longitude").toDoubleOrNull() ?: Double.NaN,
+            latitude = parseCoordinate(value("latitude")) ?: Double.NaN,
+            longitude = parseCoordinate(value("longitude")) ?: Double.NaN,
             label = value("label"),
         )
 

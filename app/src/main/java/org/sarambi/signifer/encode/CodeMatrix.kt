@@ -56,6 +56,7 @@ fun CodeMatrix.toSvg(
     val builder = StringBuilder(1_024)
     builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
     builder.append("<svg xmlns=\"http://www.w3.org/2000/svg\" ")
+    if (logo != null && logoFraction > 0f) builder.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ")
     builder.append("width=\"").append(totalWidth).append("\" ")
     builder.append("height=\"").append(totalHeight).append("\" ")
     builder.append("viewBox=\"0 0 ").append(totalWidth).append(' ').append(totalHeight)
@@ -80,6 +81,27 @@ fun CodeMatrix.toSvg(
         }
     }
 
-    builder.append("</g>\n</svg>\n")
+    builder.append("</g>\n")
+
+    if (logo != null && logoFraction > 0f) {
+        val side = totalWidth * logoFraction
+        val padding = side * LOGO_PADDING
+        val left = (totalWidth - side) / 2f
+        val top = (totalHeight - side) / 2f
+        builder.append("<rect x=\"").append(fmt(left - padding))
+        builder.append("\" y=\"").append(fmt(top - padding))
+        builder.append("\" width=\"").append(fmt(side + padding * 2))
+        builder.append("\" height=\"").append(fmt(side + padding * 2))
+        builder.append("\" rx=\"").append(fmt(padding))
+        builder.append("\" fill=\"").append(background).append("\"/>\n")
+        builder.append("<image x=\"").append(fmt(left))
+        builder.append("\" y=\"").append(fmt(top))
+        builder.append("\" width=\"").append(fmt(side))
+        builder.append("\" height=\"").append(fmt(side))
+        builder.append("\" preserveAspectRatio=\"xMidYMid meet\" href=\"").append(logo)
+        builder.append("\" xlink:href=\"").append(logo).append("\"/>\n")
+    }
+
+    builder.append("</svg>\n")
     return builder.toString()
 }

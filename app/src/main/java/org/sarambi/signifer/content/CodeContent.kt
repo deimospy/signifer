@@ -232,14 +232,30 @@ fun compactPhone(number: String): String {
     val compact = buildString(number.length) {
         for ((index, character) in number.trim().withIndex()) {
             when {
-                character.isDigit() -> append(character)
-                character == '+' && index == 0 -> append(character)
+                character.isDigit() -> append('0' + character.digitToInt())
+                (character == '+' || character == '＋') && index == 0 -> append('+')
                 character == ',' || character == ';' -> append(character)
                 else -> Unit
             }
         }
     }
     return compact
+}
+
+/** Lee una coordenada tal como la escribe una persona. */
+fun parseCoordinate(value: String): Double? {
+    val normalized = buildString(value.length) {
+        for (character in value.trim()) {
+            when {
+                character.isDigit() -> append('0' + character.digitToInt())
+                character == '.' || character == ',' || character == '٫' -> append('.')
+                character == '-' || character == '−' -> append('-')
+                character == '+' -> append('+')
+                else -> return null
+            }
+        }
+    }
+    return normalized.toDoubleOrNull()?.takeIf { it.isFinite() }
 }
 
 /** Escribe una coordenada sin notacion cientifica ni ceros de relleno. */

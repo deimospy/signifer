@@ -8,6 +8,7 @@ import android.util.Base64
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -342,6 +343,10 @@ class CreateFragment : Fragment() {
         else -> inflateText(host, spec).also { layout ->
             val input = layout.editText ?: return@also
             input.inputType = inputTypeOf(spec.type)
+            // Un documento pegado entero no cabe en ningun codigo, y antes de Android 15 el sistema
+            // no pone limite: un campo con cientos de miles de caracteres se guarda al salir de la
+            // aplicacion y ese envio al sistema la cierra.
+            input.filters = input.filters + InputFilter.LengthFilter(MAX_FIELD_CHARS)
             if (spec.type == FieldType.MULTILINE) {
                 input.setLines(3)
                 input.maxLines = 6
@@ -492,7 +497,11 @@ class CreateFragment : Fragment() {
             org.sarambi.signifer.encode.PayloadProblem.ODD_LENGTH ->
                 getString(R.string.problem_odd_length)
             org.sarambi.signifer.encode.PayloadProblem.UNSUPPORTED_CHARACTER ->
-                getString(R.string.problem_unsupported_character, format.label)
+                if (format == CodeFormat.DATA_MATRIX || format == CodeFormat.PDF_417) {
+                    getString(R.string.problem_unsupported_matrix, format.label)
+                } else {
+                    getString(R.string.problem_unsupported_character, format.label)
+                }
             org.sarambi.signifer.encode.PayloadProblem.BAD_CHECK_DIGIT ->
                 getString(R.string.problem_check_digit)
             org.sarambi.signifer.encode.PayloadProblem.TOO_LONG ->
@@ -501,6 +510,8 @@ class CreateFragment : Fragment() {
                 getString(R.string.problem_lowercase, format.label)
             org.sarambi.signifer.encode.PayloadProblem.NUMBER_SYSTEM ->
                 getString(R.string.problem_number_system)
+            org.sarambi.signifer.encode.PayloadProblem.EMOJI ->
+                getString(R.string.problem_emoji, format.label)
             org.sarambi.signifer.encode.PayloadProblem.NOT_WRITABLE, null ->
                 getString(R.string.create_failed)
         }
@@ -647,6 +658,9 @@ class CreateFragment : Fragment() {
 
         /** Respiro antes de redibujar. */
         const val PREVIEW_DELAY_MILLIS = 120L
+
+        /** El doble de lo que cabe en el QR mas grande que se puede leer. */
+        const val MAX_FIELD_CHARS = 4_000
         val EXPORT_SIZES = listOf(512, 1024, 2048)
 
         val CORRECTIONS = listOf(

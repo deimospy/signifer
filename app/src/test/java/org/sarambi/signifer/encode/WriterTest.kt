@@ -111,6 +111,26 @@ class WriterTest {
     }
 
     @Test
+    fun `el SVG lleva el logotipo cuando se elige uno`() {
+        val matriz = (writer.write(CodeFormat.QR_CODE, "https://ejemplo.org") as WriteResult.Written).matrix
+        val logo = "data:image/png;base64,iVBORw0KGgo="
+        val svg = matriz.toSvg(modulePixels = 10, quietModules = 4, logo = logo, logoFraction = 0.22f)
+
+        assertTrue(svg, "<image " in svg && "href=\"$logo\"" in svg)
+        assertTrue("xmlns:xlink=" in svg)
+        val side = (matriz.width + 8) * 10
+        val x = Regex("<image x=\"([0-9.]+)\" y=\"[0-9.]+\" width=\"([0-9.]+)\"").find(svg)!!
+        val left = x.groupValues[1].toFloat()
+        val width = x.groupValues[2].toFloat()
+        assertEquals(side - left - width, left, 0.02f)
+
+        javax.xml.parsers.DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }
+            .newDocumentBuilder().parse(svg.byteInputStream())
+
+        assertTrue("<image" !in matriz.toSvg())
+    }
+
+    @Test
     fun `los colores del SVG son los que se piden`() {
         val svg = CodeMatrix.of(1, 1) { _, _ -> true }
             .toSvg(foreground = "#1F5A64", background = "#F2EDE3")

@@ -243,6 +243,8 @@
     <string name="wifi_enterprise">De empresa, com usuário e senha</string>
     <string name="problem_lowercase">%1$s só aceita maiúsculas: quase nenhum leitor entende minúsculas</string>
     <string name="problem_number_system">Um UPC-E sempre começa com 0 ou 1</string>
+    <string name="problem_emoji">%1$s não aceita emojis. Um código QR aceita.</string>
+    <string name="problem_unsupported_matrix">%1$s não consegue escrever este texto. Um código QR consegue.</string>
     <string name="settings_min_one_format">Pelo menos um formato precisa ficar ativo</string>
 
 </resources>

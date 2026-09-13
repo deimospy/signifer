@@ -38,6 +38,9 @@ enum class PayloadProblem {
 
     /** Un UPC-E empieza siempre por 0 o por 1. */
     NUMBER_SYSTEM,
+
+    /** Emojis y otros caracteres fuera del plano basico: Data Matrix y PDF417 no los escriben. */
+    EMOJI,
 }
 
 /** El resultado de comprobar una carga contra un formato. */

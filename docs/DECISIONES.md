@@ -54,7 +54,7 @@ está esperando.
 
 ## 5. Idiomas
 
-**Cerrada en tres: español, inglés y portugués.** Las 215 cadenas traducibles
+**Cerrada en tres: español, inglés y portugués.** Las 217 cadenas traducibles
 están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
 estático falla la compilación si falta una traducción. El paquete solo incluye
 esos tres, así que ninguna dependencia cuela los suyos.
@@ -82,3 +82,22 @@ luminancia relativa de sRGB, la misma de las pautas de accesibilidad, con 3 a 1
 como suelo y 4,5 a 1 como cómodo. Un código invertido —módulos más claros que
 el fondo— sí se deja exportar, avisando: tiene contraste de sobra y es una
 elección legítima.
+
+**Cualquier escritura entra en un código matricial, con dos límites que se
+avisan.** QR y Aztec escriben emojis, chino, árabe, devanagari y cualquier otra
+escritura, y el lector de la aplicación los lee tal cual. Data Matrix y PDF417
+también, salvo los emojis: sus codificadores en ZXing procesan el texto de a
+una unidad UTF-16 y no saben escribir un carácter fuera del plano básico. Y el
+Data Matrix compacto de ZXing, el único que sabe declarar UTF-8, deja datos de
+relleno que el lector toma por texto cuando una escritura no latina va con
+saltos de línea. Por eso los textos latinos van por el codificador clásico, y
+lo que sale del compacto se relee antes de mostrarlo: si no dice exactamente lo
+escrito, la pantalla lo avisa y sugiere QR. Mejor ningún código que uno que
+diga otra cosa.
+
+**Los campos de texto tienen límite.** 4000 caracteres en la creación —el doble
+de lo que cabe en el QR legible más grande— y 200 en la búsqueda. En Android 16
+el propio sistema ya cortó a 5000 caracteres un texto pegado de 700 000; en las
+versiones anteriores no se comprobó y no se da por hecho. Sin límite, un campo
+con cientos de miles de caracteres se guarda al salir de la aplicación en un
+envío al sistema que no admite más de un megabyte.

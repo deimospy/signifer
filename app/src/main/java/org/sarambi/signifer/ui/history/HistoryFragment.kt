@@ -277,7 +277,7 @@ class HistoryFragment : Fragment() {
             val outcome = withContext(Dispatchers.IO) {
                 val json = runCatching {
                     requireContext().contentResolver.openInputStream(uri)?.use { stream ->
-                        stream.readBytes().toString(Charsets.UTF_8)
+                        readLimited(stream)?.toString(Charsets.UTF_8)
                     }
                 }.getOrNull() ?: return@withContext null
 
@@ -310,8 +310,22 @@ class HistoryFragment : Fragment() {
         Snackbar.make(views.root, message, Snackbar.LENGTH_LONG).show()
     }
 
+    /** Lee el archivo elegido, pero no uno cualquiera entero. */
+    private fun readLimited(stream: java.io.InputStream): ByteArray? {
+        val bytes = java.io.ByteArrayOutputStream()
+        val buffer = ByteArray(64 * 1024)
+        while (true) {
+            val read = stream.read(buffer)
+            if (read < 0) return bytes.toByteArray()
+            if (bytes.size() + read > MAX_BACKUP_BYTES) return null
+            bytes.write(buffer, 0, read)
+        }
+    }
+
     private companion object {
         /** Un respiro para que escribir cuatro letras consulte una vez, no cuatro. */
         const val SEARCH_DELAY_MILLIS = 180L
+
+        const val MAX_BACKUP_BYTES = 32 * 1024 * 1024
     }
 }
