@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="signum_bone">#FFF2EDE3</color>
+    <color name="signum_crimson">#FF8C1D2C</color>
+    <color name="signum_bone">#FFF4EFE6</color>
+
+    <color name="signum_mark">@color/signum_crimson</color>
 
     <color name="light_primary">#FF1F5A64</color>
     <color name="light_on_primary">#FFFFFFFF</color>

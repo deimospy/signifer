@@ -1,4 +1,4 @@
-"""Genera todas las piezas de identidad visual a partir de la grilla.
+"""Genera todas las piezas de identidad visual a partir de la geometria de la marca.
 
     python tools/brand/generate.py
 """
@@ -7,7 +7,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from grid import BONE, INK, SIZE, check_symmetry, rectangles  # noqa: E402
+import banner  # noqa: E402
+from grid import BONE, CRIMSON  # noqa: E402
 from icons import ICONS  # noqa: E402
 from pngwriter import rgba, write_png  # noqa: E402
 
@@ -77,67 +78,38 @@ def icon_path(matrix, scale, offset):
     return "".join(parts)
 
 
-def path_data(scale, offset):
-    parts = []
-    for row, col, width, height in rectangles():
-        x = offset + col * scale
-        y = offset + row * scale
-        w = width * scale
-        h = height * scale
-        parts.append(f"M{fmt(x)},{fmt(y)}h{fmt(w)}v{fmt(h)}h{fmt(-w)}z")
-    return "".join(parts)
-
-
 def fmt(value):
     text = f"{value:.2f}".rstrip("0").rstrip(".")
     return text if text else "0"
 
 
-def rounded_square(size, radius, ink, bone, inset_scale):
-    """Icono cuadrado de esquinas redondeadas, con la S centrada."""
+def badge(size, radius, mark_scale, background, mark):
+    """El icono en mapa de bits: fondo carmesi recortado y el estandarte encima."""
+    scale = size * mark_scale / banner.VIEW
+    offset = (size - banner.VIEW * scale) / 2.0
+    staff_bottom = (size - offset) / scale + 1
+    cover = banner.coverage(size, scale, offset, offset, staff_bottom, SUPERSAMPLE)
+
     big = size * SUPERSAMPLE
     r = radius * SUPERSAMPLE
-    module = big * inset_scale / SIZE
-    origin = (big - module * SIZE) / 2.0
-    cells = {(row, col, w, h) for row, col, w, h in rectangles()}
-
-    coarse = []
-    for y in range(big):
-        line = bytearray(big)
-        inside_y = y
-        for row, col, w, h in cells:
-            y0 = origin + row * module
-            y1 = y0 + h * module
-            if y0 <= inside_y < y1:
-                x0 = int(origin + col * module)
-                x1 = int(origin + (col + w) * module)
-                for x in range(max(0, x0), min(big, x1)):
-                    line[x] = 1
-        coarse.append(line)
-
     rows = []
     for y in range(size):
         out = []
         for x in range(size):
-            r_sum = g_sum = b_sum = a_sum = 0
+            inside = 0
             for dy in range(SUPERSAMPLE):
                 for dx in range(SUPERSAMPLE):
-                    px, py = x * SUPERSAMPLE + dx, y * SUPERSAMPLE + dy
-                    if not in_rounded(px, py, big, r):
-                        color = (0, 0, 0, 0)
-                    elif coarse[py][px]:
-                        color = ink
-                    else:
-                        color = bone
-                    r_sum += color[0] * color[3]
-                    g_sum += color[1] * color[3]
-                    b_sum += color[2] * color[3]
-                    a_sum += color[3]
-            if a_sum == 0:
+                    if in_rounded(x * SUPERSAMPLE + dx, y * SUPERSAMPLE + dy, big, r):
+                        inside += 1
+            alpha = inside / (SUPERSAMPLE * SUPERSAMPLE)
+            if alpha == 0:
                 out.append((0, 0, 0, 0))
-            else:
-                n = SUPERSAMPLE * SUPERSAMPLE
-                out.append((r_sum // a_sum, g_sum // a_sum, b_sum // a_sum, a_sum // n))
+                continue
+            amount = cover[y][x]
+            color = tuple(
+                round(mark[i] * amount + background[i] * (1 - amount)) for i in range(3)
+            )
+            out.append(color + (round(255 * alpha),))
         rows.append(out)
     return rows
 
@@ -150,10 +122,6 @@ def in_rounded(x, y, size, radius):
     dx = x + 0.5 - cx
     dy = y + 0.5 - cy
     return dx * dx + dy * dy <= radius * radius
-
-
-def circle(size, ink, bone, inset_scale):
-    return rounded_square(size, size / 2.0, ink, bone, inset_scale)
 
 
 def shortcut(matrix, name):
@@ -169,7 +137,7 @@ def shortcut(matrix, name):
         '    android:viewportWidth="48"',
         '    android:viewportHeight="48">',
         "    <path",
-        f'        android:fillColor="{INK}"',
+        f'        android:fillColor="{CRIMSON}"',
         '        android:pathData="M24,0A24,24 0 1,1 24,48A24,24 0 1,1 24,0z" />',
         "    <path",
         f'        android:fillColor="{BONE}"',
@@ -181,42 +149,69 @@ def shortcut(matrix, name):
         handle.write(NEWLINE.join(lines))
 
 
-def main():
-    if not check_symmetry():
-        raise SystemExit("la grilla perdio la simetria de rotacion")
+def banner_vector(name, viewport, color, scale=1.0, offset=0.0, staff_bottom=banner.VIEW):
+    """El estandarte como vector de Android: un trazado con regla par-impar."""
+    lines = [
+        '<?xml version="1.0" encoding="utf-8"?>',
+        "<!-- Generado por tools/brand/generate.py. No editar a mano. -->",
+        '<vector xmlns:android="http://schemas.android.com/apk/res/android"',
+        f'    android:width="{fmt(viewport)}dp"',
+        f'    android:height="{fmt(viewport)}dp"',
+        f'    android:viewportWidth="{fmt(viewport)}"',
+        f'    android:viewportHeight="{fmt(viewport)}">',
+    ]
+    indent = "    "
+    if scale != 1.0 or offset != 0.0:
+        lines += [
+            "    <group",
+            f'        android:scaleX="{fmt(scale)}"',
+            f'        android:scaleY="{fmt(scale)}"',
+            f'        android:translateX="{fmt(offset)}"',
+            f'        android:translateY="{fmt(offset)}">',
+        ]
+        indent = "        "
+    lines += [
+        f"{indent}<path",
+        f'{indent}    android:fillColor="{color}"',
+        f'{indent}    android:fillType="evenOdd"',
+        f'{indent}    android:pathData="' + banner.path_data(staff_bottom, ",") + '" />',
+    ]
+    if indent != "    ":
+        lines.append("    </group>")
+    lines += ["</vector>", ""]
+    with open(name, "w", encoding="utf-8", newline=NEWLINE) as handle:
+        handle.write(NEWLINE.join(lines))
 
+
+def main():
     for name, matrix in ICONS.items():
         if len(matrix) != 12 or any(len(row) != 12 for row in matrix):
             raise SystemExit(f"la matriz del icono «{name}» no es de 12 x 12")
 
-    ink = rgba(INK)
+    crimson = rgba(CRIMSON)
     bone = rgba(BONE)
 
     os.makedirs(os.path.join(RES, "drawable"), exist_ok=True)
 
-    vector(
-        path_data(1, 0), SIZE, 1, 0, "?attr/colorPrimary",
-        os.path.join(RES, "drawable", "ic_signum.xml"),
-    )
+    banner_vector(os.path.join(RES, "drawable", "ic_signum.xml"), banner.VIEW, "@color/signum_mark")
 
-    scale = 66.0 / SIZE
-    offset = (108 - 66) / 2.0
-    vector(
-        path_data(scale, offset), 108, scale, offset, INK,
-        os.path.join(RES, "drawable", "ic_launcher_foreground.xml"),
+    scale = 0.45
+    offset = 54 - banner.VIEW / 2 * scale
+    staff_bottom = round((108 - offset) / scale) + 1
+    banner_vector(
+        os.path.join(RES, "drawable", "ic_launcher_foreground.xml"), 108, BONE, scale, offset, staff_bottom,
     )
     # Version monocroma: Android 13 la tine con el color del sistema.
-    vector(
-        path_data(scale, offset), 108, scale, offset, "#FFFFFFFF",
-        os.path.join(RES, "drawable", "ic_launcher_monochrome.xml"),
+    banner_vector(
+        os.path.join(RES, "drawable", "ic_launcher_monochrome.xml"), 108, "#FFFFFFFF", scale, offset, staff_bottom,
     )
 
     for density, size in DENSITIES:
         folder = os.path.join(RES, f"mipmap-{density}")
         os.makedirs(folder, exist_ok=True)
-        square = rounded_square(size, size * 0.22, ink, bone, 0.72)
+        square = badge(size, size * 0.22, 0.92, crimson, bone)
         write_png(os.path.join(folder, "ic_launcher.png"), square, size, size)
-        round_icon = circle(size, ink, bone, 0.66)
+        round_icon = badge(size, size / 2.0, 0.84, crimson, bone)
         write_png(os.path.join(folder, "ic_launcher_round.png"), round_icon, size, size)
 
     for name, matrix in sorted(ICONS.items()):
@@ -231,8 +226,10 @@ def main():
             os.path.join(RES, "drawable", f"ic_shortcut_{name}.xml"),
         )
 
-    store = rounded_square(512, 0, ink, bone, 0.72)
+    store = badge(512, 0, 1.0, crimson, bone)
     write_png(os.path.join(os.path.dirname(os.path.abspath(__file__)), "store_icon_512.png"), store, 512, 512)
+
+    banner.write_svgs()
 
     print("piezas generadas en", RES)
 

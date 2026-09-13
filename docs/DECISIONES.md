@@ -95,6 +95,15 @@ lo que sale del compacto se relee antes de mostrarlo: si no dice exactamente lo
 escrito, la pantalla lo avisa y sugiere QR. Mejor ningún código que uno que
 diga otra cosa.
 
+**La marca es un estandarte, y se genera desde su geometría.** El signifer
+portaba el signum; aquí el paño lleva una S de módulos con dos patrones de
+detección. No hay piezas dibujadas a mano: `tools/brand/banner.py` define la
+figura sobre una grilla de 144 unidades y de ahí salen los SVG de `docs/marca`,
+el icono adaptativo, los mapas de bits del lanzador y el icono de la tienda.
+Los módulos de la S son huecos, no cuadrados pintados: sobre el tema claro el
+estandarte es carmesí `#8C1D2C` y la S deja ver el blanco del fondo; sobre el
+oscuro, el estandarte pasa a hueso.
+
 **Los ajustes son un solo panel.** La lectura se ajustaba desde la cámara y el
 historial desde un menú propio, y encontrar una opción era adivinar en cuál de
 los dos estaba. Ahora el mismo botón abre el mismo panel en las dos pantallas,

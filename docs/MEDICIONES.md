@@ -35,6 +35,7 @@ arquitectura. Cifras en KB.
 | Zonas horarias, agendas antiguas e invertidos en imágenes | 2629 | 2551 | 2683 | 2662 |
 | Escrituras de todo el mundo y límites de entrada | 2637 | 2559 | 2691 | 2670 |
 | Panel único de ajustes | 2639 | 2561 | 2693 | 2672 |
+| El estandarte como marca | 2643 | 2565 | 2697 | 2675 |
 
 ## Lo que descarga un teléfono desde la tienda
 
@@ -46,10 +47,10 @@ Medido con `bundletool get-size total` sobre `app-release.aab`:
 
 | Arquitectura | Descarga |
 |---|---|
-| armeabi-v7a | 2020 – 2049 KB |
-| **arm64-v8a** | **2098 – 2127 KB** |
-| x86_64 | 2130 – 2159 KB |
-| x86 | 2151 – 2181 KB |
+| armeabi-v7a | 2023 – 2053 KB |
+| **arm64-v8a** | **2100 – 2132 KB** |
+| x86_64 | 2132 – 2164 KB |
+| x86 | 2153 – 2186 KB |
 
 ```
 gradlew :app:bundleRelease -Psignifer.abiSplits=false
