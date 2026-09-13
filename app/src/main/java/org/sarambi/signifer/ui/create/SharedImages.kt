@@ -11,13 +11,15 @@ import java.io.FileOutputStream
 /** Compartir una imagen sin tocar el almacenamiento compartido. */
 object SharedImages {
     private const val FOLDER = "shared"
+    private const val KEEP_MILLIS = 60L * 60 * 1000
 
     fun write(context: Context, bitmap: Bitmap, name: String): Uri? = runCatching {
         val folder = File(context.cacheDir, FOLDER)
         folder.mkdirs()
-        folder.listFiles()?.forEach { it.delete() }
+        val cutoff = System.currentTimeMillis() - KEEP_MILLIS
+        folder.listFiles()?.filter { it.lastModified() < cutoff }?.forEach { it.delete() }
 
-        val file = File(folder, name)
+        val file = File(folder, "${System.currentTimeMillis()}-$name")
         FileOutputStream(file).use { stream ->
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         }

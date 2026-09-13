@@ -89,7 +89,18 @@ class ScanSettingsSheet : BottomSheetDialogFragment() {
                 val box = inflater.inflate(R.layout.item_format, host, false) as CheckBox
                 box.text = format.label
                 box.isChecked = format in active
-                box.setOnCheckedChangeListener { _, _ -> storeFormats() }
+                box.setOnCheckedChangeListener { _, checked ->
+                    if (!checked && checkBoxes.values.none { it.isChecked }) {
+                        box.isChecked = true
+                        android.widget.Toast.makeText(
+                            requireContext(),
+                            R.string.settings_min_one_format,
+                            android.widget.Toast.LENGTH_SHORT,
+                        ).show()
+                        return@setOnCheckedChangeListener
+                    }
+                    storeFormats()
+                }
                 checkBoxes[format] = box
                 host.addView(box)
             }

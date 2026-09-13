@@ -9,8 +9,9 @@ cerraron midiendo llevan el enlace a la medición.
 
 ## 2. La tasa de detección de zxing-cpp
 
-**81,3 %** sobre un banco de 150 imágenes difíciles: 122 aciertos, contando
-como acierto leer exactamente lo que el código decía.
+**78,2 % en vivo y 83,1 % desde una imagen** sobre un banco de 225 imágenes
+difíciles de los trece formatos que la aplicación escribe, contando como
+acierto leer exactamente lo que el código decía.
 
 No existía una cifra pública de esta biblioteca —los estudios publicados miden
 la implementación Java original— así que se ha medido, y el banco se regenera
@@ -22,16 +23,21 @@ lectura no es el ruido ni el desenfoque, que se leen enteros, sino que el
 código ocupe pocos píxeles. Por eso el análisis corre a 1280×720 y no a menos,
 que era lo que la intuición pedía para ahorrar milisegundos.
 
-**No se sustituye la biblioteca ni se añade una segunda pasada.** La opción
-estaba prevista —por eso el decodificador vive tras una interfaz propia— y la
-medición no la justifica: los fallos están en imágenes que ninguna segunda
-pasada recupera.
+**No se sustituye la biblioteca.** La opción estaba prevista —por eso el
+decodificador vive tras una interfaz propia— y la medición no la justifica.
+
+**Sí hay un segundo intento, solo para imágenes fijas.** Al ampliar el banco a
+todos los formatos apareció que la opción de invertidos de la biblioteca no
+alcanza a los códigos de barras: ninguno claro sobre oscuro se leía. Un segundo
+intento con la imagen invertida, solo cuando el primero no encontró nada, los
+lee todos. En la cámara no se hace: duplicaría el coste de cada fotograma
+vacío, que son casi todos.
 
 ## 3. Qué formatos vienen activos de fábrica
 
 **Los veinte.** Quien lee la etiqueta de un paquete no sabe qué formato lleva,
 y fallar una lectura es peor que tardar unos milisegundos más. Con el percentil
-95 en 6,5 ms y un fotograma de 33 ms, el margen sobra.
+95 por debajo de 12 ms y un fotograma de 33 ms, el margen sobra.
 
 Se pueden apagar, y hay tres ajustes preparados —los veinte, solo matriciales,
 solo QR— para quien use la aplicación como lector de QR y quiera cada
@@ -39,17 +45,16 @@ milisegundo.
 
 ## 4. Si `tryHarder` compensa
 
-**No.** Cuesta más del doble de tiempo —la mediana pasa de 1,5 a 3,5 ms y el
-percentil 95 se triplica, de 6,5 a 21 ms— y no acierta **ni una sola imagen
-más** de las 150.
+**No, en la cámara.** Sobre las 225 imágenes acierta una sola más —un UPC-E con
+ruido— y la mediana pasa de 1,25 a 4,75 ms.
 
-Queda apagado de fábrica y disponible en los ajustes. La generación desde una
+Queda apagado de fábrica y disponible en los ajustes. La lectura desde una
 imagen fija sí lo activa: ahí no hay presupuesto de fotograma y la persona ya
 está esperando.
 
 ## 5. Idiomas
 
-**Cerrada en tres: español, inglés y portugués.** Las 181 cadenas traducibles
+**Cerrada en tres: español, inglés y portugués.** Las 215 cadenas traducibles
 están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
 estático falla la compilación si falta una traducción. El paquete solo incluye
 esos tres, así que ninguna dependencia cuela los suyos.

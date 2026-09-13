@@ -103,11 +103,41 @@ fun percentDecode(value: String): String {
                 index += 3
             }
         } else {
-            for (byte in character.toString().toByteArray(Charsets.UTF_8)) bytes.add(byte)
-            index += 1
+            val width = if (character.isHighSurrogate() && index + 1 < value.length &&
+                value[index + 1].isLowSurrogate()
+            ) {
+                2
+            } else {
+                1
+            }
+            for (byte in value.substring(index, index + width).toByteArray(Charsets.UTF_8)) {
+                bytes.add(byte)
+            }
+            index += width
         }
     }
     return String(bytes.toByteArray(), Charsets.UTF_8)
+}
+
+/** Decodifica quoted-printable, la codificacion de las vCard 2.1. */
+fun decodeQuotedPrintable(value: String, charset: String = "UTF-8"): String {
+    val bytes = java.io.ByteArrayOutputStream(value.length)
+    var index = 0
+    while (index < value.length) {
+        val character = value[index]
+        if (character == '=' && index + 2 < value.length) {
+            val code = value.substring(index + 1, index + 3).toIntOrNull(16)
+            if (code != null) {
+                bytes.write(code)
+                index += 3
+                continue
+            }
+        }
+        for (byte in character.toString().toByteArray(Charsets.UTF_8)) bytes.write(byte.toInt())
+        index += 1
+    }
+    val decoder = runCatching { java.nio.charset.Charset.forName(charset) }.getOrDefault(Charsets.UTF_8)
+    return String(bytes.toByteArray(), decoder)
 }
 
 /** Quita las barras invertidas de escape de una carga. */

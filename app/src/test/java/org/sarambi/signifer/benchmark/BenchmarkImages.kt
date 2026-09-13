@@ -31,6 +31,11 @@ object BenchmarkImages {
         Subject("code128", CodeFormat.CODE_128, "SIGNIFER-128-2026"),
         Subject("code39", CodeFormat.CODE_39, "SIGNIFER39"),
         Subject("itf", CodeFormat.ITF, "12345678901234"),
+        Subject("ean8", CodeFormat.EAN_8, "96385074"),
+        Subject("upca", CodeFormat.UPC_A, "036000291452"),
+        Subject("upce", CodeFormat.UPC_E, "01234565"),
+        Subject("code93", CodeFormat.CODE_93, "SIGNIFER-93"),
+        Subject("codabar", CodeFormat.CODABAR, "A40156B"),
     )
 
     /** Las degradaciones que se aplican a cada codigo. */

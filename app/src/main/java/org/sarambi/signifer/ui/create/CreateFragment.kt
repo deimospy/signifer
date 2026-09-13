@@ -30,6 +30,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.sarambi.signifer.R
 import org.sarambi.signifer.content.CodeContent
@@ -74,6 +76,9 @@ class CreateFragment : Fragment() {
 
     /** El lector con el que la aplicacion se comprueba a si misma. */
     private val verifier = ZxingCppScanner(ScanOptions.STILL)
+
+    /** Una vista previa a la vez. */
+    private val work = Mutex()
 
     private val exportPng = registerForActivityResult(
         ActivityResultContracts.CreateDocument("image/png"),
@@ -427,7 +432,7 @@ class CreateFragment : Fragment() {
         preview = viewLifecycleOwner.lifecycleScope.launch {
             delay(PREVIEW_DELAY_MILLIS)
             val result = withContext(Dispatchers.Default) {
-                writer.write(chosenFormat, payload, chosenCorrection)
+                work.withLock { writer.write(chosenFormat, payload, chosenCorrection) }
             }
             val current = binding ?: return@launch
             when (result) {
@@ -435,15 +440,17 @@ class CreateFragment : Fragment() {
                     val mark = logo?.takeIf { LogoOverlay.supports(chosenFormat) }
                     val chosenSize = logoSize
                     val drawn = withContext(Dispatchers.Default) {
-                        val plain = BitmapRenderer.render(result.matrix, chosenFormat, PREVIEW_PIXELS)
-                        val finished = if (mark == null) {
-                            plain
-                        } else {
-                            LogoOverlay.draw(plain, mark, chosenSize)
+                        work.withLock {
+                            val plain = BitmapRenderer.render(result.matrix, chosenFormat, PREVIEW_PIXELS)
+                            val finished = if (mark == null) {
+                                plain
+                            } else {
+                                LogoOverlay.draw(plain, mark, chosenSize)
+                            }
+                            val readable = mark == null ||
+                                verifier.decode(finished).any { it.text == payload }
+                            finished to readable
                         }
-                        val readable = mark == null ||
-                            verifier.decode(finished).any { it.text == payload }
-                        finished to readable
                     }
                     currentMatrix = result.matrix
                     current.previewPlaceholder.visibility = View.GONE
@@ -490,6 +497,10 @@ class CreateFragment : Fragment() {
                 getString(R.string.problem_check_digit)
             org.sarambi.signifer.encode.PayloadProblem.TOO_LONG ->
                 getString(R.string.problem_too_long, format.label)
+            org.sarambi.signifer.encode.PayloadProblem.LOWERCASE ->
+                getString(R.string.problem_lowercase, format.label)
+            org.sarambi.signifer.encode.PayloadProblem.NUMBER_SYSTEM ->
+                getString(R.string.problem_number_system)
             org.sarambi.signifer.encode.PayloadProblem.NOT_WRITABLE, null ->
                 getString(R.string.create_failed)
         }
@@ -596,11 +607,11 @@ class CreateFragment : Fragment() {
 
         val payload = content.encode()
         val chosenFormat = format
+        val context = requireContext()
         viewLifecycleOwner.lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                val store = HistoryStore(requireContext().applicationContext)
-                store.save(payload, chosenFormat, HistoryOrigin.CREATED)
-                store.close()
+                HistoryStore.get(context.applicationContext)
+                    .save(payload, chosenFormat, HistoryOrigin.CREATED)
             }
         }
     }

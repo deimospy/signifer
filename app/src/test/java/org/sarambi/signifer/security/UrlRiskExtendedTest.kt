@@ -44,7 +44,7 @@ class UrlRiskExtendedTest {
 
     @Test
     fun `los caracteres que invierten el texto se senalan`() {
-        val riesgo = assessUrl("https://ejemplo.org/‮gnp.exe")
+        val riesgo = assessUrl("https://ejemplo.org/\u202Egnp.exe")
 
         assertTrue(UrlRiskReason.BIDIRECTIONAL_CONTROL in riesgo.reasons)
         assertTrue(riesgo.needsWarning)

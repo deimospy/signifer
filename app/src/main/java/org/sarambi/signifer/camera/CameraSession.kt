@@ -160,6 +160,7 @@ class CameraSession(
 
     /** Suelta la camara y el hilo de analisis. */
     fun stop() {
+        report()
         generation += 1
         provider?.unbindAll()
         provider = null
@@ -171,7 +172,18 @@ class CameraSession(
         executor = null
     }
 
+    /** Publica las cifras de la sesion en el registro del sistema. */
+    private fun report() {
+        if (metrics.count == 0L || !android.util.Log.isLoggable(METRICS_TAG, android.util.Log.DEBUG)) return
+        android.util.Log.d(
+            METRICS_TAG,
+            "primer codigo=${if (firstCodeMillis == 0L) "-" else "$firstCodeMillis ms"}  " +
+                "fotogramas ${metrics.summary()}",
+        )
+    }
+
     private companion object {
+        const val METRICS_TAG = "SigniferMetrics"
         /** Resolucion del analisis. */
         const val ANALYSIS_WIDTH = 1280
         const val ANALYSIS_HEIGHT = 720

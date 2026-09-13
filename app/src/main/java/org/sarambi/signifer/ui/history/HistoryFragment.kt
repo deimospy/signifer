@@ -62,7 +62,7 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        store = HistoryStore(requireContext())
+        store = HistoryStore.get(requireContext())
         preferences = ScanPreferences(requireContext())
         val views = binding ?: return
 
@@ -88,7 +88,7 @@ class HistoryFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 store.applyRetention(Retention.ofDays(preferences.retentionDays))
             }
@@ -108,7 +108,6 @@ class HistoryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         reload?.cancel()
-        store.close()
         binding = null
     }
 
@@ -173,7 +172,8 @@ class HistoryFragment : Fragment() {
     }
 
     private fun open(entry: HistoryEntry) {
-        ResultSheet.of(entry.text, entry.format).show(parentFragmentManager, "result")
+        ResultSheet.of(entry.text, entry.format, fromHistory = true)
+            .show(parentFragmentManager, "result")
     }
 
     private fun toggleFavorite(entry: HistoryEntry) {
@@ -282,15 +282,8 @@ class HistoryFragment : Fragment() {
                 }.getOrNull() ?: return@withContext null
 
                 when (val result = HistoryBackup.import(json)) {
-                    is HistoryBackup.Result.Restored -> {
-                        var added = 0
-                        for (entry in result.entries) {
-                            if (store.contains(entry.text, entry.format)) continue
-                            store.restore(entry)
-                            added += 1
-                        }
-                        added to result.digestMatches
-                    }
+                    is HistoryBackup.Result.Restored ->
+                        store.restoreAll(result.entries) to result.digestMatches
                     else -> null
                 }
             }

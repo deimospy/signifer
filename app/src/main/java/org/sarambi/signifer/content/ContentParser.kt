@@ -15,7 +15,9 @@ fun parseContent(raw: String): CodeContent {
         upper.startsWith("MAILTO:") -> parseMailto(value) ?: PlainText(raw)
         upper.startsWith("MATMSG:") -> parseMatmsg(value) ?: PlainText(raw)
         upper.startsWith("SMSTO:") || upper.startsWith("SMS:") -> parseSms(value) ?: PlainText(raw)
-        upper.startsWith("TEL:") -> PhoneNumber(value.substring(4).trim())
+        upper.startsWith("TEL:") -> value.substring(4).trim()
+            .takeIf { number -> number.any { it.isDigit() } }
+            ?.let(::PhoneNumber) ?: PlainText(raw)
         upper.startsWith("GEO:") -> parseGeo(value) ?: PlainText(raw)
         upper.startsWith("HTTP://") || upper.startsWith("HTTPS://") -> Website(value)
         else -> PlainText(raw)
@@ -36,11 +38,14 @@ private fun parseWifi(value: String): CodeContent? {
             'S' -> ssid = unescapeWifi(content)
             'P' -> password = unescapeWifi(content)
             'H' -> hidden = unescapeWifi(content).equals("true", ignoreCase = true)
-            'T' -> security = when (unescapeWifi(content).uppercase()) {
-                "WEP" -> WifiSecurity.WEP
-                "SAE" -> WifiSecurity.SAE
-                "", "NOPASS" -> WifiSecurity.NONE
-                else -> WifiSecurity.WPA
+            'T' -> security = unescapeWifi(content).uppercase().let { token ->
+                when {
+                    token == "WEP" -> WifiSecurity.WEP
+                    token == "SAE" || token == "WPA3" -> WifiSecurity.SAE
+                    token.isEmpty() || token == "NOPASS" -> WifiSecurity.NONE
+                    "EAP" in token -> WifiSecurity.ENTERPRISE
+                    else -> WifiSecurity.WPA
+                }
             }
             else -> Unit
         }
@@ -72,9 +77,17 @@ private fun parseVCard(value: String): CodeContent? {
         val separator = line.indexOf(':')
         if (separator <= 0) continue
         val head = line.substring(0, separator)
-        val body = line.substring(separator + 1)
         val property = head.substringBefore(';').uppercase()
         val parameters = head.substringAfter(';', "").uppercase()
+        val body = if ("QUOTED-PRINTABLE" in parameters) {
+            val charset = parameters.split(';')
+                .firstOrNull { it.startsWith("CHARSET=") }
+                ?.substringAfter('=')
+                ?: "UTF-8"
+            decodeQuotedPrintable(line.substring(separator + 1), charset)
+        } else {
+            line.substring(separator + 1)
+        }
 
         when (property) {
             "N" -> {
@@ -181,21 +194,35 @@ private fun parseEvent(value: String): CodeContent? {
     var end: Moment? = null
     var allDay = false
 
-    for (line in unfold(value)) {
+    val lines = unfold(value)
+    val hasEvent = lines.any { it.trim().equals("BEGIN:VEVENT", ignoreCase = true) }
+    var inside = !hasEvent
+
+    for (line in lines) {
+        val marker = line.trim().uppercase()
+        if (marker == "BEGIN:VEVENT") {
+            inside = true
+            continue
+        }
+        if (marker == "END:VEVENT") break
+        if (!inside) continue
+
         val separator = line.indexOf(':')
         if (separator <= 0) continue
-        val head = line.substring(0, separator).uppercase()
+        val rawHead = line.substring(0, separator)
+        val head = rawHead.uppercase()
         val body = line.substring(separator + 1)
         val property = head.substringBefore(';')
-        when {
-            property == "SUMMARY" -> summary = unescapeVCard(body)
-            property == "LOCATION" -> location = unescapeVCard(body)
-            property == "DESCRIPTION" -> description = unescapeVCard(body)
-            head.startsWith("DTSTART") -> {
-                start = Moment.parse(body)
-                if ("VALUE=DATE" in head && "DATE-TIME" !in head) allDay = true
+        when (property) {
+            "SUMMARY" -> summary = unescapeVCard(body)
+            "LOCATION" -> location = unescapeVCard(body)
+            "DESCRIPTION" -> description = unescapeVCard(body)
+            "DTSTART" -> {
+                start = momentWithZone(rawHead, body)
+                val dateOnly = body.trim().length == 8 && body.trim().all { it.isDigit() }
+                if (dateOnly || ("VALUE=DATE" in head && "DATE-TIME" !in head)) allDay = true
             }
-            head.startsWith("DTEND") -> end = Moment.parse(body)
+            "DTEND" -> end = momentWithZone(rawHead, body)
             else -> Unit
         }
     }
@@ -210,6 +237,19 @@ private fun parseEvent(value: String): CodeContent? {
         end = end,
         allDay = allDay,
     )
+}
+
+/** Lee una marca y le pone la zona de su parametro `TZID`, si lo trae. */
+private fun momentWithZone(head: String, body: String): Moment? {
+    val moment = Moment.parse(body) ?: return null
+    if (moment.utc) return moment
+    val zone = head.split(';')
+        .drop(1)
+        .firstOrNull { it.startsWith("TZID=", ignoreCase = true) }
+        ?.substringAfter('=')
+        ?.trim('"')
+        .orEmpty()
+    return if (zone.isEmpty()) moment else moment.copy(zone = zone)
 }
 
 private fun parseMailto(value: String): CodeContent? {
@@ -273,6 +313,14 @@ private fun parseSms(value: String): CodeContent? {
         message = body.substringAfter(':', "")
     }
 
+    val appleBody = number.indexOf("&body=", ignoreCase = true)
+    if (appleBody >= 0) {
+        val appleNumber = number.substring(0, appleBody)
+        val appleMessage = percentDecode(number.substring(appleBody + "&body=".length))
+        if (appleNumber.isBlank()) return null
+        return SmsMessage(appleNumber.trim(), appleMessage)
+    }
+
     if (number.isBlank()) return null
     return SmsMessage(number.trim(), message)
 }
@@ -304,6 +352,13 @@ private fun unfold(value: String): List<String> {
     val lines = value.replace("\r\n", "\n").replace('\r', '\n').split('\n')
     val result = mutableListOf<String>()
     for (line in lines) {
+        val previous = result.lastOrNull()
+        val softBreak = previous != null && previous.endsWith('=') &&
+            "QUOTED-PRINTABLE" in previous.substringBefore(':').uppercase()
+        if (softBreak) {
+            result[result.size - 1] = previous.dropLast(1) + line
+            continue
+        }
         if (line.isEmpty()) continue
         if ((line[0] == ' ' || line[0] == '\t') && result.isNotEmpty()) {
             result[result.size - 1] = result.last() + line.substring(1)

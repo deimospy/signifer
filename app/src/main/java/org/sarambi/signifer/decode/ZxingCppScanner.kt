@@ -1,18 +1,27 @@
 package org.sarambi.signifer.decode
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.Paint
 import android.graphics.Rect
 import androidx.camera.core.ImageProxy
+import androidx.core.graphics.createBitmap
 import zxingcpp.BarcodeReader
 
 /** El unico archivo del proyecto que conoce zxing-cpp. */
 class ZxingCppScanner(initialOptions: ScanOptions = ScanOptions.LIVE) : CodeScanner {
     private val reader = BarcodeReader()
 
+    /** Las opciones se cambian desde la interfaz mientras la camara decodifica en su hebra. */
+    private val lock = Any()
+
     override var options: ScanOptions = initialOptions
         set(value) {
-            field = value
-            apply(value)
+            synchronized(lock) {
+                field = value
+                apply(value)
+            }
         }
 
     override val lastDecodeMicros: Int
@@ -22,13 +31,24 @@ class ZxingCppScanner(initialOptions: ScanOptions = ScanOptions.LIVE) : CodeScan
         apply(initialOptions)
     }
 
-    override fun decode(image: ImageProxy): List<DecodedCode> =
+    override fun decode(image: ImageProxy): List<DecodedCode> = synchronized(lock) {
         runCatching { reader.read(image).map { it.toDecodedCode() } }.getOrDefault(emptyList())
+    }
 
-    override fun decode(bitmap: Bitmap, rotationDegrees: Int): List<DecodedCode> =
-        runCatching {
-            reader.read(bitmap, Rect(), rotationDegrees).map { it.toDecodedCode() }
-        }.getOrDefault(emptyList())
+    override fun decode(bitmap: Bitmap, rotationDegrees: Int): List<DecodedCode> = synchronized(lock) {
+        val codes = read(bitmap, rotationDegrees)
+        if (codes.isNotEmpty() || !options.tryInvert || !options.tryHarder) return codes
+        val inverted = runCatching { invert(bitmap) }.getOrNull() ?: return codes
+        try {
+            read(inverted, rotationDegrees)
+        } finally {
+            inverted.recycle()
+        }
+    }
+
+    private fun read(bitmap: Bitmap, rotationDegrees: Int): List<DecodedCode> = runCatching {
+        reader.read(bitmap, Rect(), rotationDegrees).map { it.toDecodedCode() }
+    }.getOrDefault(emptyList())
 
     private fun apply(value: ScanOptions) {
         reader.options.apply {
@@ -43,6 +63,25 @@ class ZxingCppScanner(initialOptions: ScanOptions = ScanOptions.LIVE) : CodeScan
             binarizer = value.binarizer.toLibraryBinarizer()
         }
     }
+}
+
+private fun invert(source: Bitmap): Bitmap {
+    val target = createBitmap(source.width, source.height)
+    val paint = Paint().apply {
+        colorFilter = ColorMatrixColorFilter(
+            floatArrayOf(
+                -1f, 0f, 0f, 0f, 255f,
+                0f, -1f, 0f, 0f, 255f,
+                0f, 0f, -1f, 0f, 255f,
+                0f, 0f, 0f, 1f, 0f,
+            ),
+        )
+    }
+    Canvas(target).apply {
+        drawColor(android.graphics.Color.WHITE)
+        drawBitmap(source, 0f, 0f, paint)
+    }
+    return target
 }
 
 private fun BarcodeReader.Result.toDecodedCode(): DecodedCode {

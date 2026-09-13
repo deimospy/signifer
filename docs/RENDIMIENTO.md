@@ -14,12 +14,16 @@ cualquiera pueda regenerar.
 
 ## El banco de imágenes
 
-Diez códigos, en seis formatos, con quince degradaciones cada uno: **150
-imágenes**. Se regeneran byte a byte —la semilla del ruido es fija— con:
+Quince códigos, uno por cada formato que la aplicación escribe y tres de QR con
+cargas distintas, con quince degradaciones cada uno: **225 imágenes**. Se
+regeneran byte a byte —la semilla del ruido es fija— con:
 
 ```
 gradlew :app:testDebugUnitTest --tests "*GenerateBenchmark*" -Dsignifer.benchmark=true
 ```
+
+Los códigos de producto (EAN, UPC) van completos, con su dígito de control,
+porque es lo que devuelve el lector y se compara texto contra texto.
 
 Las degradaciones no son adorno. Son lo que le pasa a un código de verdad: una
 etiqueta se arruga, un cartel se lee de lado, la luz entra por una ventana y
@@ -49,43 +53,80 @@ adb logcat -d -s SigniferBenchmark:I
 La prueba corre en el dispositivo, porque el decodificador es nativo. Cuenta
 como acierto **leer lo que el código decía**, no leer algo: un lector que
 devuelve un número equivocado es peor que uno que no lee. El tiempo se toma con
-reloj propio alrededor de la llamada, no con el contador de la biblioteca.
+reloj propio alrededor de la llamada, no con el contador de la biblioteca. El
+informe incluye el desglose por condición, por formato y la lista de imágenes
+que fallaron.
 
 ## Resultados
 
-Medido el 7 de septiembre de 2026 sobre `sdk_gphone64_x86_64`, API 36.
+Medido el 13 de septiembre de 2026 sobre `sdk_gphone64_x86_64`, API 36.
 
 | Perfil | Aciertos | Mediana | Percentil 95 | Máximo |
 |---|---|---|---|---|
-| En vivo (el de la cámara) | **122 de 150 — 81,3 %** | 1,5 ms | 6,5 ms | 21,4 ms |
-| Imagen fija (`tryHarder`) | **122 de 150 — 81,3 %** | 3,5 ms | 21,0 ms | 34,5 ms |
+| En vivo (el de la cámara) | **176 de 225 — 78,2 %** | 1,5 ms | 11,3 ms | 38,4 ms |
+| Imagen fija (`tryHarder` y segundo intento invertido) | **187 de 225 — 83,1 %** | 7,3 ms | 33,0 ms | 130,9 ms |
 
-Por condición, con el perfil en vivo:
+Los aciertos son idénticos en cada ejecución; los tiempos no. En tres
+ejecuciones seguidas el percentil 95 en vivo osciló entre 5,0 y 12,0 ms,
+porque el emulador comparte procesador con el equipo que lo ejecuta.
 
-| Condición | Aciertos | Mediana |
+Por condición:
+
+| Condición | En vivo | Imagen fija |
 |---|---|---|
-| limpio | 10/10 | 1,60 ms |
-| desenfoque-leve | 10/10 | 1,45 ms |
-| desenfoque-fuerte | 10/10 | 1,14 ms |
-| girado-5 | 10/10 | 1,28 ms |
-| perspectiva | 10/10 | 1,38 ms |
-| contraste-bajo | 10/10 | 1,52 ms |
-| ruido | 10/10 | 3,29 ms |
-| danado | 10/10 | 1,48 ms |
-| borde-recortado | 10/10 | 0,71 ms |
-| pequeno | 8/10 | 0,40 ms |
-| girado-15 | 7/10 | 1,85 ms |
-| sombra | 6/10 | 2,12 ms |
-| girado-45 | 5/10 | 3,87 ms |
-| invertido | 5/10 | 2,76 ms |
-| muy-pequeno | 1/10 | 0,36 ms |
+| limpio | 15/15 | 15/15 |
+| desenfoque-leve | 15/15 | 15/15 |
+| desenfoque-fuerte | 15/15 | 15/15 |
+| girado-5 | 15/15 | 15/15 |
+| perspectiva | 15/15 | 15/15 |
+| contraste-bajo | 15/15 | 15/15 |
+| danado | 15/15 | 15/15 |
+| borde-recortado | 15/15 | 15/15 |
+| ruido | 14/15 | 15/15 |
+| pequeno | 12/15 | 12/15 |
+| girado-15 | 12/15 | 12/15 |
+| invertido | 5/15 | **15/15** |
+| sombra | 6/15 | 6/15 |
+| girado-45 | 5/15 | 5/15 |
+| muy-pequeno | 2/15 | 2/15 |
+
+Por formato:
+
+| Formato | En vivo | Imagen fija |
+|---|---|---|
+| QR Code (tres cargas) | 43/45 | 43/45 |
+| Data Matrix | 14/15 | 14/15 |
+| Aztec | 13/15 | 13/15 |
+| ITF | 12/15 | 13/15 |
+| PDF417 | 11/15 | 12/15 |
+| EAN-13 | 11/15 | 12/15 |
+| EAN-8 | 11/15 | 12/15 |
+| UPC-A | 11/15 | 12/15 |
+| Code 93 | 11/15 | 12/15 |
+| UPC-E | 10/15 | 12/15 |
+| Code 128 | 10/15 | 11/15 |
+| Codabar | 10/15 | 11/15 |
+| Code 39 | 9/15 | 10/15 |
 
 ## Lo que dicen estas cifras
 
-**`tryHarder` no compensa.** Cuesta más del doble de tiempo —la mediana pasa de
-1,5 a 3,5 ms y el percentil 95 se triplica— y no acierta **ni una sola imagen
-más**. Esto responde con un dato a una de las decisiones que el proyecto dejó
-abiertas: se queda apagado de fábrica.
+**Los códigos matriciales aguantan casi todo; los lineales, no.** QR, Data
+Matrix y Aztec solo fallan cuando el código ocupa unos pocos píxeles. Los de
+barras —y PDF417, que también se lee por filas— fallan además girados a 45°,
+con media imagen quemada y en claro sobre oscuro: una fila que cruza el código
+en diagonal o con dos iluminaciones distintas no tiene un umbral que sirva.
+
+**La opción de invertidos de la biblioteca solo alcanza a los matriciales.** Los
+códigos de barras y PDF417 en claro sobre oscuro no se leían en ningún perfil:
+0 de 10. Para imágenes fijas hay ahora un segundo intento con la imagen
+invertida, que solo se hace cuando el primero no encontró nada; con él se leen
+los 15. En vivo no se hace: la mayoría de fotogramas no contienen ningún código,
+y el segundo intento duplicaría el coste de cada uno de ellos.
+
+**`tryHarder` no compensa en vivo.** En una ejecución sin el segundo intento, la
+imagen fija acertó 177 frente a 176 —una sola imagen más, un UPC-E con ruido— y
+su mediana fue 4,75 ms frente a 1,25 ms. Se queda apagado de fábrica en la
+cámara y activo para imágenes, donde la persona ya espera.
 
 **Lo que falla no es el ruido, es la resolución.** El desenfoque, el grano, el
 contraste bajo y hasta una esquina rota se leen enteros. Lo que no se lee es un
@@ -93,13 +134,9 @@ código que ocupa pocos píxeles: en `muy-pequeno` cada módulo queda por debajo
 del píxel y no hay algoritmo que lo recupere. De ahí que la resolución de
 análisis de la cámara sea 1280×720 y no menos.
 
-**Los códigos invertidos y los girados a 45° son de los lineales.** Los
-matriciales los leen; las barras, no. Es una limitación conocida de los
-formatos lineales, no de esta aplicación.
-
-**Un fotograma dura 33 ms a 30 por segundo.** Con el percentil 95 en 6,5 ms
-queda margen de sobra: la lectura no es lo que marca el ritmo de la vista
-previa.
+**Un fotograma dura 33 ms a 30 por segundo.** Con el percentil 95 en vivo por
+debajo de 12 ms queda margen de sobra: la lectura no es lo que marca el ritmo
+de la vista previa.
 
 ## Arranque en frío
 
@@ -107,15 +144,38 @@ previa.
 adb shell am start -W -n org.sarambi.signifer/.MainActivity
 ```
 
-Paquete de publicación, cinco arranques seguidos tras `force-stop`:
+Paquete de publicación firmado, cinco arranques seguidos tras `force-stop`:
 
 | Arranque | Tiempo |
 |---|---|
-| 1.º (primera vez tras instalar) | 1524 ms |
-| 2.º al 5.º | 1022, 1042, 1063, 1055 ms |
+| 1.º (tras instalar, con el emulador recién arrancado) | 2655 ms |
+| 2.º al 6.º | 1044, 920, 901, 993, 909 ms |
 
-Mediana **1055 ms** hasta el primer fotograma dibujado, incluida la vista
-previa de la cámara.
+Mediana **920 ms** hasta el primer fotograma dibujado, incluida la vista previa
+de la cámara.
+
+## Tiempo hasta el primer código
+
+La aplicación mide, en cada sesión de cámara, cuánto pasa desde que se pide la
+cámara hasta la primera lectura, y el tiempo de decodificación de cada
+fotograma. No escribe nada salvo que se active a mano:
+
+```
+adb shell setprop log.tag.SigniferMetrics DEBUG
+adb logcat -s SigniferMetrics:D
+```
+
+Cada vez que la cámara se detiene deja una línea. Esta es real, de una sesión
+en el emulador en la que no se leyó ningún código —de ahí el guion—:
+
+```
+primer codigo=-  fotogramas n=264  p50=0.25 ms  p95=0.25 ms  max=0.468 ms
+```
+
+Esta cifra no se publica todavía. El emulador tiene una cámara virtual con una
+habitación en 3D donde se puede colgar una imagen, pero apuntarla hacia ella
+exige mover la cámara con el teclado de su ventana, y medir la latencia de una
+cámara simulada no dice nada de la de un teléfono.
 
 ## Honestidad sobre estas cifras
 
@@ -123,8 +183,8 @@ previa de la cámara.
 un emulador.** Un `sdk_gphone64_x86_64` corre sobre el procesador del equipo de
 desarrollo: los tiempos absolutos de un teléfono de gama baja serán varias
 veces mayores. Lo que **sí** se traslada es la comparación entre perfiles —
-`tryHarder` cuesta el doble en cualquier procesador— y la tasa de detección,
-que no depende de la velocidad.
+`tryHarder` cuesta varias veces más en cualquier procesador— y la tasa de
+detección, que no depende de la velocidad.
 
-Repetir la medición en un teléfono real es una orden y un `adb pull`. Cuando se
-haga, esta tabla se sustituye por la de ese aparato.
+Repetir la medición en un teléfono real es una orden y un `adb logcat`. Cuando
+se haga, estas tablas se sustituyen por las de ese aparato.

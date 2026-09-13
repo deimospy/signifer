@@ -92,6 +92,7 @@ object CodeActions {
     @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.R)
     private fun suggestionFor(network: WifiNetwork): android.net.wifi.WifiNetworkSuggestion? {
         if (network.security == org.sarambi.signifer.content.WifiSecurity.WEP) return null
+        if (network.security == org.sarambi.signifer.content.WifiSecurity.ENTERPRISE) return null
         return try {
             android.net.wifi.WifiNetworkSuggestion.Builder()
                 .setSsid(network.ssid)
@@ -138,7 +139,10 @@ object CodeActions {
     private fun sendEmail(context: Context, content: CodeContent): Outcome {
         val message = content as? EmailMessage ?: return Outcome.Refused
         val intent = Intent(Intent.ACTION_SENDTO, "mailto:".toUri()).apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(message.address))
+            putExtra(
+                Intent.EXTRA_EMAIL,
+                message.address.split(',').map { it.trim() }.filter { it.isNotEmpty() }.toTypedArray(),
+            )
             putExtra(Intent.EXTRA_SUBJECT, message.subject)
             putExtra(Intent.EXTRA_TEXT, message.body)
         }
@@ -174,9 +178,9 @@ object CodeActions {
             putExtra(CalendarContract.Events.EVENT_LOCATION, event.location)
             putExtra(CalendarContract.Events.DESCRIPTION, event.description)
             putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, event.allDay)
-            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, epochMillis(event.start))
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, Moments.epochMillis(event.start))
             event.end?.let {
-                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, epochMillis(it))
+                putExtra(CalendarContract.EXTRA_EVENT_END_TIME, Moments.epochMillis(it))
             }
         }
         return launch(context, intent)
@@ -222,17 +226,5 @@ object CodeActions {
         Outcome.NoHandler
     } catch (_: SecurityException) {
         Outcome.NoHandler
-    }
-
-    /** Del calendario local del formulario al instante que espera el sistema. */
-    private fun epochMillis(moment: org.sarambi.signifer.content.Moment): Long {
-        val calendar = if (moment.utc) {
-            java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
-        } else {
-            java.util.Calendar.getInstance()
-        }
-        calendar.clear()
-        calendar.set(moment.year, moment.month - 1, moment.day, moment.hour, moment.minute)
-        return calendar.timeInMillis
     }
 }

@@ -238,4 +238,9 @@
     <string name="about_license">Licence</string>
     <string name="about_licenses">Third-party software</string>
 
+    <string name="wifi_enterprise">Business, with username and password</string>
+    <string name="problem_lowercase">%1$s only takes capital letters: almost no scanner understands lowercase</string>
+    <string name="problem_number_system">A UPC-E always starts with 0 or 1</string>
+    <string name="settings_min_one_format">At least one format has to stay on</string>
+
 </resources>

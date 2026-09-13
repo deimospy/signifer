@@ -51,6 +51,9 @@ enum class WifiSecurity(val token: String) {
     WEP("WEP"),
     WPA("WPA"),
     SAE("SAE"),
+
+    /** WPA con usuario, de oficinas y universidades. */
+    ENTERPRISE("WPA2-EAP"),
 }
 
 data class WifiNetwork(
@@ -191,12 +194,19 @@ data class CalendarEvent(
             append("DTSTART;VALUE=DATE:").append(start.toDateStamp()).append('\n')
             end?.let { append("DTEND;VALUE=DATE:").append(it.toDateStamp()).append('\n') }
         } else {
-            append("DTSTART:").append(start.toCalendarStamp()).append('\n')
-            end?.let { append("DTEND:").append(it.toCalendarStamp()).append('\n') }
+            append("DTSTART").append(zoneParameter(start)).append(':')
+            append(start.toCalendarStamp()).append('\n')
+            end?.let {
+                append("DTEND").append(zoneParameter(it)).append(':')
+                append(it.toCalendarStamp()).append('\n')
+            }
         }
         append("END:VEVENT")
     }
 }
+
+private fun zoneParameter(moment: Moment): String =
+    if (moment.zone.isNotBlank() && !moment.utc) ";TZID=${moment.zone}" else ""
 
 /** La direccion de un `mailto:`, con la arroba sin tocar. */
 fun encodeMailAddress(address: String): String {

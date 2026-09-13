@@ -44,6 +44,8 @@ class DetectionRateTest {
             val scanner = ZxingCppScanner(profile.second)
             val metrics = DecodeMetrics()
             val byCondition = linkedMapOf<String, Outcome>()
+            val byFormat = linkedMapOf<String, IntArray>()
+            val misses = mutableListOf<String>()
             var hits = 0
 
             for (case in cases) {
@@ -57,7 +59,11 @@ class DetectionRateTest {
                 metrics.record(elapsed)
 
                 val correct = codes.any { it.text == case.payload }
-                if (correct) hits += 1
+                if (correct) hits += 1 else misses += case.file.removeSuffix(".png")
+                byFormat.getOrPut(case.format) { IntArray(2) }.let {
+                    if (correct) it[0] += 1
+                    it[1] += 1
+                }
 
                 val condition = case.file.substringAfter("__").removeSuffix(".png")
                 val outcome = byCondition.getOrPut(condition) { Outcome(condition, 0, 0) }
@@ -81,7 +87,11 @@ class DetectionRateTest {
                 report.append(String.format("%.1f", 100.0 * outcome.hits / outcome.total))
                 report.append('\t').append(String.format("%.2f", median)).append('\n')
             }
-            report.append('\n')
+            report.append("\nformato\taciertos\ttotal\n")
+            for ((format, counts) in byFormat) {
+                report.append(format).append('\t').append(counts[0]).append('\t').append(counts[1]).append('\n')
+            }
+            report.append("\nfallos\t").append(misses.joinToString(" ")).append("\n\n")
         }
 
         File(context.filesDir, "deteccion.tsv").writeText(report.toString(), Charsets.UTF_8)

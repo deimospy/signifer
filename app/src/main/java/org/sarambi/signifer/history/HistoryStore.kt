@@ -5,13 +5,14 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import androidx.core.database.sqlite.transaction
 import org.sarambi.signifer.content.ContentKind
 import org.sarambi.signifer.content.parseContent
 import org.sarambi.signifer.decode.CodeFormat
 
 /** El historial, sobre el SQLite del sistema. */
-class HistoryStore(context: Context) {
-    private val helper = Helper(context.applicationContext)
+class HistoryStore(context: Context, name: String = NAME) {
+    private val helper = Helper(context.applicationContext, name)
 
     /** Guarda una lectura. */
     fun save(
@@ -20,44 +21,44 @@ class HistoryStore(context: Context) {
         origin: HistoryOrigin = HistoryOrigin.SCANNED,
         now: Long = System.currentTimeMillis(),
     ): Long {
-        val database = helper.writableDatabase
         val kind = parseContent(text).kind
-
-        database.rawQuery(
-            "SELECT $COLUMN_ID, $COLUMN_TIMES FROM $TABLE " +
-                "WHERE $COLUMN_TEXT = ? AND $COLUMN_FORMAT = ? LIMIT 1",
-            arrayOf(text, format.name),
-        ).use { cursor ->
-            if (cursor.moveToFirst()) {
-                val id = cursor.getLong(0)
-                val times = cursor.getInt(1) + 1
-                database.update(
-                    TABLE,
-                    ContentValues().apply {
-                        put(COLUMN_CREATED_AT, now)
-                        put(COLUMN_TIMES, times)
-                    },
-                    "$COLUMN_ID = ?",
-                    arrayOf(id.toString()),
-                )
-                return id
+        val database = helper.writableDatabase
+        return database.transaction {
+            database.rawQuery(
+                "SELECT $COLUMN_ID, $COLUMN_TIMES FROM $TABLE " +
+                    "WHERE $COLUMN_TEXT = ? AND $COLUMN_FORMAT = ? LIMIT 1",
+                arrayOf(text, format.name),
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val existing = cursor.getLong(0)
+                    database.update(
+                        TABLE,
+                        ContentValues().apply {
+                            put(COLUMN_CREATED_AT, now)
+                            put(COLUMN_TIMES, cursor.getInt(1) + 1)
+                        },
+                        "$COLUMN_ID = ?",
+                        arrayOf(existing.toString()),
+                    )
+                    existing
+                } else {
+                    database.insert(
+                        TABLE,
+                        null,
+                        ContentValues().apply {
+                            put(COLUMN_TEXT, text)
+                            put(COLUMN_SEARCH, TextNormalizer.normalize(text))
+                            put(COLUMN_FORMAT, format.name)
+                            put(COLUMN_KIND, kind.name)
+                            put(COLUMN_CREATED_AT, now)
+                            put(COLUMN_FAVORITE, 0)
+                            put(COLUMN_ORIGIN, origin.name)
+                            put(COLUMN_TIMES, 1)
+                        },
+                    )
+                }
             }
         }
-
-        return database.insert(
-            TABLE,
-            null,
-            ContentValues().apply {
-                put(COLUMN_TEXT, text)
-                put(COLUMN_SEARCH, TextNormalizer.normalize(text))
-                put(COLUMN_FORMAT, format.name)
-                put(COLUMN_KIND, kind.name)
-                put(COLUMN_CREATED_AT, now)
-                put(COLUMN_FAVORITE, 0)
-                put(COLUMN_ORIGIN, origin.name)
-                put(COLUMN_TIMES, 1)
-            },
-        )
     }
 
     fun setFavorite(id: Long, favorite: Boolean) {
@@ -146,6 +147,19 @@ class HistoryStore(context: Context) {
         },
     )
 
+    /** Restaura un respaldo entero en una sola transaccion. */
+    fun restoreAll(entries: List<HistoryEntry>): Int {
+        var added = 0
+        helper.writableDatabase.transaction {
+            for (entry in entries) {
+                if (contains(entry.text, entry.format)) continue
+                restore(entry)
+                added += 1
+            }
+        }
+        return added
+    }
+
     /** Si ya existe la misma carga en el mismo formato. */
     fun contains(text: String, format: CodeFormat): Boolean =
         helper.readableDatabase.rawQuery(
@@ -176,8 +190,8 @@ class HistoryStore(context: Context) {
 
     private fun placeholders(count: Int) = List(count) { "?" }.joinToString(", ")
 
-    private class Helper(context: Context) :
-        SQLiteOpenHelper(context, NAME, null, VERSION) {
+    private class Helper(context: Context, name: String) :
+        SQLiteOpenHelper(context, name, null, VERSION) {
         override fun onCreate(database: SQLiteDatabase) {
             database.execSQL(
                 """
@@ -203,6 +217,15 @@ class HistoryStore(context: Context) {
     }
 
     companion object {
+        @Volatile
+        private var shared: HistoryStore? = null
+
+        /** La instancia de la aplicacion. */
+        fun get(context: Context): HistoryStore =
+            shared ?: synchronized(this) {
+                shared ?: HistoryStore(context.applicationContext).also { shared = it }
+            }
+
         const val NAME = "history.db"
         const val VERSION = 1
 

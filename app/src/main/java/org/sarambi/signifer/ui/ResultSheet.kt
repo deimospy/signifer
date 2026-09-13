@@ -225,7 +225,8 @@ class ResultSheet : BottomSheetDialogFragment() {
         views.share.setOnClickListener { run(CodeAction.SHARE, content) }
 
         val listener = activity as? Listener
-        if (content.isSensitive && listener != null) {
+        val fromHistory = requireArguments().getBoolean(ARGUMENT_FROM_HISTORY)
+        if (content.isSensitive && listener != null && !fromHistory) {
             views.save.visibility = View.VISIBLE
             views.save.setOnClickListener {
                 listener.onSaveRequested(content, format)
@@ -325,35 +326,12 @@ class ResultSheet : BottomSheetDialogFragment() {
         )
         is CalendarEvent -> listOf(
             R.string.field_summary to content.summary,
-            R.string.field_starts to describe(content.start, content.allDay),
-            R.string.field_ends to (content.end?.let { describe(it, content.allDay) } ?: ""),
+            R.string.field_starts to Moments.describe(content.start, content.allDay),
+            R.string.field_ends to (content.end?.let { Moments.describe(it, content.allDay) } ?: ""),
             R.string.field_place to content.location,
             R.string.field_note to content.description,
         )
         is Website, is PlainText -> emptyList()
-    }
-
-    /** Fecha y hora para leer. */
-    private fun describe(moment: org.sarambi.signifer.content.Moment, allDay: Boolean): String {
-        var year = moment.year
-        var month = moment.month
-        var day = moment.day
-        var hour = moment.hour
-        var minute = moment.minute
-        if (moment.utc && !allDay) {
-            val utc = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
-            utc.clear()
-            utc.set(year, month - 1, day, hour, minute)
-            val local = java.util.Calendar.getInstance()
-            local.timeInMillis = utc.timeInMillis
-            year = local.get(java.util.Calendar.YEAR)
-            month = local.get(java.util.Calendar.MONTH) + 1
-            day = local.get(java.util.Calendar.DAY_OF_MONTH)
-            hour = local.get(java.util.Calendar.HOUR_OF_DAY)
-            minute = local.get(java.util.Calendar.MINUTE)
-        }
-        val date = String.format(java.util.Locale.ROOT, "%04d-%02d-%02d", year, month, day)
-        return if (allDay) date else date + String.format(java.util.Locale.ROOT, " %02d:%02d", hour, minute)
     }
 
     private fun securityLabel(security: WifiSecurity): String = getString(
@@ -362,19 +340,22 @@ class ResultSheet : BottomSheetDialogFragment() {
             WifiSecurity.WEP -> R.string.wifi_wep
             WifiSecurity.WPA -> R.string.wifi_wpa
             WifiSecurity.SAE -> R.string.wifi_sae
+            WifiSecurity.ENTERPRISE -> R.string.wifi_enterprise
         },
     )
 
     companion object {
         private const val ARGUMENT_TEXT = "text"
         private const val ARGUMENT_FORMAT = "format"
+        private const val ARGUMENT_FROM_HISTORY = "from_history"
 
         private val SECONDARY_ACTIONS = setOf(CodeAction.COPY, CodeAction.SHARE)
 
-        fun of(text: String, format: CodeFormat): ResultSheet = ResultSheet().apply {
+        fun of(text: String, format: CodeFormat, fromHistory: Boolean = false): ResultSheet = ResultSheet().apply {
             arguments = Bundle().apply {
                 putString(ARGUMENT_TEXT, text)
                 putString(ARGUMENT_FORMAT, format.name)
+                putBoolean(ARGUMENT_FROM_HISTORY, fromHistory)
             }
         }
     }

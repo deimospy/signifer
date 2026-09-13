@@ -60,8 +60,7 @@ class ScanFragment : Fragment() {
         val views = binding ?: return
 
         views.torch.setOnClickListener {
-            val on = session?.toggleTorch() ?: false
-            views.torch.isSelected = on
+            paintTorch(session?.toggleTorch() ?: false)
         }
         views.pickImage.setOnClickListener { launchPicker() }
         views.permissionPickImage.setOnClickListener { launchPicker() }
@@ -71,8 +70,22 @@ class ScanFragment : Fragment() {
         }
     }
 
+    /** La linterna se ve encendida solo si lo esta. */
+    private fun paintTorch(on: Boolean) {
+        val views = binding ?: return
+        val bone = ContextCompat.getColor(requireContext(), R.color.signum_bone)
+        views.torch.isSelected = on
+        views.torch.backgroundTintList = android.content.res.ColorStateList.valueOf(
+            if (on) bone else TORCH_OFF_BACKGROUND,
+        )
+        views.torch.iconTint = android.content.res.ColorStateList.valueOf(
+            if (on) ContextCompat.getColor(requireContext(), R.color.light_primary) else bone,
+        )
+    }
+
     override fun onStop() {
         super.onStop()
+        paintTorch(false)
         session?.stop()
         session = null
     }
@@ -81,6 +94,7 @@ class ScanFragment : Fragment() {
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
+            paintTorch(false)
             session?.stop()
             session = null
         } else if (isResumed && hasCameraPermission()) {
@@ -220,6 +234,8 @@ class ScanFragment : Fragment() {
     }
 
     private companion object {
+        const val TORCH_OFF_BACKGROUND = 0x66000000
+
         /** Lado maximo al que se carga una imagen para buscarle codigos. */
         const val MAX_IMAGE_SIDE = 2048
     }

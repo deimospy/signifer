@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
             ACTION_CREATE -> binding.navigation.selectedItemId = R.id.destination_create
             ACTION_HISTORY -> binding.navigation.selectedItemId = R.id.destination_history
             ACTION_SCAN -> binding.navigation.selectedItemId = R.id.destination_scan
-            Intent.ACTION_SEND, Intent.ACTION_VIEW -> sharedImage(intent)?.let { uri ->
+            Intent.ACTION_SEND -> sharedImage(intent)?.let { uri ->
                 binding.navigation.selectedItemId = R.id.destination_scan
                 binding.container.post { scanFragment()?.decodeUri(uri) }
             }
@@ -149,16 +149,15 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
     }
 
     override fun onCodeRead(code: DecodedCode) {
-        if (preferences.vibrateOnRead) vibrate()
-        if (preferences.beepOnRead) beep()
-
         if (returningResult) {
+            confirmRead()
             setResult(RESULT_OK, LegacyScanIntent.result(code.text, code.format, code.bytes))
             finish()
             return
         }
 
         if (supportFragmentManager.findFragmentByTag(TAG_RESULT) != null) return
+        confirmRead()
         remember(code)
         ResultSheet.of(code.text, code.format).show(supportFragmentManager, TAG_RESULT)
     }
@@ -169,6 +168,11 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         val content = parseContent(code.text)
         if (content.isSensitive && !preferences.saveSensitive) return
         store(code.text, code.format)
+    }
+
+    private fun confirmRead() {
+        if (preferences.vibrateOnRead) vibrate()
+        if (preferences.beepOnRead) beep()
     }
 
     override fun onResultDismissed() {
@@ -182,9 +186,7 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
     private fun store(text: String, format: CodeFormat) {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                val store = HistoryStore(applicationContext)
-                store.save(text, format, HistoryOrigin.SCANNED)
-                store.close()
+                HistoryStore.get(applicationContext).save(text, format, HistoryOrigin.SCANNED)
             }
         }
     }

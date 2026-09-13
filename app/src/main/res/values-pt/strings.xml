@@ -240,4 +240,9 @@
     <string name="about_license">Licença</string>
     <string name="about_licenses">Software de terceiros</string>
 
+    <string name="wifi_enterprise">De empresa, com usuário e senha</string>
+    <string name="problem_lowercase">%1$s só aceita maiúsculas: quase nenhum leitor entende minúsculas</string>
+    <string name="problem_number_system">Um UPC-E sempre começa com 0 ou 1</string>
+    <string name="settings_min_one_format">Pelo menos um formato precisa ficar ativo</string>
+
 </resources>

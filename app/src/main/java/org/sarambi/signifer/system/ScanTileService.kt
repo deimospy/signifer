@@ -13,6 +13,10 @@ import org.sarambi.signifer.MainActivity
 class ScanTileService : TileService() {
     override fun onClick() {
         super.onClick()
+        if (isLocked) unlockAndRun { open() } else open()
+    }
+
+    private fun open() {
         val intent = Intent(this, MainActivity::class.java).apply {
             action = MainActivity.ACTION_SCAN
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)

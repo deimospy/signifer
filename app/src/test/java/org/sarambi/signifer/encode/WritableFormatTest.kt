@@ -79,7 +79,7 @@ class WritableFormatTest {
     @Test
     fun `Code 39 solo acepta su alfabeto`() {
         assertTrue(checkPayload(CodeFormat.CODE_39, "SIGNIFER-2026").isValid)
-        assertTrue(checkPayload(CodeFormat.CODE_39, "signifer").isValid)
+        assertEquals(PayloadProblem.LOWERCASE, checkPayload(CodeFormat.CODE_39, "signifer").problem)
         assertEquals(
             PayloadProblem.UNSUPPORTED_CHARACTER,
             checkPayload(CodeFormat.CODE_39, "señal").problem,

@@ -89,7 +89,7 @@ private fun validateWifi(content: WifiNetwork): List<ContentIssue> {
     }
 
     when (content.security) {
-        WifiSecurity.NONE -> Unit
+        WifiSecurity.NONE, WifiSecurity.ENTERPRISE -> Unit
         WifiSecurity.WEP -> {
             val length = content.password.length
             val hexadecimal = content.password.all { it.isDigit() || it in 'a'..'f' || it in 'A'..'F' }

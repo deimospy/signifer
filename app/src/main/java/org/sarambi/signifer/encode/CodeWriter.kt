@@ -55,7 +55,9 @@ class ZxingCoreWriter : CodeWriter {
 
         val hints = buildMap<EncodeHintType, Any> {
             put(EncodeHintType.MARGIN, 0)
-            put(EncodeHintType.CHARACTER_SET, "UTF-8")
+            // Declarar UTF-8 hace que ZXing anada una marca ECI a todo codigo en modo byte, aunque
+            // solo lleve ASCII.
+            if (payload.any { it.code > 0x7F }) put(EncodeHintType.CHARACTER_SET, "UTF-8")
             if (format == CodeFormat.QR_CODE || format == CodeFormat.AZTEC) {
                 put(EncodeHintType.ERROR_CORRECTION, correction.toHint(format))
             }

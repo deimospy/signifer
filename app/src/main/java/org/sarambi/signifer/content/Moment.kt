@@ -10,6 +10,9 @@ data class Moment(
 
     /** Si la hora es UTC en lugar de hora local. */
     val utc: Boolean = false,
+
+    /** Zona horaria de la marca, como `America/Asuncion`, o vacia. */
+    val zone: String = "",
 ) : Comparable<Moment> {
     /** Si los campos forman una fecha que existe en el calendario. */
     val isValid: Boolean

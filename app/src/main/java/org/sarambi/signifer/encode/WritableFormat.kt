@@ -29,6 +29,15 @@ enum class PayloadProblem {
     BAD_CHECK_DIGIT,
     TOO_LONG,
     NOT_WRITABLE,
+
+    /**
+     * Code 39 solo tiene mayusculas; las minusculas se escriben en un modo que casi ningun lector
+     * activa.
+     */
+    LOWERCASE,
+
+    /** Un UPC-E empieza siempre por 0 o por 1. */
+    NUMBER_SYSTEM,
 }
 
 /** El resultado de comprobar una carga contra un formato. */
@@ -71,9 +80,12 @@ fun checkPayload(format: CodeFormat, payload: String): PayloadCheck {
         CodeFormat.EAN_13 -> checkNumeric(payload, listOf(12, 13), checkedLength = 13)
         CodeFormat.EAN_8 -> checkNumeric(payload, listOf(7, 8), checkedLength = 8)
         CodeFormat.UPC_A -> checkNumeric(payload, listOf(11, 12), checkedLength = 12)
-        CodeFormat.UPC_E -> checkNumeric(payload, listOf(7, 8), checkedLength = 0)
+        CodeFormat.UPC_E -> checkUpcE(payload)
         CodeFormat.ITF -> checkInterleaved(payload)
-        CodeFormat.CODE_39 -> checkAlphabet(payload.uppercase(), CODE_39_ALPHABET)
+        // Code 39 no tiene minusculas.
+        CodeFormat.CODE_39 -> checkAlphabet(payload.uppercase(), CODE_39_ALPHABET).let { check ->
+            if (check.isValid && payload.any { it.isLowerCase() }) PayloadCheck(PayloadProblem.LOWERCASE) else check
+        }
         CodeFormat.CODE_93 -> checkAlphabet(payload.uppercase(), CODE_39_ALPHABET)
         CodeFormat.CODE_128 -> checkAscii(payload)
         CodeFormat.CODABAR -> checkCodabar(payload)
@@ -105,6 +117,34 @@ private fun checkNumeric(
         return PayloadCheck(PayloadProblem.BAD_CHECK_DIGIT, lengths)
     }
     return PayloadCheck(expectedLengths = lengths)
+}
+
+/** UPC-E: siete u ocho digitos, que empiezan por 0 o 1. */
+private fun checkUpcE(payload: String): PayloadCheck {
+    val lengths = listOf(7, 8)
+    if (!payload.all { it.isDigit() }) return PayloadCheck(PayloadProblem.NOT_NUMERIC, lengths)
+    if (payload.length !in lengths) return PayloadCheck(PayloadProblem.WRONG_LENGTH, lengths)
+    if (payload[0] != '0' && payload[0] != '1') return PayloadCheck(PayloadProblem.NUMBER_SYSTEM, lengths)
+    if (payload.length == 8) {
+        val expected = checkDigitOf(expandUpcE(payload.substring(0, 7)))
+        if (payload[7].digitToInt() != expected) {
+            return PayloadCheck(PayloadProblem.BAD_CHECK_DIGIT, lengths)
+        }
+    }
+    return PayloadCheck(expectedLengths = lengths)
+}
+
+/** Expande los siete digitos de un UPC-E a los once de su UPC-A. */
+fun expandUpcE(seven: String): String {
+    val system = seven[0]
+    val m = seven.substring(1)
+    val body = when (m[5]) {
+        '0', '1', '2' -> "${m[0]}${m[1]}${m[5]}0000${m[2]}${m[3]}${m[4]}"
+        '3' -> "${m[0]}${m[1]}${m[2]}00000${m[3]}${m[4]}"
+        '4' -> "${m[0]}${m[1]}${m[2]}${m[3]}00000${m[4]}"
+        else -> "${m[0]}${m[1]}${m[2]}${m[3]}${m[4]}0000${m[5]}"
+    }
+    return "$system$body"
 }
 
 private fun checkInterleaved(payload: String): PayloadCheck = when {
