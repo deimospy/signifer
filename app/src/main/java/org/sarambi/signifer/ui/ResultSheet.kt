@@ -313,8 +313,15 @@ class ResultSheet : BottomSheetDialogFragment() {
             R.string.field_body to content.message,
         )
         is GeoPoint -> listOf(
-            R.string.field_coordinates to "${content.latitude}, ${content.longitude}",
-            R.string.field_place to content.label,
+            R.string.field_coordinates to if (content.query.isNotBlank() && content.latitude == 0.0 &&
+                content.longitude == 0.0
+            ) {
+                ""
+            } else {
+                "${org.sarambi.signifer.content.formatCoordinate(content.latitude)}, " +
+                    org.sarambi.signifer.content.formatCoordinate(content.longitude)
+            },
+            R.string.field_place to content.label.ifBlank { content.query },
         )
         is CalendarEvent -> listOf(
             R.string.field_summary to content.summary,
@@ -326,9 +333,27 @@ class ResultSheet : BottomSheetDialogFragment() {
         is Website, is PlainText -> emptyList()
     }
 
+    /** Fecha y hora para leer. */
     private fun describe(moment: org.sarambi.signifer.content.Moment, allDay: Boolean): String {
-        val date = "%04d-%02d-%02d".format(moment.year, moment.month, moment.day)
-        return if (allDay) date else "$date %02d:%02d".format(moment.hour, moment.minute)
+        var year = moment.year
+        var month = moment.month
+        var day = moment.day
+        var hour = moment.hour
+        var minute = moment.minute
+        if (moment.utc && !allDay) {
+            val utc = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+            utc.clear()
+            utc.set(year, month - 1, day, hour, minute)
+            val local = java.util.Calendar.getInstance()
+            local.timeInMillis = utc.timeInMillis
+            year = local.get(java.util.Calendar.YEAR)
+            month = local.get(java.util.Calendar.MONTH) + 1
+            day = local.get(java.util.Calendar.DAY_OF_MONTH)
+            hour = local.get(java.util.Calendar.HOUR_OF_DAY)
+            minute = local.get(java.util.Calendar.MINUTE)
+        }
+        val date = String.format(java.util.Locale.ROOT, "%04d-%02d-%02d", year, month, day)
+        return if (allDay) date else date + String.format(java.util.Locale.ROOT, " %02d:%02d", hour, minute)
     }
 
     private fun securityLabel(security: WifiSecurity): String = getString(

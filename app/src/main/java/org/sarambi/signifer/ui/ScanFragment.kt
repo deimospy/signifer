@@ -12,6 +12,10 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.google.android.material.snackbar.Snackbar
 import org.sarambi.signifer.R
 import org.sarambi.signifer.camera.CameraSession
@@ -95,6 +99,16 @@ class ScanFragment : Fragment() {
         binding = null
     }
 
+    /** Aplica los ajustes a la camara que ya esta abierta. */
+    fun reloadOptions() {
+        scanner.options = currentOptions()
+    }
+
+    private fun currentOptions(): ScanOptions = preferences.scanOptions().let { options ->
+        val imposed = (activity as? CodeSink)?.requestedFormats
+        if (imposed.isNullOrEmpty()) options else options.copy(formats = imposed)
+    }
+
     /** Vuelve a analizar. */
     fun resumeScanning() {
         session?.resumeAnalysis()
@@ -114,10 +128,7 @@ class ScanFragment : Fragment() {
         views.permissionPanel.visibility = View.GONE
         views.frame.visibility = View.VISIBLE
 
-        scanner.options = preferences.scanOptions().let { options ->
-            val imposed = (activity as? CodeSink)?.requestedFormats
-            if (imposed.isNullOrEmpty()) options else options.copy(formats = imposed)
-        }
+        scanner.options = currentOptions()
         val camera = CameraSession(
             context = requireContext().applicationContext,
             scanner = scanner,
@@ -155,32 +166,45 @@ class ScanFragment : Fragment() {
         decodeImage(uri)
     }
 
+    /** Lee una imagen elegida o compartida. */
     private fun decodeImage(uri: Uri) {
-        val views = binding ?: return
-        val bitmap = runCatching {
-            requireContext().contentResolver.openInputStream(uri).use { stream ->
-                BitmapFactory.decodeStream(stream)
-            }
-        }.getOrNull()
-
-        if (bitmap == null) {
-            Snackbar.make(views.root, R.string.image_unreadable, Snackbar.LENGTH_LONG).show()
-            return
-        }
-
+        if (binding == null) return
+        val context = requireContext().applicationContext
         val imposed = (activity as? CodeSink)?.requestedFormats
-        val stillScanner = ZxingCppScanner(
-            ScanOptions.STILL.copy(formats = imposed?.ifEmpty { null } ?: preferences.formats()),
-        )
-        val codes = stillScanner.decode(bitmap)
-        bitmap.recycle()
+        val formats = imposed?.ifEmpty { null } ?: preferences.formats()
 
-        if (codes.isEmpty()) {
-            Snackbar.make(views.root, R.string.image_without_code, Snackbar.LENGTH_LONG).show()
-        } else {
-            onCodeRead(codes.first())
+        viewLifecycleOwner.lifecycleScope.launch {
+            val outcome = withContext(Dispatchers.Default) {
+                val bitmap = loadSampled(context, uri) ?: return@withContext null
+                val codes = ZxingCppScanner(ScanOptions.STILL.copy(formats = formats)).decode(bitmap)
+                bitmap.recycle()
+                codes
+            }
+            val views = binding ?: return@launch
+            when {
+                outcome == null ->
+                    Snackbar.make(views.root, R.string.image_unreadable, Snackbar.LENGTH_LONG).show()
+                outcome.isEmpty() ->
+                    Snackbar.make(views.root, R.string.image_without_code, Snackbar.LENGTH_LONG).show()
+                else -> onCodeRead(outcome.first())
+            }
         }
     }
+
+    /** Carga la imagen con el lado mayor por debajo de [MAX_IMAGE_SIDE]. */
+    private fun loadSampled(context: android.content.Context, uri: Uri): android.graphics.Bitmap? =
+        runCatching {
+            val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            context.contentResolver.openInputStream(uri).use { BitmapFactory.decodeStream(it, null, bounds) }
+            var sample = 1
+            while (bounds.outWidth / (sample * 2) >= MAX_IMAGE_SIDE ||
+                bounds.outHeight / (sample * 2) >= MAX_IMAGE_SIDE
+            ) {
+                sample *= 2
+            }
+            val options = BitmapFactory.Options().apply { inSampleSize = sample }
+            context.contentResolver.openInputStream(uri).use { BitmapFactory.decodeStream(it, null, options) }
+        }.getOrNull()
 
     private fun onCodeRead(code: DecodedCode) {
         session?.pauseAnalysis()
@@ -193,5 +217,10 @@ class ScanFragment : Fragment() {
 
         /** Formatos que pide quien abrio la aplicacion. */
         val requestedFormats: Set<CodeFormat>?
+    }
+
+    private companion object {
+        /** Lado maximo al que se carga una imagen para buscarle codigos. */
+        const val MAX_IMAGE_SIDE = 2048
     }
 }

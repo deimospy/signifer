@@ -32,7 +32,12 @@ class CameraSession(
     private var provider: ProcessCameraProvider? = null
     private var camera: Camera? = null
     private var executor: ExecutorService? = null
+    @Volatile
     private var analyzing = true
+
+    /** Cuantas veces se arranco o se paro la sesion. */
+    @Volatile
+    private var generation = 0
 
     /** Instante de la primera lectura desde que arranco la sesion, en milisegundos. */
     var firstCodeMillis: Long = 0
@@ -50,8 +55,10 @@ class CameraSession(
     fun start(owner: LifecycleOwner, preview: PreviewView, onFailure: (Throwable) -> Unit) {
         startedAt = System.nanoTime()
         firstCodeMillis = 0
+        val requested = ++generation
         val future = ProcessCameraProvider.getInstance(context)
         future.addListener({
+            if (requested != generation) return@addListener
             val cameraProvider = runCatching { future.get() }.getOrElse {
                 onFailure(it)
                 return@addListener
@@ -119,7 +126,12 @@ class CameraSession(
         if (firstCodeMillis == 0L) {
             firstCodeMillis = (System.nanoTime() - startedAt) / 1_000_000
         }
-        ContextCompat.getMainExecutor(context).execute { onCode(code) }
+        // Una lectura que viaja al hilo principal mientras se para la sesion no puede abrir un
+        // resultado encima de otra pestana.
+        val posted = generation
+        ContextCompat.getMainExecutor(context).execute {
+            if (posted == generation) onCode(code)
+        }
     }
 
     /** Deja de analizar sin soltar la camara. */
@@ -148,6 +160,7 @@ class CameraSession(
 
     /** Suelta la camara y el hilo de analisis. */
     fun stop() {
+        generation += 1
         provider?.unbindAll()
         provider = null
         camera = null

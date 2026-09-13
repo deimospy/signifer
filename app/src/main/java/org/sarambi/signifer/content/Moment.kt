@@ -7,6 +7,9 @@ data class Moment(
     val day: Int,
     val hour: Int = 0,
     val minute: Int = 0,
+
+    /** Si la hora es UTC en lugar de hora local. */
+    val utc: Boolean = false,
 ) : Comparable<Moment> {
     /** Si los campos forman una fecha que existe en el calendario. */
     val isValid: Boolean
@@ -23,7 +26,8 @@ data class Moment(
 
     /** `20260907T143000` — hora local, como la escribio la persona. */
     fun toCalendarStamp(): String =
-        "${pad(year, 4)}${pad(month, 2)}${pad(day, 2)}T${pad(hour, 2)}${pad(minute, 2)}00"
+        "${pad(year, 4)}${pad(month, 2)}${pad(day, 2)}T${pad(hour, 2)}${pad(minute, 2)}00" +
+            if (utc) "Z" else ""
 
     /** `20260907` — para eventos de dia entero, que no llevan hora. */
     fun toDateStamp(): String = "${pad(year, 4)}${pad(month, 2)}${pad(day, 2)}"
@@ -41,7 +45,9 @@ data class Moment(
 
         /** Lee `20260907T143000`, `20260907T143000Z` o `20260907`. */
         fun parse(value: String): Moment? {
-            val text = value.trim().removeSuffix("Z")
+            val trimmed = value.trim()
+            val utc = trimmed.endsWith("Z") || trimmed.endsWith("z")
+            val text = trimmed.removeSuffix("Z").removeSuffix("z")
             val date = text.substringBefore('T')
             if (date.length != 8 || !date.all { it.isDigit() }) return null
 
@@ -54,6 +60,7 @@ data class Moment(
                 day = date.substring(6, 8).toInt(),
                 hour = if (time.length >= 2) time.substring(0, 2).toInt() else 0,
                 minute = if (time.length >= 4) time.substring(2, 4).toInt() else 0,
+                utc = utc && time.isNotEmpty(),
             )
             return if (moment.isValid) moment else null
         }

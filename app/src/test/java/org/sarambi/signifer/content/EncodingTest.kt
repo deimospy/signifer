@@ -82,14 +82,16 @@ class EncodingTest {
     fun `el asunto de un correo se codifica sin convertir espacios en mas`() {
         val carga = EmailMessage("ana@ejemplo.org", "hola que tal", "cuerpo con acentos: nandu").encode()
 
-        assertTrue(carga, carga.startsWith("mailto:ana%40ejemplo.org?"))
+        // La arroba va tal cual: codificada como %40, RFC 6068 la lee como parte del usuario y la
+        // direccion se queda sin dominio.
+        assertTrue(carga, carga.startsWith("mailto:ana@ejemplo.org?"))
         assertTrue(carga, "subject=hola%20que%20tal" in carga)
         assertTrue(carga, "+" !in carga)
     }
 
     @Test
     fun `un correo sin asunto ni cuerpo no lleva consulta`() {
-        assertEquals("mailto:ana%40ejemplo.org", EmailMessage("ana@ejemplo.org").encode())
+        assertEquals("mailto:ana@ejemplo.org", EmailMessage("ana@ejemplo.org").encode())
     }
 
     @Test

@@ -42,7 +42,7 @@ object CodeActions {
     }
 
     fun run(context: Context, action: CodeAction, content: CodeContent): Outcome = when (action) {
-        CodeAction.COPY -> copy(context, content.encode())
+        CodeAction.COPY -> copy(context, content.encode(), sensitive = content.isSensitive)
         CodeAction.SHARE -> share(context, content.encode())
         CodeAction.OPEN_WEBSITE -> openWebsite(context, content)
         CodeAction.CONNECT_WIFI -> connectWifi(context, content)
@@ -68,7 +68,32 @@ object CodeActions {
         val network = content as? WifiNetwork ?: return Outcome.Refused
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            val suggestion = android.net.wifi.WifiNetworkSuggestion.Builder()
+            // El sistema valida la red al construirla y lanza ante lo que no acepta: una clave con
+            // «n» o tildes, una clave de menos de ocho caracteres, un SSID demasiado largo.
+            val suggestion = suggestionFor(network)
+            if (suggestion != null) {
+                val intent = Intent(Settings.ACTION_WIFI_ADD_NETWORKS).apply {
+                    putParcelableArrayListExtra(
+                        Settings.EXTRA_WIFI_NETWORK_LIST,
+                        arrayListOf(suggestion),
+                    )
+                }
+                val launched = launch(context, intent)
+                if (launched != Outcome.NoHandler) return launched
+            }
+        }
+
+        if (network.password.isNotEmpty()) copy(context, network.password, sensitive = true)
+        val settings = launch(context, Intent(Settings.ACTION_WIFI_SETTINGS))
+        return if (settings == Outcome.Done) Outcome.Copied else settings
+    }
+
+    /** La red como la entiende el sistema, o `null` si el sistema no la acepta. */
+    @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.R)
+    private fun suggestionFor(network: WifiNetwork): android.net.wifi.WifiNetworkSuggestion? {
+        if (network.security == org.sarambi.signifer.content.WifiSecurity.WEP) return null
+        return try {
+            android.net.wifi.WifiNetworkSuggestion.Builder()
                 .setSsid(network.ssid)
                 .apply {
                     when (network.security) {
@@ -81,20 +106,11 @@ object CodeActions {
                     setIsHiddenSsid(network.hidden)
                 }
                 .build()
-
-            val intent = Intent(Settings.ACTION_WIFI_ADD_NETWORKS).apply {
-                putParcelableArrayListExtra(
-                    Settings.EXTRA_WIFI_NETWORK_LIST,
-                    arrayListOf(suggestion),
-                )
-            }
-            val launched = launch(context, intent)
-            if (launched != Outcome.NoHandler) return launched
+        } catch (_: IllegalArgumentException) {
+            null
+        } catch (_: IllegalStateException) {
+            null
         }
-
-        if (network.password.isNotEmpty()) copy(context, network.password)
-        val settings = launch(context, Intent(Settings.ACTION_WIFI_SETTINGS))
-        return if (settings == Outcome.Done) Outcome.Copied else settings
     }
 
     private fun addContact(context: Context, content: CodeContent): Outcome {
@@ -174,13 +190,22 @@ object CodeActions {
         return launch(context, intent)
     }
 
-    fun copy(context: Context, value: String): Outcome {
+    /** Copia al portapapeles. */
+    fun copy(context: Context, value: String, sensitive: Boolean = false): Outcome {
         val manager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        manager.setPrimaryClip(
-            ClipData.newPlainText(context.getString(R.string.app_name), value),
-        )
+        val clip = ClipData.newPlainText(context.getString(R.string.app_name), value)
+        // `setExtras` existe desde API 24, y el sistema solo mira la marca desde 33.
+        if (sensitive && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            clip.description.extras = android.os.PersistableBundle().apply {
+                putBoolean(EXTRA_IS_SENSITIVE, true)
+            }
+        }
+        manager.setPrimaryClip(clip)
         return Outcome.Copied
     }
+
+    /** La marca de contenido sensible. */
+    private const val EXTRA_IS_SENSITIVE = "android.content.extra.IS_SENSITIVE"
 
     private fun share(context: Context, value: String): Outcome {
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -201,7 +226,11 @@ object CodeActions {
 
     /** Del calendario local del formulario al instante que espera el sistema. */
     private fun epochMillis(moment: org.sarambi.signifer.content.Moment): Long {
-        val calendar = java.util.Calendar.getInstance()
+        val calendar = if (moment.utc) {
+            java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+        } else {
+            java.util.Calendar.getInstance()
+        }
         calendar.clear()
         calendar.set(moment.year, moment.month - 1, moment.day, moment.hour, moment.minute)
         return calendar.timeInMillis

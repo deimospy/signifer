@@ -45,7 +45,7 @@ class MomentTest {
     @Test
     fun `lee las tres formas de marca que aparecen en un codigo`() {
         assertEquals(Moment(2026, 9, 7, 14, 30), Moment.parse("20260907T143000"))
-        assertEquals(Moment(2026, 9, 7, 14, 30), Moment.parse("20260907T143000Z"))
+        assertEquals(Moment(2026, 9, 7, 14, 30, utc = true), Moment.parse("20260907T143000Z"))
         assertEquals(Moment(2026, 9, 7), Moment.parse("20260907"))
     }
 

@@ -126,6 +126,8 @@
     <string name="risk_bidirectional_body">Invisible characters change the order in which text reads. They make a file that installs look like a picture.</string>
     <string name="risk_unusual_port">Listens on an unusual port</string>
     <string name="risk_unusual_port_body">The server does not answer on the usual port for the protocol.</string>
+    <string name="risk_malformed">The address is malformed</string>
+    <string name="risk_malformed_body">The server or the port is not valid, so no browser could open it. It is usually a broken code, or one crafted to confuse.</string>
 
     <string name="warning_risky_destination">The destination has findings</string>
     <string name="warning_risky_destination_body">Each one is explained below.</string>

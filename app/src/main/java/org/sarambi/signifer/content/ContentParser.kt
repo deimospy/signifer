@@ -2,7 +2,7 @@ package org.sarambi.signifer.content
 
 /** Del texto leido al tipo de contenido. */
 fun parseContent(raw: String): CodeContent {
-    val value = raw.trim()
+    val value = raw.trim().trimStart('\uFEFF').trim()
     if (value.isEmpty()) return PlainText(raw)
 
     val upper = value.uppercase()
@@ -186,10 +186,11 @@ private fun parseEvent(value: String): CodeContent? {
         if (separator <= 0) continue
         val head = line.substring(0, separator).uppercase()
         val body = line.substring(separator + 1)
+        val property = head.substringBefore(';')
         when {
-            head == "SUMMARY" -> summary = unescapeVCard(body)
-            head == "LOCATION" -> location = unescapeVCard(body)
-            head == "DESCRIPTION" -> description = unescapeVCard(body)
+            property == "SUMMARY" -> summary = unescapeVCard(body)
+            property == "LOCATION" -> location = unescapeVCard(body)
+            property == "DESCRIPTION" -> description = unescapeVCard(body)
             head.startsWith("DTSTART") -> {
                 start = Moment.parse(body)
                 if ("VALUE=DATE" in head && "DATE-TIME" !in head) allDay = true
@@ -286,13 +287,16 @@ private fun parseGeo(value: String): CodeContent? {
     val longitude = parts[1].trim().substringBefore(';').toDoubleOrNull() ?: return null
     if (latitude !in -90.0..90.0 || longitude !in -180.0..180.0) return null
 
-    val query = body.substringAfter('?', "")
-    val label = if ('(' in query && query.endsWith(')')) {
-        percentDecode(query.substringAfter('(').dropLast(1))
+    val q = body.substringAfter('?', "")
+        .split('&')
+        .firstOrNull { it.startsWith("q=", ignoreCase = true) }
+        ?.substring(2)
+        .orEmpty()
+    return if ('(' in q && q.endsWith(')')) {
+        GeoPoint(latitude, longitude, label = percentDecode(q.substringAfter('(').dropLast(1)))
     } else {
-        ""
+        GeoPoint(latitude, longitude, query = percentDecode(q.replace('+', ' ')))
     }
-    return GeoPoint(latitude, longitude, label)
 }
 
 /** Reune las lineas plegadas de vCard e iCalendar. */

@@ -59,6 +59,11 @@ class ScanSettingsSheet : BottomSheetDialogFragment() {
         buildFormatList(views.formats)
     }
 
+    override fun onDismiss(dialog: android.content.DialogInterface) {
+        super.onDismiss(dialog)
+        (parentFragment as? ScanFragment)?.reloadOptions()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         checkBoxes.clear()

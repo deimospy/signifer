@@ -103,6 +103,7 @@ class CreateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val views = binding ?: return
+        savedInstanceState?.let(::restore)
 
         buildKindChips(views)
         buildFormatChooser(views)
@@ -120,7 +121,13 @@ class CreateFragment : Fragment() {
             )
         }
         views.removeLogo.setOnClickListener { clearLogo() }
-        views.logoSizes.check(R.id.logo_medium)
+        views.logoSizes.check(
+            when (logoSize) {
+                LogoOverlay.Size.SMALL -> R.id.logo_small
+                LogoOverlay.Size.MEDIUM -> R.id.logo_medium
+                LogoOverlay.Size.LARGE -> R.id.logo_large
+            },
+        )
         views.logoSizes.addOnButtonCheckedListener { _, checked, isChecked ->
             if (!isChecked) return@addOnButtonCheckedListener
             logoSize = when (checked) {
@@ -132,6 +139,49 @@ class CreateFragment : Fragment() {
         }
         refreshLogoVisibility()
     }
+
+    /** Guarda lo escrito. */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_KIND, kind.name)
+        outState.putString(STATE_FORMAT, format.name)
+        outState.putString(STATE_CORRECTION, correction.name)
+        outState.putString(STATE_LOGO_SIZE, logoSize.name)
+        outState.putStringArray(STATE_KEYS, values.keys.toTypedArray())
+        outState.putStringArray(STATE_VALUES, values.values.toTypedArray())
+
+        val mark = logo
+        val file = logoFile()
+        if (mark == null) {
+            file.delete()
+        } else {
+            runCatching {
+                file.parentFile?.mkdirs()
+                file.outputStream().use { mark.compress(Bitmap.CompressFormat.PNG, 100, it) }
+            }
+        }
+        outState.putBoolean(STATE_HAS_LOGO, mark != null)
+    }
+
+    private fun restore(state: Bundle) {
+        kind = ContentKind.entries.firstOrNull { it.name == state.getString(STATE_KIND) } ?: kind
+        format = WRITABLE_FORMATS.firstOrNull { it.name == state.getString(STATE_FORMAT) } ?: format
+        correction = Correction.entries.firstOrNull { it.name == state.getString(STATE_CORRECTION) }
+            ?: correction
+        logoSize = LogoOverlay.Size.entries.firstOrNull { it.name == state.getString(STATE_LOGO_SIZE) }
+            ?: logoSize
+
+        val keys = state.getStringArray(STATE_KEYS).orEmpty()
+        val restored = state.getStringArray(STATE_VALUES).orEmpty()
+        values.clear()
+        keys.zip(restored).forEach { (key, value) -> values[key] = value }
+
+        if (state.getBoolean(STATE_HAS_LOGO)) {
+            logo = runCatching { BitmapFactory.decodeFile(logoFile().path) }.getOrNull()
+        }
+    }
+
+    private fun logoFile() = java.io.File(requireContext().cacheDir, "logo/current.png")
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -174,7 +224,8 @@ class CreateFragment : Fragment() {
     private fun buildCorrectionChooser(views: FragmentCreateBinding) {
         val adapter = ChoiceAdapter(requireContext(), CORRECTIONS.map { it.second })
         views.correction.setAdapter(adapter)
-        views.correction.setText(getString(CORRECTIONS[1].second.title), false)
+        val selected = CORRECTIONS.indexOfFirst { it.first == correction }.coerceAtLeast(0)
+        views.correction.setText(getString(CORRECTIONS[selected].second.title), false)
         views.correction.setOnItemClickListener { _, _, position, _ ->
             correction = CORRECTIONS[position].first
             views.correction.setText(getString(CORRECTIONS[position].second.title), false)
@@ -381,13 +432,14 @@ class CreateFragment : Fragment() {
             val current = binding ?: return@launch
             when (result) {
                 is WriteResult.Written -> {
-                    val mark = logo
+                    val mark = logo?.takeIf { LogoOverlay.supports(chosenFormat) }
+                    val chosenSize = logoSize
                     val drawn = withContext(Dispatchers.Default) {
                         val plain = BitmapRenderer.render(result.matrix, chosenFormat, PREVIEW_PIXELS)
                         val finished = if (mark == null) {
                             plain
                         } else {
-                            LogoOverlay.draw(plain, mark, logoSize)
+                            LogoOverlay.draw(plain, mark, chosenSize)
                         }
                         val readable = mark == null ||
                             verifier.decode(finished).any { it.text == payload }
@@ -493,8 +545,8 @@ class CreateFragment : Fragment() {
         val matrix = currentMatrix ?: return
         val svg = matrix.toSvg(
             quietModules = quietModulesFor(format),
-            logo = logo?.let(::asDataUri),
-            logoFraction = if (logo == null) 0f else logoSize.fraction,
+            logo = logo?.takeIf { LogoOverlay.supports(format) }?.let(::asDataUri),
+            logoFraction = if (logo == null || !LogoOverlay.supports(format)) 0f else logoSize.fraction,
         )
         val written = runCatching {
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
@@ -516,7 +568,7 @@ class CreateFragment : Fragment() {
     /** El codigo al tamano pedido, con el logotipo encima si lo hay. */
     private fun compose(matrix: org.sarambi.signifer.encode.CodeMatrix, side: Int): Bitmap {
         val plain = BitmapRenderer.render(matrix, format, side)
-        val mark = logo ?: return plain
+        val mark = logo?.takeIf { LogoOverlay.supports(format) } ?: return plain
         return LogoOverlay.draw(plain, mark, logoSize)
     }
 
@@ -573,6 +625,14 @@ class CreateFragment : Fragment() {
 
     private companion object {
         const val PREVIEW_PIXELS = 512
+
+        const val STATE_KIND = "kind"
+        const val STATE_FORMAT = "format"
+        const val STATE_CORRECTION = "correction"
+        const val STATE_LOGO_SIZE = "logo_size"
+        const val STATE_KEYS = "keys"
+        const val STATE_VALUES = "values"
+        const val STATE_HAS_LOGO = "has_logo"
 
         /** Respiro antes de redibujar. */
         const val PREVIEW_DELAY_MILLIS = 120L

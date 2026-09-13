@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         if (savedInstanceState == null) {
             binding.navigation.selectedItemId = R.id.destination_scan
             handle(intent)
+        } else if (LegacyScanIntent.matches(intent)) {
+            enterLegacyMode(intent)
         }
     }
 
@@ -83,10 +85,8 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         if (intent == null) return
 
         if (LegacyScanIntent.matches(intent)) {
-            returningResult = true
-            requestedFormats = LegacyScanIntent.requestedFormats(intent)
+            enterLegacyMode(intent)
             binding.navigation.selectedItemId = R.id.destination_scan
-            binding.navigation.visibility = View.GONE
             return
         }
 
@@ -103,6 +103,12 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
                 binding.container.post { scanFragment()?.decodeUri(uri) }
             }
         }
+    }
+
+    private fun enterLegacyMode(intent: Intent) {
+        returningResult = true
+        requestedFormats = LegacyScanIntent.requestedFormats(intent)
+        binding.navigation.visibility = View.GONE
     }
 
     private fun sharedImage(intent: Intent): Uri? {

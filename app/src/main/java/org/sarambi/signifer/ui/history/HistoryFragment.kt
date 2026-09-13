@@ -96,6 +96,15 @@ class HistoryFragment : Fragment() {
         }
     }
 
+    /**
+     * Los destinos se ocultan en lugar de destruirse, y ocultar no pasa por `onStart`: sin esto, lo
+     * leido mientras se miraba otra pestana no aparecia al volver.
+     */
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden && view != null) refresh()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         reload?.cancel()

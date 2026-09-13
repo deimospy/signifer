@@ -124,7 +124,7 @@ data class EmailMessage(
     override val kind: ContentKind get() = ContentKind.EMAIL
 
     override fun encode(): String = buildString {
-        append("mailto:").append(percentEncode(address.trim()))
+        append("mailto:").append(encodeMailAddress(address.trim()))
         val query = mutableListOf<String>()
         if (subject.isNotBlank()) query += "subject=" + percentEncode(subject)
         if (body.isNotBlank()) query += "body=" + percentEncode(body)
@@ -151,6 +151,9 @@ data class GeoPoint(
     val latitude: Double,
     val longitude: Double,
     val label: String = "",
+
+    /** Una busqueda en lugar de un punto: `geo:0,0?q=Panteon+de+los+Heroes`. */
+    val query: String = "",
 ) : CodeContent {
     override val kind: ContentKind get() = ContentKind.LOCATION
 
@@ -161,6 +164,8 @@ data class GeoPoint(
             append("?q=").append(formatCoordinate(latitude))
             append(',').append(formatCoordinate(longitude))
             append('(').append(percentEncode(label)).append(')')
+        } else if (query.isNotBlank()) {
+            append("?q=").append(percentEncode(query))
         }
     }
 }
@@ -190,6 +195,25 @@ data class CalendarEvent(
             end?.let { append("DTEND:").append(it.toCalendarStamp()).append('\n') }
         }
         append("END:VEVENT")
+    }
+}
+
+/** La direccion de un `mailto:`, con la arroba sin tocar. */
+fun encodeMailAddress(address: String): String {
+    val allowed = "!\$'()*+,;:@"
+    val bytes = address.toByteArray(Charsets.UTF_8)
+    return buildString(bytes.size) {
+        for (byte in bytes) {
+            val code = byte.toInt() and 0xFF
+            val character = code.toChar()
+            val literal = character in 'A'..'Z' || character in 'a'..'z' ||
+                character in '0'..'9' || character in "-._~" || character in allowed
+            if (literal) {
+                append(character)
+            } else {
+                append('%').append("0123456789ABCDEF"[code shr 4]).append("0123456789ABCDEF"[code and 0x0F])
+            }
+        }
     }
 }
 

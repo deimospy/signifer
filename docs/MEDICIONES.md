@@ -31,6 +31,7 @@ arquitectura. Cifras en KB.
 | Historial sobre el SQLite del sistema | 2584 | 2507 | 2639 | 2617 |
 | Integración con el sistema y análisis en verde | 2593 | 2515 | 2648 | 2626 |
 | Logotipo en el código, ficha y lenguaje claro | 2614 | 2536 | 2668 | 2646 |
+| Direcciones como las resuelve el navegador y pruebas cruzadas | 2620 | 2542 | 2674 | 2653 |
 
 ## Lo que descarga un teléfono desde la tienda
 

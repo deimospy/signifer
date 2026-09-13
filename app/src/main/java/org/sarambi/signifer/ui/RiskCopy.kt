@@ -25,6 +25,7 @@ fun titleOf(reason: UrlRiskReason): Int = when (reason) {
     UrlRiskReason.EXECUTABLE_DOWNLOAD -> R.string.risk_executable
     UrlRiskReason.BIDIRECTIONAL_CONTROL -> R.string.risk_bidirectional
     UrlRiskReason.UNUSUAL_PORT -> R.string.risk_unusual_port
+    UrlRiskReason.MALFORMED_ADDRESS -> R.string.risk_malformed
 }
 
 @StringRes
@@ -43,6 +44,7 @@ fun explanationOf(reason: UrlRiskReason): Int = when (reason) {
     UrlRiskReason.EXECUTABLE_DOWNLOAD -> R.string.risk_executable_body
     UrlRiskReason.BIDIRECTIONAL_CONTROL -> R.string.risk_bidirectional_body
     UrlRiskReason.UNUSUAL_PORT -> R.string.risk_unusual_port_body
+    UrlRiskReason.MALFORMED_ADDRESS -> R.string.risk_malformed_body
 }
 
 @StringRes

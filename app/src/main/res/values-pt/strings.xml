@@ -126,6 +126,8 @@
     <string name="risk_bidirectional_body">Há caracteres invisíveis que mudam a ordem em que o texto é lido. Servem para um arquivo que instala parecer uma imagem.</string>
     <string name="risk_unusual_port">Escuta em uma porta incomum</string>
     <string name="risk_unusual_port_body">O servidor não atende na porta habitual do protocolo.</string>
+    <string name="risk_malformed">O endereço está mal formado</string>
+    <string name="risk_malformed_body">O servidor ou a porta não são válidos, então nenhum navegador conseguiria abri-lo. Costuma ser um código quebrado ou feito para confundir.</string>
 
     <string name="warning_risky_destination">O destino tem achados</string>
     <string name="warning_risky_destination_body">Cada um está explicado abaixo.</string>
