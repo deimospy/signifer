@@ -26,11 +26,12 @@ import org.sarambi.signifer.settings.ScanPreferences
 import org.sarambi.signifer.system.LegacyScanIntent
 import org.sarambi.signifer.ui.ResultSheet
 import org.sarambi.signifer.ui.ScanFragment
+import org.sarambi.signifer.ui.SettingsSheet
 import org.sarambi.signifer.ui.create.CreateFragment
 import org.sarambi.signifer.ui.history.HistoryFragment
 
 /** La unica actividad. */
-class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Listener {
+class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Listener, SettingsSheet.Host {
     private lateinit var binding: ActivityMainBinding
     private lateinit var preferences: ScanPreferences
 
@@ -179,6 +180,12 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         scanFragment()?.resumeScanning()
     }
 
+    /** El panel de ajustes es uno solo: la camara y la lista se enteran igual. */
+    override fun onSettingsChanged() {
+        scanFragment()?.reloadOptions()
+        historyFragment()?.onSettingsChanged()
+    }
+
     override fun onSaveRequested(content: CodeContent, format: CodeFormat) {
         store(content.encode(), format)
     }
@@ -193,6 +200,9 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
 
     private fun scanFragment(): ScanFragment? =
         supportFragmentManager.findFragmentByTag(TAG_SCAN) as? ScanFragment
+
+    private fun historyFragment(): HistoryFragment? =
+        supportFragmentManager.findFragmentByTag(TAG_HISTORY) as? HistoryFragment
 
     /** Un toque corto al leer. */
     private fun vibrate() {

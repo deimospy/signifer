@@ -14,15 +14,18 @@
     <string name="scan_permission_grant">Permitir a câmera</string>
     <string name="action_torch">Lanterna</string>
     <string name="action_pick_image">Ler de uma imagem</string>
-    <string name="action_scan_settings">Ajustes de leitura</string>
     <string name="camera_unavailable">Não foi possível abrir a câmera</string>
     <string name="image_unreadable">Não foi possível abrir a imagem</string>
     <string name="image_without_code">Nenhum código nessa imagem</string>
 
+    <string name="settings_section_reading">Leitura</string>
+    <string name="settings_section_history">Histórico</string>
+    <string name="settings_formats_summary">Formatos lidos: %1$d de %2$d</string>
+    <string name="settings_retention_value">Por quanto tempo se guarda: %1$s</string>
     <string name="settings_title">Ajustes</string>
     <string name="settings_formats_note">Quanto menos formatos procurar, mais rápido lê. Se você só escaneia QR, desligue o resto.</string>
     <string name="settings_try_harder">Insistir mais em cada tentativa</string>
-    <string name="settings_try_harder_note">Fica mais lento. Nos nossos testes não leu nem um código a mais, mas pode ajudar com códigos muito danificados.</string>
+    <string name="settings_try_harder_note">Fica mais lento. Nos nossos testes leu um código a mais entre 225, mas pode ajudar com códigos muito danificados.</string>
     <string name="settings_try_invert">Ler códigos em negativo</string>
     <string name="settings_try_invert_note">Códigos claros sobre fundo escuro.</string>
     <string name="settings_vibrate">Vibrar ao ler</string>
@@ -30,7 +33,6 @@
     <string name="settings_save_history">Guardar no histórico</string>
     <string name="settings_save_sensitive">Guardar também as senhas</string>
     <string name="settings_save_sensitive_note">Desligado, uma rede Wi-Fi com senha não fica guardada, a não ser que se peça na própria tela de resultado.</string>
-    <string name="settings_formats">Formatos</string>
     <string name="settings_preset_all">Todos</string>
     <string name="settings_preset_matrix">Quadrados</string>
     <string name="settings_preset_qr">Só QR</string>
@@ -181,7 +183,6 @@
     <string name="form_end_time">Às</string>
 
     <string name="history_search">Buscar no histórico</string>
-    <string name="history_menu">Opções do histórico</string>
     <string name="history_favorite">Favorito</string>
     <string name="history_only_favorites">Favoritos</string>
     <string name="history_empty">Ainda não há nada lido</string>

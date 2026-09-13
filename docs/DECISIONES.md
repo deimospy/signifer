@@ -54,7 +54,7 @@ está esperando.
 
 ## 5. Idiomas
 
-**Cerrada en tres: español, inglés y portugués.** Las 217 cadenas traducibles
+**Cerrada en tres: español, inglés y portugués.** Las 218 cadenas traducibles
 están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
 estático falla la compilación si falta una traducción. El paquete solo incluye
 esos tres, así que ninguna dependencia cuela los suyos.
@@ -94,6 +94,12 @@ saltos de línea. Por eso los textos latinos van por el codificador clásico, y
 lo que sale del compacto se relee antes de mostrarlo: si no dice exactamente lo
 escrito, la pantalla lo avisa y sugiere QR. Mejor ningún código que uno que
 diga otra cosa.
+
+**Los ajustes son un solo panel.** La lectura se ajustaba desde la cámara y el
+historial desde un menú propio, y encontrar una opción era adivinar en cuál de
+los dos estaba. Ahora el mismo botón abre el mismo panel en las dos pantallas,
+con tres secciones: lectura, historial y acerca de. La lista de formatos va
+plegada para que el resto no quede al fondo.
 
 **Los campos de texto tienen límite.** 4000 caracteres en la creación —el doble
 de lo que cabe en el QR legible más grande— y 200 en la búsqueda. En Android 16

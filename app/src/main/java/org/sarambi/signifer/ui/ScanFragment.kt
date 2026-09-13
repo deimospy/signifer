@@ -64,7 +64,7 @@ class ScanFragment : Fragment() {
         }
         views.pickImage.setOnClickListener { launchPicker() }
         views.permissionPickImage.setOnClickListener { launchPicker() }
-        views.settings.setOnClickListener { ScanSettingsSheet().show(childFragmentManager, null) }
+        views.settings.setOnClickListener { SettingsSheet().show(parentFragmentManager, SettingsSheet.TAG) }
         views.permissionGrant.setOnClickListener {
             requestCamera.launch(Manifest.permission.CAMERA)
         }

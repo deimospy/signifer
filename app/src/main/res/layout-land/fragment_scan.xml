@@ -67,7 +67,7 @@
             android:id="@+id/settings"
             style="@style/Widget.Signifer.ScanAction"
             android:layout_marginTop="12dp"
-            android:contentDescription="@string/action_scan_settings"
+            android:contentDescription="@string/settings_title"
             app:icon="@drawable/ic_settings" />
 
     </LinearLayout>

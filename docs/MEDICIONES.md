@@ -34,6 +34,7 @@ arquitectura. Cifras en KB.
 | Direcciones como las resuelve el navegador y pruebas cruzadas | 2620 | 2542 | 2674 | 2653 |
 | Zonas horarias, agendas antiguas e invertidos en imágenes | 2629 | 2551 | 2683 | 2662 |
 | Escrituras de todo el mundo y límites de entrada | 2637 | 2559 | 2691 | 2670 |
+| Panel único de ajustes | 2639 | 2561 | 2693 | 2672 |
 
 ## Lo que descarga un teléfono desde la tienda
 
@@ -45,10 +46,10 @@ Medido con `bundletool get-size total` sobre `app-release.aab`:
 
 | Arquitectura | Descarga |
 |---|---|
-| armeabi-v7a | 2020 – 2047 KB |
-| **arm64-v8a** | **2097 – 2126 KB** |
-| x86_64 | 2129 – 2157 KB |
-| x86 | 2150 – 2180 KB |
+| armeabi-v7a | 2020 – 2049 KB |
+| **arm64-v8a** | **2098 – 2127 KB** |
+| x86_64 | 2130 – 2159 KB |
+| x86 | 2151 – 2181 KB |
 
 ```
 gradlew :app:bundleRelease -Psignifer.abiSplits=false

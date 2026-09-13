@@ -12,6 +12,36 @@
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Module</item>
     </style>
 
+    <style name="Widget.Signifer.SettingsRow" parent="Widget.Material3.Button.TextButton.Icon">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="iconPadding">16dp</item>
+        <item name="iconSize">24dp</item>
+    </style>
+
+    <style name="Widget.Signifer.SettingsSection" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.Signifer.SettingsDivider" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:background">?attr/colorOutlineVariant</item>
+    </style>
+
     <style name="ShapeAppearance.Signifer.Module" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
