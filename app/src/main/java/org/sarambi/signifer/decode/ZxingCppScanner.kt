@@ -43,9 +43,9 @@ class ZxingCppScanner(initialOptions: ScanOptions = ScanOptions.LIVE) : CodeScan
 
     /** Un fotograma de camara ya convertido, para medir los dos tipos de fotograma. */
     @VisibleForTesting
-    fun decodeFrame(bitmap: Bitmap, thorough: Boolean): List<DecodedCode> = synchronized(lock) {
+    fun decodeFrame(bitmap: Bitmap, thorough: Boolean, crop: Rect = Rect()): List<DecodedCode> = synchronized(lock) {
         useFrameOptions(thorough)
-        runCatching { reader.read(bitmap, Rect(), 0).map { it.toDecodedCode() } }.getOrDefault(emptyList())
+        runCatching { reader.read(bitmap, crop, 0).map { it.toDecodedCode() } }.getOrDefault(emptyList())
     }
 
     /**

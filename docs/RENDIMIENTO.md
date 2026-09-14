@@ -169,16 +169,18 @@ Coste por fotograma, medido en la misma prueba:
 
 | Imágenes | Rápido (mediana) | Completo (mediana) |
 |---|---|---|
-| Banco de 225, con código | 1,0 ms | 1,5 ms |
-| 40 sin código, con texto y recuadros | 7,5 ms | 15,0 ms |
+| Banco de 225, con código | 0,75 ms | 1,25 ms |
+| 40 sin código, con texto y recuadros, fotograma entero | 7,0 ms | 13,0 ms |
+| Las mismas, solo el marco (612 × 612 px) | **3,25 ms** | **6,5 ms** |
 
-La cámara casi siempre mira algo sin código, así que esa es la fila que cuenta:
-alternando, el fotograma medio pasa de 7,5 a unos 11 ms, lejos de los 33 ms de
-un fotograma.
+La cámara casi siempre mira algo sin código, así que las dos últimas filas son
+las que cuentan. La cámara solo decodifica lo que está dentro del marco, con
+un margen para la zona tranquila: alternando, el fotograma medio queda en unos
+5 ms, por debajo de lo que costaba el fotograma entero en modo rápido.
 
 Lo que la alternancia no arregla es la resolución: un código largo que cruza
-el visor de lado a lado, con el teléfono en vertical, dispone solo del lado
-corto del sensor, 720 píxeles. Para eso está el zoom: pellizcar acerca, un
+el marco de lado a lado, con el teléfono en vertical, dispone de unos 630
+píxeles: el lado corto del sensor, recortado a lo que se ve. Para eso está el zoom: pellizcar acerca, un
 doble toque alterna entre 1× y 2× y un toque enfoca en ese punto.
 
 ## Arranque en frío

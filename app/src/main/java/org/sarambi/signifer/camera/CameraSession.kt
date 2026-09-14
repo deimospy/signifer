@@ -1,12 +1,15 @@
 package org.sarambi.signifer.camera
 
 import android.content.Context
+import android.graphics.Rect
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
 import androidx.camera.core.MeteringPoint
 import androidx.camera.core.Preview
+import androidx.camera.core.UseCaseGroup
 import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -53,6 +56,14 @@ class CameraSession(
 
     var torchOn: Boolean = false
         private set
+
+    /** Solo se lee dentro de esta zona de la vista previa; sin ella, el fotograma entero. */
+    @Volatile
+    var scanArea: ScanArea? = null
+
+    /** El recorte del fotograma coincide con lo que muestra la vista previa. */
+    @Volatile
+    private var matchesPreview = false
 
     /** El estado de zoom de la camara llega con retraso; durante un pellizco manda el pedido. */
     private var zoomRatio = 1f
@@ -112,17 +123,25 @@ class CameraSession(
             }
         }
 
-        camera = cameraProvider.bindToLifecycle(
-            owner,
-            CameraSelector.DEFAULT_BACK_CAMERA,
-            preview,
-            analysis,
-        )
+        val viewPort = previewView.viewPort
+        matchesPreview = viewPort != null
+        camera = if (viewPort == null) {
+            cameraProvider.bindToLifecycle(owner, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+        } else {
+            val group = UseCaseGroup.Builder().setViewPort(viewPort).addUseCase(preview).addUseCase(analysis).build()
+            cameraProvider.bindToLifecycle(owner, CameraSelector.DEFAULT_BACK_CAMERA, group)
+        }
         torchOn = false
         zoomRatio = 1f
     }
 
-    private fun analyze(image: androidx.camera.core.ImageProxy) {
+    private fun analyze(image: ImageProxy) {
+        val area = scanArea
+        if (area != null && matchesPreview) {
+            val visible = image.cropRect
+            val box = area.toBuffer(PixelRect(visible.left, visible.top, visible.right, visible.bottom), image.imageInfo.rotationDegrees)
+            image.setCropRect(Rect(box.left, box.top, box.right, box.bottom))
+        }
         val codes = scanner.decode(image)
         metrics.record(scanner.lastDecodeMicros)
         if (codes.isEmpty()) return

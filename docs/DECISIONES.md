@@ -45,12 +45,16 @@ milisegundo.
 
 ## 4. Si `tryHarder` compensa
 
-**No, en la cámara.** Sobre las 225 imágenes acierta una sola más —un UPC-E con
-ruido— y la mediana pasa de 1,25 a 4,75 ms.
+**En todos los fotogramas, no; en uno de cada dos y solo para lineales, sí.**
+Sobre las 225 imágenes acierta una sola más —un UPC-E con ruido— y la mediana
+pasa de 1,25 a 4,75 ms. Pero el banco no tiene etiquetas finas, y una etiqueta
+de número de serie fuera del centro no se lee sin él. La cámara alterna un
+fotograma rápido y uno completo que busca solo códigos de barras
+([medición](RENDIMIENTO.md#etiquetas-finas)).
 
-Queda apagado de fábrica y disponible en los ajustes. La lectura desde una
-imagen fija sí lo activa: ahí no hay presupuesto de fotograma y la persona ya
-está esperando.
+Aplicarlo a todos los fotogramas sigue disponible en los ajustes. La lectura
+desde una imagen fija lo activa siempre: ahí no hay presupuesto de fotograma y
+la persona ya está esperando.
 
 ## 5. Idiomas
 
@@ -64,6 +68,13 @@ día para siempre; se hará cuando haya una razón concreta y alguien que hable
 el idioma, no por tener más banderas en la ficha.
 
 ## Decisiones que no estaban abiertas y aun así hubo que tomar
+
+**En la cámara solo se lee lo que está dentro del marco.** Con varios códigos a
+la vista —una pila de discos, una caja con etiquetas— se leía el primero que la
+biblioteca encontraba en cualquier parte de la imagen, no el que se apuntaba.
+Ahora el fotograma se recorta al marco, con un margen para la zona tranquila
+de un código que lo llena, y decodificar cuesta la mitad. El marco ocupa el
+84 % del ancho en vertical para que quepan los códigos largos.
 
 **El permiso `VIBRATE` se declara.** No estaba previsto. Es un permiso normal
 —el sistema lo concede sin preguntar y no da acceso a ningún dato— y sin él la

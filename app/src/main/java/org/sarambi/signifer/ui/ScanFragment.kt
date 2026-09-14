@@ -72,6 +72,7 @@ class ScanFragment : Fragment() {
         views.permissionGrant.setOnClickListener {
             requestCamera.launch(Manifest.permission.CAMERA)
         }
+        views.frame.onScanAreaChanged = { area -> session?.scanArea = area }
         attachGestures(views)
     }
 
@@ -195,6 +196,7 @@ class ScanFragment : Fragment() {
             scanner = scanner,
             onCode = ::onCodeRead,
         )
+        camera.scanArea = views.frame.scanArea
         session = camera
         camera.start(viewLifecycleOwner, views.preview) { failure ->
             binding?.let {

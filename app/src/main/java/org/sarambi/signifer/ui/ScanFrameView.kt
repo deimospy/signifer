@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import org.sarambi.signifer.R
+import org.sarambi.signifer.camera.ScanArea
 
 /** El marco de lectura sobre la vista previa. */
 class ScanFrameView @JvmOverloads constructor(
@@ -31,13 +32,32 @@ class ScanFrameView @JvmOverloads constructor(
     private val cutout = Path()
     private val corners = Path()
 
+    /** Lo que se lee: el marco y un margen alrededor. */
+    var scanArea: ScanArea? = null
+        private set
+
+    var onScanAreaChanged: ((ScanArea) -> Unit)? = null
+
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        val fraction = if (width > height) LANDSCAPE_FRACTION else WINDOW_FRACTION
-        val side = (minOf(width, height) * fraction)
-        val left = (width - side) / 2f
-        val top = (height - side) / 2f
-        window.set(left, top, left + side, top + side)
+        val windowWidth: Float
+        val windowHeight: Float
+        if (width > height) {
+            windowHeight = height * LANDSCAPE_FRACTION
+            windowWidth = minOf(windowHeight * LANDSCAPE_ASPECT, width * LANDSCAPE_MAX_WIDTH)
+        } else {
+            windowWidth = width * WINDOW_FRACTION
+            windowHeight = minOf(windowWidth, height * LANDSCAPE_FRACTION)
+        }
+        val left = (width - windowWidth) / 2f
+        val top = (height - windowHeight) / 2f
+        window.set(left, top, left + windowWidth, top + windowHeight)
+        val side = minOf(windowWidth, windowHeight)
+
+        val area = ScanArea(window.left / width, window.top / height, window.right / width, window.bottom / height)
+            .widened(QUIET_ZONE_MARGIN)
+        scanArea = area
+        onScanAreaChanged?.invoke(area)
 
         val radius = side * RADIUS_FRACTION
         cutout.reset()
@@ -84,10 +104,15 @@ class ScanFrameView @JvmOverloads constructor(
 
     private companion object {
         const val SCRIM_COLOR = 0x99000000.toInt()
-        const val WINDOW_FRACTION = 0.72f
+        const val WINDOW_FRACTION = 0.84f
         const val LANDSCAPE_FRACTION = 0.60f
-        const val RADIUS_FRACTION = 0.09f
-        const val STROKE_FRACTION = 0.03f
-        const val ARM_FRACTION = 0.17f
+        const val LANDSCAPE_ASPECT = 1.6f
+        const val LANDSCAPE_MAX_WIDTH = 0.62f
+
+        /** Un codigo que llena el marco necesita su zona tranquila, que queda por fuera. */
+        const val QUIET_ZONE_MARGIN = 0.08f
+        const val RADIUS_FRACTION = 0.077f
+        const val STROKE_FRACTION = 0.026f
+        const val ARM_FRACTION = 0.146f
     }
 }
