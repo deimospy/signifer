@@ -37,6 +37,7 @@ arquitectura. Cifras en KB.
 | Panel único de ajustes | 2639 | 2561 | 2693 | 2672 |
 | El estandarte como marca | 2643 | 2565 | 2697 | 2675 |
 | Paleta de la marca y hojas con cierre visible | 2646 | 2568 | 2700 | 2679 |
+| Formas de píldora e iconos Lucide | 2656 | 2578 | 2711 | 2689 |
 
 ## Lo que descarga un teléfono desde la tienda
 

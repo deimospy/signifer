@@ -136,7 +136,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:minHeight="56dp"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Signifer.Module"
                 tools:text="Abrir el sitio" />
 
             <LinearLayout
@@ -152,8 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/action_copy"
-                    app:icon="@drawable/ic_copy"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Signifer.Module" />
+                    app:icon="@drawable/ic_copy" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/share"
@@ -163,8 +161,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:text="@string/action_share"
-                    app:icon="@drawable/ic_share"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Signifer.Module" />
+                    app:icon="@drawable/ic_share" />
 
             </LinearLayout>
 

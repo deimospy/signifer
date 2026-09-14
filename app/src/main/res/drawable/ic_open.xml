@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generado por tools/brand/generate.py. No editar a mano. -->
+<!-- Generado por tools/brand/generate.py a partir de Lucide (ISC). No editar a mano. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="#FF000000"
-        android:pathData="M0,0h14v2h-14zM16,0h8v2h-8zM0,2h2v20h-2zM16,2h2v2h-2zM22,2h2v20h-2zM14,4h2v2h-2zM12,6h2v2h-2zM0,22h24v2h-24z" />
+        android:fillColor="#00000000"
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M15,3h6v6M10,14,21,3M18,13v6a2,2,0,0,1,-2,2H5a2,2,0,0,1,-2,-2V8a2,2,0,0,1,2,-2h6" />
 </vector>

@@ -78,7 +78,7 @@
                 android:id="@+id/formats_toggle"
                 style="@style/Widget.Signifer.SettingsRow"
                 android:layout_marginTop="8dp"
-                app:icon="@drawable/ic_filter" />
+                app:icon="@drawable/ic_formats" />
 
             <LinearLayout
                 android:id="@+id/formats_panel"
@@ -190,7 +190,7 @@
                 android:id="@+id/import_backup"
                 style="@style/Widget.Signifer.SettingsRow"
                 android:text="@string/history_import"
-                app:icon="@drawable/ic_open" />
+                app:icon="@drawable/ic_import" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clear_history"

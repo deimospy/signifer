@@ -41,7 +41,7 @@ class AboutSheet : BottomSheetDialogFragment() {
             views.promises.addView(row(views.promises, promise.first, promise.second, R.drawable.ic_check))
         }
         for (fact in FACTS) {
-            views.facts.addView(row(views.facts, fact.first, fact.second, R.drawable.ic_signum))
+            views.facts.addView(row(views.facts, fact.title, fact.body, fact.icon))
         }
 
         views.licenses.setOnClickListener { showLicenses() }
@@ -51,6 +51,8 @@ class AboutSheet : BottomSheetDialogFragment() {
         super.onDestroyView()
         binding = null
     }
+
+    private data class Fact(@StringRes val title: Int, @StringRes val body: Int, @DrawableRes val icon: Int)
 
     private fun row(
         host: LinearLayout,
@@ -105,8 +107,8 @@ class AboutSheet : BottomSheetDialogFragment() {
 
         /** Quien la hizo y bajo que licencia. */
         val FACTS = listOf(
-            R.string.about_author to R.string.about_author_name,
-            R.string.about_license to R.string.about_license_name,
+            Fact(R.string.about_author, R.string.about_author_name, R.drawable.ic_author),
+            Fact(R.string.about_license, R.string.about_license_name, R.drawable.ic_license),
         )
     }
 }

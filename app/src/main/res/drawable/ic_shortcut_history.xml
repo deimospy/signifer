@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generado por tools/brand/generate.py. No editar a mano. -->
+<!-- Generado por tools/brand/generate.py a partir de Lucide (ISC). No editar a mano. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="48dp"
     android:height="48dp"
@@ -8,7 +8,17 @@
     <path
         android:fillColor="#8C1D2C"
         android:pathData="M24,0A24,24 0 1,1 24,48A24,24 0 1,1 24,0z" />
-    <path
-        android:fillColor="#F4EFE6"
-        android:pathData="M10,12.33h4.67v4.67h-4.67zM17,12.33h21v4.67h-21zM10,19.33h4.67v4.67h-4.67zM17,19.33h14v4.67h-14zM10,26.33h4.67v4.67h-4.67zM17,26.33h7v4.67h-7zM10,33.33h4.67v4.67h-4.67zM17,33.33h21v4.67h-21z" />
+    <group
+        android:scaleX="1.1667"
+        android:scaleY="1.1667"
+        android:translateX="10"
+        android:translateY="10">
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#F4EFE6"
+            android:strokeWidth="2"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M3,12a9,9,0,1,0,9,-9,9.75,9.75,0,0,0,-6.74,2.74L3,8M3,3v5h5M12,7v5l4,2" />
+    </group>
 </vector>

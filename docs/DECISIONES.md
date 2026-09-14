@@ -113,6 +113,21 @@ tema claro y en el oscuro. Los colores de riesgo siguen aparte y siempre van
 con icono y texto, porque el rojo de peligro y el carmesí de la marca se
 parecen demasiado para confiar solo en el color.
 
+**Todo lo que se pulsa es una píldora.** Botones, filtros, la búsqueda y los
+botones de la cámara van con las esquinas del todo redondeadas; los bloques de
+contenido, con esquinas amplias de 20 dp; los campos con etiqueta flotante, de
+16 dp, porque con más la etiqueta caería sobre la curva del borde. Antes
+convivían cinco radios distintos. La forma no cuesta rendimiento: la GPU dibuja
+igual un rectángulo recto que uno redondeado.
+
+**Los iconos son de Lucide.** Un juego de trazo coherente, con licencia ISC
+compatible con Apache-2.0. `tools/brand/lucide_import.py` copia al proyecto
+solo la geometría de los iconos usados y `tools/brand/generate.py` la convierte
+en vectores de Android, reescribiendo los números que el lector de trazados de
+algunas versiones de Android interpreta mal. La resistencia a daños no tiene
+equivalente en Lucide y se dibuja con su mismo trazo. Cada acción del resultado
+lleva su icono: red, contacto, correo, teléfono, mensaje, mapa y evento.
+
 **Toda hoja inferior se puede cerrar a la vista.** Arrastrarla hacia abajo o
 tocar fuera funciona, pero no se descubre solo. Cada hoja lleva el asa que el
 sistema reconoce y un botón de cerrar fijo arriba, que no se va al desplazar.

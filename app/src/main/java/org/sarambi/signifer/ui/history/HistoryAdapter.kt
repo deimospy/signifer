@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import java.util.Calendar
+import org.sarambi.signifer.R
 import org.sarambi.signifer.databinding.ItemHistoryBinding
 import org.sarambi.signifer.history.HistoryEntry
 import org.sarambi.signifer.ui.titleOf
@@ -43,7 +44,8 @@ class HistoryAdapter(
                 if (entry.times > 1) "×${entry.times}" else null,
             ).joinToString(" · ")
 
-            views.favorite.alpha = if (entry.favorite) 1f else 0.35f
+            views.favorite.setIconResource(if (entry.favorite) R.drawable.ic_star_filled else R.drawable.ic_star)
+            views.favorite.alpha = if (entry.favorite) 1f else 0.6f
             views.favorite.setOnClickListener { onFavorite(entry) }
             views.root.setOnClickListener { onOpen(entry) }
             views.root.setOnLongClickListener {

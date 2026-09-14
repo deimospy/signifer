@@ -261,10 +261,16 @@ class ResultSheet : BottomSheetDialogFragment() {
     /** El icono de la accion principal. */
     private fun iconOf(action: CodeAction): Int = when (action) {
         CodeAction.OPEN_WEBSITE -> R.drawable.ic_open
+        CodeAction.CONNECT_WIFI -> R.drawable.ic_wifi
+        CodeAction.ADD_CONTACT -> R.drawable.ic_contact
+        CodeAction.SEND_EMAIL -> R.drawable.ic_mail
+        CodeAction.DIAL -> R.drawable.ic_phone
+        CodeAction.SEND_SMS -> R.drawable.ic_sms
+        CodeAction.OPEN_MAP -> R.drawable.ic_map
+        CodeAction.ADD_EVENT -> R.drawable.ic_event
         CodeAction.SEARCH_WEB -> R.drawable.ic_search
         CodeAction.COPY -> R.drawable.ic_copy
         CodeAction.SHARE -> R.drawable.ic_share
-        else -> R.drawable.ic_check
     }
 
     @StringRes

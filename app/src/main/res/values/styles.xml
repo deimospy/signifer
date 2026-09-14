@@ -9,7 +9,7 @@
         <item name="backgroundTint">#66000000</item>
         <item name="iconTint">@color/signum_bone</item>
         <item name="iconSize">24dp</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Module</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Pill</item>
     </style>
 
     <style name="Widget.Signifer.SettingsRow" parent="Widget.Material3.Button.TextButton.Icon">
@@ -42,9 +42,35 @@
         <item name="android:background">?attr/colorOutlineVariant</item>
     </style>
 
-    <style name="ShapeAppearance.Signifer.Module" parent="">
+    <style name="ShapeAppearance.Signifer.Pill" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">8dp</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearance.Signifer.Field" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="Widget.Signifer.TextField" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Field</item>
+    </style>
+
+    <style name="Widget.Signifer.TextField.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Field</item>
+    </style>
+
+    <style name="Widget.Signifer.SearchField" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Pill</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="Widget.Signifer.Chip" parent="Widget.Material3.Chip.Assist">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Pill</item>
+    </style>
+
+    <style name="Widget.Signifer.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Field</item>
     </style>
 
 </resources>
