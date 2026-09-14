@@ -39,6 +39,7 @@ arquitectura. Cifras en KB.
 | Paleta de la marca y hojas con cierre visible | 2646 | 2568 | 2700 | 2679 |
 | Formas de píldora e iconos Lucide | 2656 | 2578 | 2711 | 2689 |
 | Licencias completas y comentarios esenciales | 2661 | 2583 | 2715 | 2694 |
+| Descripción nueva y enlace a GitHub | 2662 | 2584 | 2716 | 2695 |
 
 ## Lo que descarga un teléfono desde la tienda
 

@@ -67,9 +67,16 @@
                 android:orientation="vertical" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/licenses"
+                android:id="@+id/github"
                 style="@style/Widget.Signifer.SettingsRow"
                 android:layout_marginTop="8dp"
+                android:text="@string/about_github"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:icon="@drawable/ic_open" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/licenses"
+                style="@style/Widget.Signifer.SettingsRow"
                 android:text="@string/about_licenses"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 app:icon="@drawable/ic_document" />

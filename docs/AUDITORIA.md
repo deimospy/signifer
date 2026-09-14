@@ -13,7 +13,7 @@ minificado y las bibliotecas nativas.
 
 ## Resultado
 
-Sobre `app-arm64-v8a-release-unsigned.apk`, 2661 KB.
+Sobre `app-arm64-v8a-release-unsigned.apk`, 2662 KB.
 
 **Permisos declarados en el binario: dos.**
 

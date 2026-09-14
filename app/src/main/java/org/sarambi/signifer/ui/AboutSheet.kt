@@ -1,5 +1,7 @@
 package org.sarambi.signifer.ui
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.sarambi.signifer.R
@@ -44,6 +48,7 @@ class AboutSheet : BottomSheetDialogFragment() {
             views.facts.addView(row(views.facts, fact.title, fact.body, fact.icon))
         }
 
+        views.github.setOnClickListener { openGitHub() }
         views.licenses.setOnClickListener { showLicenses() }
     }
 
@@ -70,6 +75,16 @@ class AboutSheet : BottomSheetDialogFragment() {
     }
 
     /** Las licencias del software que la aplicacion enlaza. */
+    /** Lo abre el navegador o la aplicacion de GitHub; la app no necesita permiso de red. */
+    private fun openGitHub() {
+        val intent = Intent(Intent.ACTION_VIEW, getString(R.string.about_github_url).toUri())
+        try {
+            startActivity(intent)
+        } catch (_: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), R.string.action_no_handler, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun showLicenses() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.about_licenses)
