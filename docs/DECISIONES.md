@@ -76,6 +76,12 @@ Ahora el fotograma se recorta al marco, con un margen para la zona tranquila
 de un código que lo llena, y decodificar cuesta la mitad. El marco ocupa el
 84 % del ancho en vertical para que quepan los códigos largos.
 
+**Al leer, las esquinas del marco se posan sobre el código leído.** Con cinco
+códigos dentro del marco no se sabía cuál se había leído. No hace falta un
+detector de objetos como YOLO, que sumaría megas y milisegundos por fotograma:
+el decodificador ya devuelve las cuatro esquinas del código. La animación dura
+180 ms, solo ocurre al leer y el resultado se abre cuando las esquinas se posan.
+
 **El permiso `VIBRATE` se declara.** No estaba previsto. Es un permiso normal
 —el sistema lo concede sin preguntar y no da acceso a ningún dato— y sin él la
 aplicación se cerraba al confirmar una lectura. Aparece en la

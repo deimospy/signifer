@@ -42,6 +42,7 @@ arquitectura. Cifras en KB.
 | Descripción nueva y enlace a GitHub | 2662 | 2584 | 2716 | 2695 |
 | Etiquetas finas, zoom y enfoque al tocar | 2667 | 2589 | 2721 | 2700 |
 | Lectura dentro del marco | 2669 | 2591 | 2723 | 2702 |
+| Esquinas posadas sobre el código leído | 2671 | 2593 | 2725 | 2704 |
 
 ## Lo que descarga un teléfono desde la tienda
 

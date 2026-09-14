@@ -1,5 +1,8 @@
 package org.sarambi.signifer.ui
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -7,9 +10,12 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.PathInterpolator
 import androidx.core.content.ContextCompat
 import org.sarambi.signifer.R
 import org.sarambi.signifer.camera.ScanArea
+import org.sarambi.signifer.camera.orderLike
+import kotlin.math.hypot
 
 /** El marco de lectura sobre la vista previa. */
 class ScanFrameView @JvmOverloads constructor(
@@ -31,6 +37,14 @@ class ScanFrameView @JvmOverloads constructor(
     private val window = RectF()
     private val cutout = Path()
     private val corners = Path()
+
+    /** Las esquinas del marco y las del codigo leido, en el sentido de las agujas del reloj. */
+    private val home = FloatArray(8)
+    private val target = FloatArray(8)
+    private val lockPath = Path()
+    private var lock: ValueAnimator? = null
+    private var locked = false
+    private var arm = 0f
 
     /** Lo que se lee: el marco y un margen alrededor. */
     var scanArea: ScanArea? = null
@@ -72,7 +86,9 @@ class ScanFrameView @JvmOverloads constructor(
         val r = window.right - inset
         val b = window.bottom - inset
         val curve = (radius - inset).coerceAtLeast(0f)
-        val arm = side * ARM_FRACTION
+        arm = side * ARM_FRACTION
+        floatArrayOf(l, t, r, t, r, b, l, b).copyInto(home)
+        release()
 
         corners.reset()
         corners.moveTo(l, t + arm)
@@ -99,7 +115,72 @@ class ScanFrameView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawPath(cutout, scrim)
-        canvas.drawPath(corners, corner)
+        canvas.drawPath(if (locked) lockPath else corners, corner)
+    }
+
+    /** Las esquinas viajan hasta el codigo leido; [onLanded] llega cuando se posan. */
+    fun lockOn(outline: FloatArray, onLanded: () -> Unit) {
+        release()
+        val points = FloatArray(8) { outline[it] * if (it % 2 == 0) width else height }
+        orderLike(home, points).copyInto(target)
+        locked = true
+        buildLock(0f)
+        val animator = ValueAnimator.ofFloat(0f, 1f).setDuration(LOCK_MILLIS)
+        animator.interpolator = PathInterpolator(0.23f, 1f, 0.32f, 1f)
+        animator.addUpdateListener {
+            buildLock(it.animatedValue as Float)
+            invalidate()
+        }
+        animator.addListener(object : AnimatorListenerAdapter() {
+            private var cancelled = false
+
+            override fun onAnimationCancel(animation: Animator) {
+                cancelled = true
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                if (!cancelled) onLanded()
+            }
+        })
+        lock = animator
+        animator.start()
+    }
+
+    /** Vuelve al marco. */
+    fun release() {
+        lock?.cancel()
+        lock = null
+        if (locked) {
+            locked = false
+            invalidate()
+        }
+    }
+
+    override fun onDetachedFromWindow() {
+        release()
+        super.onDetachedFromWindow()
+    }
+
+    private fun buildLock(progress: Float) {
+        val points = FloatArray(8) { home[it] + (target[it] - home[it]) * progress }
+        lockPath.reset()
+        for (i in 0 until 4) {
+            val x = points[i * 2]
+            val y = points[i * 2 + 1]
+            val previous = (i + 3) % 4
+            val next = (i + 1) % 4
+            lockPath.moveTo(towards(x, points[previous * 2], y, points[previous * 2 + 1], true), towards(x, points[previous * 2], y, points[previous * 2 + 1], false))
+            lockPath.lineTo(x, y)
+            lockPath.lineTo(towards(x, points[next * 2], y, points[next * 2 + 1], true), towards(x, points[next * 2], y, points[next * 2 + 1], false))
+        }
+    }
+
+    /** Un punto sobre el lado hacia otra esquina: el brazo o un tercio del lado, lo que sea menor. */
+    private fun towards(x: Float, toX: Float, y: Float, toY: Float, horizontal: Boolean): Float {
+        val length = hypot(toX - x, toY - y)
+        if (length == 0f) return if (horizontal) x else y
+        val reach = minOf(arm, length / 3f) / length
+        return if (horizontal) x + (toX - x) * reach else y + (toY - y) * reach
     }
 
     private companion object {
@@ -114,5 +195,6 @@ class ScanFrameView @JvmOverloads constructor(
         const val RADIUS_FRACTION = 0.077f
         const val STROKE_FRACTION = 0.026f
         const val ARM_FRACTION = 0.146f
+        const val LOCK_MILLIS = 180L
     }
 }

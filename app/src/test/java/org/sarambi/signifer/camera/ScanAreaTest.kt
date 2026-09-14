@@ -1,5 +1,6 @@
 package org.sarambi.signifer.camera
 
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -43,6 +44,31 @@ class ScanAreaTest {
             assertEquals("giro $rotation", 1280, box.left + box.right)
             assertEquals("giro $rotation", 720, box.top + box.bottom)
         }
+    }
+
+    @Test
+    fun lasEsquinasDelRecorteDerechoCaenDentroDeLaZona() {
+        val area = ScanArea(0.1f, 0.2f, 0.9f, 0.6f)
+        val outline = area.locate(listOf(0 to 0, 400 to 100), 400, 200)
+        assertEquals(0.1f, outline[0], 1e-6f)
+        assertEquals(0.2f, outline[1], 1e-6f)
+        assertEquals(0.9f, outline[2], 1e-6f)
+        assertEquals(0.4f, outline[3], 1e-6f)
+    }
+
+    @Test
+    fun unCodigoBocaAbajoNoGiraElMarco() {
+        val frame = floatArrayOf(0f, 0f, 100f, 0f, 100f, 100f, 0f, 100f)
+        // Leido boca abajo: su esquina superior izquierda esta abajo a la derecha.
+        val upsideDown = floatArrayOf(60f, 60f, 40f, 60f, 40f, 40f, 60f, 40f)
+        assertArrayEquals(floatArrayOf(40f, 40f, 60f, 40f, 60f, 60f, 40f, 60f), orderLike(frame, upsideDown), 1e-6f)
+    }
+
+    @Test
+    fun unCodigoEspejadoConservaElSentido() {
+        val frame = floatArrayOf(0f, 0f, 100f, 0f, 100f, 100f, 0f, 100f)
+        val mirrored = floatArrayOf(40f, 40f, 40f, 60f, 60f, 60f, 60f, 40f)
+        assertArrayEquals(floatArrayOf(40f, 40f, 60f, 40f, 60f, 60f, 40f, 60f), orderLike(frame, mirrored), 1e-6f)
     }
 
     @Test

@@ -28,7 +28,8 @@ import org.sarambi.signifer.decode.ScanDebouncer
 class CameraSession(
     private val context: Context,
     private val scanner: CodeScanner,
-    private val onCode: (DecodedCode) -> Unit,
+    /** La lectura y, si se leyo dentro del marco, sus esquinas en fracciones de la vista previa. */
+    private val onCode: (DecodedCode, FloatArray?) -> Unit,
 ) {
     /** Cuanto cuesta cada fotograma. */
     val metrics = DecodeMetrics()
@@ -136,10 +137,11 @@ class CameraSession(
     }
 
     private fun analyze(image: ImageProxy) {
-        val area = scanArea
-        if (area != null && matchesPreview) {
+        val area = scanArea?.takeIf { matchesPreview }
+        val rotation = image.imageInfo.rotationDegrees
+        if (area != null) {
             val visible = image.cropRect
-            val box = area.toBuffer(PixelRect(visible.left, visible.top, visible.right, visible.bottom), image.imageInfo.rotationDegrees)
+            val box = area.toBuffer(PixelRect(visible.left, visible.top, visible.right, visible.bottom), rotation)
             image.setCropRect(Rect(box.left, box.top, box.right, box.bottom))
         }
         val codes = scanner.decode(image)
@@ -148,6 +150,18 @@ class CameraSession(
 
         val code = codes.first()
         if (!debouncer.accept(code.text, System.currentTimeMillis())) return
+        // Las esquinas llegan en pixeles del recorte ya girado a derechas.
+        val crop = image.cropRect
+        val sideways = rotation % 180 != 0
+        val outline = if (area == null || code.corners.size != 4) {
+            null
+        } else {
+            area.locate(
+                code.corners.map { it.x to it.y },
+                if (sideways) crop.height() else crop.width(),
+                if (sideways) crop.width() else crop.height(),
+            )
+        }
 
         if (firstCodeMillis == 0L) {
             firstCodeMillis = (System.nanoTime() - startedAt) / 1_000_000
@@ -156,7 +170,7 @@ class CameraSession(
         // resultado encima de otra pestana.
         val posted = generation
         ContextCompat.getMainExecutor(context).execute {
-            if (posted == generation) onCode(code)
+            if (posted == generation) onCode(code, outline)
         }
     }
 

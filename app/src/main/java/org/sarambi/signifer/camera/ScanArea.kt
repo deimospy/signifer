@@ -21,6 +21,19 @@ data class ScanArea(val left: Float, val top: Float, val right: Float, val botto
     }
 
     /**
+     * Las esquinas de un codigo leido, en fracciones de la vista previa: [x0, y0, x1, y1, ...].
+     * [points] llega en pixeles del recorte ya derecho, que mide [width] por [height].
+     */
+    fun locate(points: List<Pair<Int, Int>>, width: Int, height: Int): FloatArray {
+        val out = FloatArray(points.size * 2)
+        points.forEachIndexed { index, (x, y) ->
+            out[index * 2] = left + (right - left) * x / width
+            out[index * 2 + 1] = top + (bottom - top) * y / height
+        }
+        return out
+    }
+
+    /**
      * La zona en pixeles del fotograma. [visible] es la parte del fotograma que muestra la vista
      * previa y [rotationDegrees] el giro en sentido horario que lo pone derecho.
      */
@@ -40,4 +53,38 @@ data class ScanArea(val left: Float, val top: Float, val right: Float, val botto
             visible.top + (box[3] * height).roundToInt(),
         )
     }
+}
+
+/**
+ * Reordena un cuadrilatero [points] para que cada esquina quede frente a la de [reference] mas
+ * cercana, sin cruzarse: un codigo leido boca abajo no hace girar el marco al posarse.
+ */
+fun orderLike(reference: FloatArray, points: FloatArray): FloatArray {
+    val clockwise = shoelace(points) * shoelace(reference) >= 0f
+    val ordered = if (clockwise) points else FloatArray(8) { points[(if (it % 2 == 0) 6 - it else 8 - it)] }
+    var best = ordered
+    var bestDistance = Float.MAX_VALUE
+    for (shift in 0 until 4) {
+        val candidate = FloatArray(8) { ordered[(it + shift * 2) % 8] }
+        var distance = 0f
+        for (i in 0 until 4) {
+            val dx = candidate[i * 2] - reference[i * 2]
+            val dy = candidate[i * 2 + 1] - reference[i * 2 + 1]
+            distance += dx * dx + dy * dy
+        }
+        if (distance < bestDistance) {
+            bestDistance = distance
+            best = candidate
+        }
+    }
+    return best
+}
+
+private fun shoelace(points: FloatArray): Float {
+    var sum = 0f
+    for (i in 0 until 4) {
+        val j = (i + 1) % 4
+        sum += points[i * 2] * points[j * 2 + 1] - points[j * 2] * points[i * 2 + 1]
+    }
+    return sum
 }

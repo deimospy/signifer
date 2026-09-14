@@ -133,6 +133,7 @@ class ScanFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         paintTorch(false)
+        binding?.frame?.release()
         session?.stop()
         session = null
     }
@@ -142,6 +143,7 @@ class ScanFragment : Fragment() {
         super.onHiddenChanged(hidden)
         if (hidden) {
             paintTorch(false)
+            binding?.frame?.release()
             session?.stop()
             session = null
         } else if (isResumed && hasCameraPermission()) {
@@ -173,6 +175,7 @@ class ScanFragment : Fragment() {
 
     /** Vuelve a analizar. */
     fun resumeScanning() {
+        binding?.frame?.release()
         session?.resumeAnalysis()
     }
 
@@ -269,9 +272,15 @@ class ScanFragment : Fragment() {
             context.contentResolver.openInputStream(uri).use { BitmapFactory.decodeStream(it, null, options) }
         }.getOrNull()
 
-    private fun onCodeRead(code: DecodedCode) {
+    /** Con varios codigos a la vista, las esquinas del marco se posan sobre el que se leyo. */
+    private fun onCodeRead(code: DecodedCode, outline: FloatArray? = null) {
         session?.pauseAnalysis()
-        (activity as? CodeSink)?.onCodeRead(code)
+        val frame = binding?.frame
+        if (outline == null || frame == null) {
+            (activity as? CodeSink)?.onCodeRead(code)
+        } else {
+            frame.lockOn(outline) { (activity as? CodeSink)?.onCodeRead(code) }
+        }
     }
 
     /** Quien recibe una lectura. */
