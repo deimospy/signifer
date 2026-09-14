@@ -1,202 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/content"
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/sheet_top_bar" />
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="32dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_title"
-            android:textAppearance="?attr/textAppearanceHeadlineSmall" />
-
-        <TextView
-            style="@style/Widget.Signifer.SettingsSection"
-            android:text="@string/settings_section_reading" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/vibrate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="@string/settings_vibrate" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/beep"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="@string/settings_beep" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/try_invert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="@string/settings_try_invert" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_try_invert_note"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/try_harder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="@string/settings_try_harder" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_try_harder_note"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/formats_toggle"
-            style="@style/Widget.Signifer.SettingsRow"
-            android:layout_marginTop="8dp"
-            app:icon="@drawable/ic_filter" />
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/formats_panel"
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:paddingHorizontal="24dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_title"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall" />
+
+            <TextView
+                style="@style/Widget.Signifer.SettingsSection"
+                android:text="@string/settings_section_reading" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/vibrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/settings_vibrate" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/beep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/settings_beep" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/try_invert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/settings_try_invert" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_formats_note"
+                android:text="@string/settings_try_invert_note"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 android:textColor="?attr/colorOnSurfaceVariant" />
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/presets"
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/try_harder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:selectionRequired="false"
-                app:singleSelection="true">
+                android:minHeight="48dp"
+                android:text="@string/settings_try_harder" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/preset_all"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/settings_preset_all" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_try_harder_note"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/preset_matrix"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/settings_preset_matrix" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/preset_qr"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/settings_preset_qr" />
-
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/formats_toggle"
+                style="@style/Widget.Signifer.SettingsRow"
+                android:layout_marginTop="8dp"
+                app:icon="@drawable/ic_filter" />
 
             <LinearLayout
-                android:id="@+id/formats"
+                android:id="@+id/formats_panel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_formats_note"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/presets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:selectionRequired="false"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/preset_all"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_preset_all" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/preset_matrix"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_preset_matrix" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/preset_qr"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_preset_qr" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <LinearLayout
+                    android:id="@+id/formats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+
+            <View style="@style/Widget.Signifer.SettingsDivider" />
+
+            <TextView
+                style="@style/Widget.Signifer.SettingsSection"
+                android:layout_marginTop="0dp"
+                android:text="@string/settings_section_history" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/save_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/settings_save_history" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/save_sensitive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/settings_save_sensitive" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_save_sensitive_note"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/retention"
+                style="@style/Widget.Signifer.SettingsRow"
                 android:layout_marginTop="8dp"
-                android:orientation="vertical" />
+                app:icon="@drawable/ic_history" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/retention_note"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/export_backup"
+                style="@style/Widget.Signifer.SettingsRow"
+                android:text="@string/history_export"
+                app:icon="@drawable/ic_download" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/import_backup"
+                style="@style/Widget.Signifer.SettingsRow"
+                android:text="@string/history_import"
+                app:icon="@drawable/ic_open" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clear_history"
+                style="@style/Widget.Signifer.SettingsRow"
+                android:text="@string/history_clear"
+                app:icon="@drawable/ic_delete" />
+
+            <View style="@style/Widget.Signifer.SettingsDivider" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/about"
+                style="@style/Widget.Signifer.SettingsRow"
+                android:text="@string/about_title"
+                app:icon="@drawable/ic_signum" />
 
         </LinearLayout>
 
-        <View style="@style/Widget.Signifer.SettingsDivider" />
+    </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            style="@style/Widget.Signifer.SettingsSection"
-            android:layout_marginTop="0dp"
-            android:text="@string/settings_section_history" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/save_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="@string/settings_save_history" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/save_sensitive"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:text="@string/settings_save_sensitive" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_save_sensitive_note"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/retention"
-            style="@style/Widget.Signifer.SettingsRow"
-            android:layout_marginTop="8dp"
-            app:icon="@drawable/ic_history" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginBottom="4dp"
-            android:text="@string/retention_note"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/export_backup"
-            style="@style/Widget.Signifer.SettingsRow"
-            android:text="@string/history_export"
-            app:icon="@drawable/ic_download" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/import_backup"
-            style="@style/Widget.Signifer.SettingsRow"
-            android:text="@string/history_import"
-            app:icon="@drawable/ic_open" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/clear_history"
-            style="@style/Widget.Signifer.SettingsRow"
-            android:text="@string/history_clear"
-            app:icon="@drawable/ic_delete" />
-
-        <View style="@style/Widget.Signifer.SettingsDivider" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/about"
-            style="@style/Widget.Signifer.SettingsRow"
-            android:text="@string/about_title"
-            app:icon="@drawable/ic_signum" />
-
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -26,6 +26,11 @@
         <item name="colorOnSurfaceVariant">@color/light_on_surface_variant</item>
         <item name="colorSurfaceContainer">@color/light_surface_container</item>
         <item name="colorSurfaceContainerHigh">@color/light_surface_container_high</item>
+        <item name="colorSurfaceContainerLowest">@color/light_surface_container_lowest</item>
+        <item name="colorSurfaceContainerLow">@color/light_surface_container_low</item>
+        <item name="colorSurfaceContainerHighest">@color/light_surface_container_highest</item>
+        <item name="colorSurfaceBright">@color/light_surface_bright</item>
+        <item name="colorSurfaceDim">@color/light_surface_dim</item>
         <item name="colorOutline">@color/light_outline</item>
         <item name="colorOutlineVariant">@color/light_outline_variant</item>
         <item name="colorSurfaceInverse">@color/light_inverse_surface</item>

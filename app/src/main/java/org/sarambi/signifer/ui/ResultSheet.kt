@@ -62,6 +62,7 @@ class ResultSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         val views = binding ?: return
 
         val raw = requireArguments().getString(ARGUMENT_TEXT).orEmpty()

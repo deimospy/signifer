@@ -61,6 +61,7 @@ class SettingsSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         preferences = ScanPreferences(requireContext())
         val views = binding ?: return
 

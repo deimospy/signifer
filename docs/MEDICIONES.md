@@ -36,6 +36,7 @@ arquitectura. Cifras en KB.
 | Escrituras de todo el mundo y límites de entrada | 2637 | 2559 | 2691 | 2670 |
 | Panel único de ajustes | 2639 | 2561 | 2693 | 2672 |
 | El estandarte como marca | 2643 | 2565 | 2697 | 2675 |
+| Paleta de la marca y hojas con cierre visible | 2646 | 2568 | 2700 | 2679 |
 
 ## Lo que descarga un teléfono desde la tienda
 

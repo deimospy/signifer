@@ -54,7 +54,7 @@ está esperando.
 
 ## 5. Idiomas
 
-**Cerrada en tres: español, inglés y portugués.** Las 218 cadenas traducibles
+**Cerrada en tres: español, inglés y portugués.** Las 219 cadenas traducibles
 están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
 estático falla la compilación si falta una traducción. El paquete solo incluye
 esos tres, así que ninguna dependencia cuela los suyos.
@@ -103,6 +103,19 @@ el icono adaptativo, los mapas de bits del lanzador y el icono de la tienda.
 Los módulos de la S son huecos, no cuadrados pintados: sobre el tema claro el
 estandarte es carmesí `#8C1D2C` y la S deja ver el blanco del fondo; sobre el
 oscuro, el estandarte pasa a hueso.
+
+**La paleta es la de la marca en todos los teléfonos.** Material 3 ofrece
+tomar los colores del fondo de pantalla, y con eso la aplicación salía en
+azules o verdes según el aparato, lejos del carmesí del estandarte. La paleta
+es propia: carmesí para lo principal, bronce para lo secundario y superficies
+hueso cálido, con cada par de texto y fondo por encima del contraste AA en el
+tema claro y en el oscuro. Los colores de riesgo siguen aparte y siempre van
+con icono y texto, porque el rojo de peligro y el carmesí de la marca se
+parecen demasiado para confiar solo en el color.
+
+**Toda hoja inferior se puede cerrar a la vista.** Arrastrarla hacia abajo o
+tocar fuera funciona, pero no se descubre solo. Cada hoja lleva el asa que el
+sistema reconoce y un botón de cerrar fijo arriba, que no se va al desplazar.
 
 **Los ajustes son un solo panel.** La lectura se ajustaba desde la cámara y el
 historial desde un menú propio, y encontrar una opción era adivinar en cuál de

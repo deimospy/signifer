@@ -79,7 +79,7 @@ class ScanFragment : Fragment() {
             if (on) bone else TORCH_OFF_BACKGROUND,
         )
         views.torch.iconTint = android.content.res.ColorStateList.valueOf(
-            if (on) ContextCompat.getColor(requireContext(), R.color.light_primary) else bone,
+            if (on) ContextCompat.getColor(requireContext(), R.color.signum_crimson) else bone,
         )
     }
 

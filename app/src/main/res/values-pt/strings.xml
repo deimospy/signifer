@@ -22,6 +22,7 @@
     <string name="settings_section_history">Histórico</string>
     <string name="settings_formats_summary">Formatos lidos: %1$d de %2$d</string>
     <string name="settings_retention_value">Por quanto tempo se guarda: %1$s</string>
+    <string name="action_close">Fechar</string>
     <string name="settings_title">Ajustes</string>
     <string name="settings_formats_note">Quanto menos formatos procurar, mais rápido lê. Se você só escaneia QR, desligue o resto.</string>
     <string name="settings_try_harder">Insistir mais em cada tentativa</string>

@@ -26,6 +26,11 @@
         <item name="colorOnSurfaceVariant">@color/dark_on_surface_variant</item>
         <item name="colorSurfaceContainer">@color/dark_surface_container</item>
         <item name="colorSurfaceContainerHigh">@color/dark_surface_container_high</item>
+        <item name="colorSurfaceContainerLowest">@color/dark_surface_container_lowest</item>
+        <item name="colorSurfaceContainerLow">@color/dark_surface_container_low</item>
+        <item name="colorSurfaceContainerHighest">@color/dark_surface_container_highest</item>
+        <item name="colorSurfaceBright">@color/dark_surface_bright</item>
+        <item name="colorSurfaceDim">@color/dark_surface_dim</item>
         <item name="colorOutline">@color/dark_outline</item>
         <item name="colorOutlineVariant">@color/dark_outline_variant</item>
         <item name="colorSurfaceInverse">@color/dark_inverse_surface</item>
