@@ -40,6 +40,7 @@ arquitectura. Cifras en KB.
 | Formas de píldora e iconos Lucide | 2656 | 2578 | 2711 | 2689 |
 | Licencias completas y comentarios esenciales | 2661 | 2583 | 2715 | 2694 |
 | Descripción nueva y enlace a GitHub | 2662 | 2584 | 2716 | 2695 |
+| Etiquetas finas, zoom y enfoque al tocar | 2667 | 2589 | 2721 | 2700 |
 
 ## Lo que descarga un teléfono desde la tienda
 

@@ -1,11 +1,15 @@
 package org.sarambi.signifer.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
@@ -68,7 +72,49 @@ class ScanFragment : Fragment() {
         views.permissionGrant.setOnClickListener {
             requestCamera.launch(Manifest.permission.CAMERA)
         }
+        attachGestures(views)
     }
+
+    /** Pellizcar acerca, doble toque alterna entre 1x y 2x, un toque enfoca. */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun attachGestures(views: FragmentScanBinding) {
+        val context = requireContext()
+        val pinch = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                session?.zoomBy(detector.scaleFactor)?.let(::showZoom)
+                return true
+            }
+        })
+        val taps = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDown(event: MotionEvent): Boolean = true
+
+            override fun onSingleTapConfirmed(event: MotionEvent): Boolean {
+                session?.focusAt(views.preview.meteringPointFactory.createPoint(event.x, event.y))
+                return true
+            }
+
+            override fun onDoubleTap(event: MotionEvent): Boolean {
+                session?.toggleZoom()?.let(::showZoom)
+                return true
+            }
+        })
+        views.preview.setOnTouchListener { view, event ->
+            pinch.onTouchEvent(event)
+            if (!pinch.isInProgress) taps.onTouchEvent(event)
+            if (event.actionMasked == MotionEvent.ACTION_UP) view.performClick()
+            true
+        }
+    }
+
+    /** El nivel de zoom aparece un momento en el rotulo de ayuda. */
+    private fun showZoom(ratio: Float) {
+        val hint = binding?.hint ?: return
+        hint.removeCallbacks(restoreHint)
+        hint.text = getString(R.string.scan_zoom, ratio)
+        hint.postDelayed(restoreHint, ZOOM_LABEL_MILLIS)
+    }
+
+    private val restoreHint = Runnable { binding?.hint?.setText(R.string.scan_hint) }
 
     /** La linterna se ve encendida solo si lo esta. */
     private fun paintTorch(on: Boolean) {
@@ -110,6 +156,7 @@ class ScanFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding?.hint?.removeCallbacks(restoreHint)
         binding = null
     }
 
@@ -235,6 +282,7 @@ class ScanFragment : Fragment() {
 
     private companion object {
         const val TORCH_OFF_BACKGROUND = 0x66000000
+        const val ZOOM_LABEL_MILLIS = 1_200L
 
         /** Lado maximo al que se carga una imagen para buscarle codigos. */
         const val MAX_IMAGE_SIDE = 2048

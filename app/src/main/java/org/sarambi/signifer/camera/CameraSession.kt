@@ -3,7 +3,9 @@ package org.sarambi.signifer.camera
 import android.content.Context
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.MeteringPoint
 import androidx.camera.core.Preview
 import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
@@ -13,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import org.sarambi.signifer.decode.CodeScanner
 import org.sarambi.signifer.decode.DecodeMetrics
 import org.sarambi.signifer.decode.DecodedCode
@@ -50,6 +53,9 @@ class CameraSession(
 
     var torchOn: Boolean = false
         private set
+
+    /** El estado de zoom de la camara llega con retraso; durante un pellizco manda el pedido. */
+    private var zoomRatio = 1f
 
     /** Enlaza la camara al ciclo de vida. */
     fun start(owner: LifecycleOwner, preview: PreviewView, onFailure: (Throwable) -> Unit) {
@@ -113,6 +119,7 @@ class CameraSession(
             analysis,
         )
         torchOn = false
+        zoomRatio = 1f
     }
 
     private fun analyze(image: androidx.camera.core.ImageProxy) {
@@ -153,9 +160,26 @@ class CameraSession(
         return torchOn
     }
 
-    /** Zoom lineal, de 0 a 1. */
-    fun setZoom(ratio: Float) {
-        camera?.cameraControl?.setLinearZoom(ratio.coerceIn(0f, 1f))
+    /** Multiplica el zoom actual dentro de lo que admite la camara; devuelve el nuevo. */
+    fun zoomBy(factor: Float): Float? = zoomTo(zoomRatio * factor)
+
+    /** Alterna entre sin zoom y el doble; devuelve el nuevo. */
+    fun toggleZoom(): Float? = zoomTo(if (zoomRatio < TOGGLE_ZOOM - 0.5f) TOGGLE_ZOOM else 1f)
+
+    private fun zoomTo(target: Float): Float? {
+        val current = camera ?: return null
+        val state = current.cameraInfo.zoomState.value ?: return null
+        zoomRatio = target.coerceIn(state.minZoomRatio, state.maxZoomRatio)
+        current.cameraControl.setZoomRatio(zoomRatio)
+        return zoomRatio
+    }
+
+    /** Enfoca y mide la luz en un punto de la vista previa. */
+    fun focusAt(point: MeteringPoint) {
+        val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF or FocusMeteringAction.FLAG_AE)
+            .setAutoCancelDuration(FOCUS_SECONDS, TimeUnit.SECONDS)
+            .build()
+        camera?.cameraControl?.startFocusAndMetering(action)
     }
 
     /** Suelta la camara y el hilo de analisis. */
@@ -166,6 +190,7 @@ class CameraSession(
         provider = null
         camera = null
         torchOn = false
+        zoomRatio = 1f
         analyzing = true
         debouncer.reset()
         executor?.shutdown()
@@ -187,5 +212,7 @@ class CameraSession(
         /** Resolucion del analisis. */
         const val ANALYSIS_WIDTH = 1280
         const val ANALYSIS_HEIGHT = 720
+        const val TOGGLE_ZOOM = 2f
+        const val FOCUS_SECONDS = 3L
     }
 }

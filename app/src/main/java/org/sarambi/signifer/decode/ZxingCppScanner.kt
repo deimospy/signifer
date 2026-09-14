@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.graphics.Rect
+import androidx.annotation.VisibleForTesting
 import androidx.camera.core.ImageProxy
 import androidx.core.graphics.createBitmap
 import zxingcpp.BarcodeReader
@@ -15,6 +16,10 @@ class ZxingCppScanner(initialOptions: ScanOptions = ScanOptions.LIVE) : CodeScan
 
     /** Las opciones se cambian desde la interfaz mientras la camara decodifica en su hebra. */
     private val lock = Any()
+
+    private var libraryFormats: Set<BarcodeReader.Format> = emptySet()
+    private var linearFormats: Set<BarcodeReader.Format> = emptySet()
+    private var frames = 0L
 
     override var options: ScanOptions = initialOptions
         set(value) {
@@ -32,7 +37,25 @@ class ZxingCppScanner(initialOptions: ScanOptions = ScanOptions.LIVE) : CodeScan
     }
 
     override fun decode(image: ImageProxy): List<DecodedCode> = synchronized(lock) {
+        useFrameOptions(thorough = frames++ % 2 == 1L)
         runCatching { reader.read(image).map { it.toDecodedCode() } }.getOrDefault(emptyList())
+    }
+
+    /** Un fotograma de camara ya convertido, para medir los dos tipos de fotograma. */
+    @VisibleForTesting
+    fun decodeFrame(bitmap: Bitmap, thorough: Boolean): List<DecodedCode> = synchronized(lock) {
+        useFrameOptions(thorough)
+        runCatching { reader.read(bitmap, Rect(), 0).map { it.toDecodedCode() } }.getOrDefault(emptyList())
+    }
+
+    /**
+     * Un fotograma de cada dos revisa todas las filas buscando solo lineales: una etiqueta fina cae
+     * entre las filas del modo rapido, y los matriciales ya se leen en el.
+     */
+    private fun useFrameOptions(thorough: Boolean) {
+        val linearOnly = thorough && !options.tryHarder && linearFormats.isNotEmpty()
+        reader.options.tryHarder = options.tryHarder || linearOnly
+        reader.options.formats = if (linearOnly) linearFormats else libraryFormats
     }
 
     override fun decode(bitmap: Bitmap, rotationDegrees: Int): List<DecodedCode> = synchronized(lock) {
@@ -47,12 +70,16 @@ class ZxingCppScanner(initialOptions: ScanOptions = ScanOptions.LIVE) : CodeScan
     }
 
     private fun read(bitmap: Bitmap, rotationDegrees: Int): List<DecodedCode> = runCatching {
+        reader.options.tryHarder = options.tryHarder
+        reader.options.formats = libraryFormats
         reader.read(bitmap, Rect(), rotationDegrees).map { it.toDecodedCode() }
     }.getOrDefault(emptyList())
 
     private fun apply(value: ScanOptions) {
+        libraryFormats = value.formats.mapNotNullTo(LinkedHashSet()) { it.toLibraryFormat() }
+        linearFormats = value.formats.filter { it.family != CodeFamily.MATRIX }.mapNotNullTo(LinkedHashSet()) { it.toLibraryFormat() }
         reader.options.apply {
-            formats = value.formats.mapNotNullTo(LinkedHashSet()) { it.toLibraryFormat() }
+            formats = libraryFormats
             tryHarder = value.tryHarder
             tryRotate = value.tryRotate
             tryInvert = value.tryInvert

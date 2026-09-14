@@ -9,6 +9,7 @@
     <string name="nav_history">Historial</string>
 
     <string name="scan_hint">Apuntar la cámara al código</string>
+    <string name="scan_zoom" translatable="false">%1$.1f×</string>
     <string name="scan_permission_title">Signifer necesita la cámara</string>
     <string name="scan_permission_body">Solo para leer códigos. Nada sale del teléfono: la aplicación no declara permiso de red, así que el sistema le impide abrir una conexión.</string>
     <string name="scan_permission_denied">Sin permiso de cámara no se puede leer en vivo. Se activa desde los ajustes del sistema. Mientras tanto, se puede leer desde una imagen.</string>

@@ -123,10 +123,10 @@ invertida, que solo se hace cuando el primero no encontró nada; con él se leen
 los 15. En vivo no se hace: la mayoría de fotogramas no contienen ningún código,
 y el segundo intento duplicaría el coste de cada uno de ellos.
 
-**`tryHarder` no compensa en vivo.** En una ejecución sin el segundo intento, la
-imagen fija acertó 177 frente a 176 —una sola imagen más, un UPC-E con ruido— y
-su mediana fue 4,75 ms frente a 1,25 ms. Se queda apagado de fábrica en la
-cámara y activo para imágenes, donde la persona ya espera.
+**`tryHarder` en todos los fotogramas no compensa en vivo.** En una ejecución
+sin el segundo intento, la imagen fija acertó 177 frente a 176 —una sola imagen
+más, un UPC-E con ruido— y su mediana fue 4,75 ms frente a 1,25 ms. El banco,
+sin embargo, no tiene etiquetas finas; la sección siguiente sí.
 
 **Lo que falla no es el ruido, es la resolución.** El desenfoque, el grano, el
 contraste bajo y hasta una esquina rota se leen enteros. Lo que no se lee es un
@@ -137,6 +137,49 @@ análisis de la cámara sea 1280×720 y no menos.
 **Un fotograma dura 33 ms a 30 por segundo.** Con el percentil 95 en vivo por
 debajo de 12 ms queda margen de sobra: la lectura no es lo que marca el ritmo
 de la vista previa.
+
+## Etiquetas finas
+
+Un número de serie de disco duro es un código de barras largo y de pocos
+milímetros de alto. El modo rápido de la biblioteca revisa unas pocas filas
+separadas entre sí, y una etiqueta así cabe entera entre dos de ellas: se lee
+si cae en el centro de la imagen y no se lee apenas se aparta.
+
+```
+adb logcat -c
+gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=org.sarambi.signifer.decode.ThinBarcodeTest
+adb logcat -d -s SigniferThin:I
+```
+
+La prueba dibuja 72 etiquetas en un fotograma de cámara: Code 128 y Code 39,
+tres largos, cuatro grosores, en el centro y a un tercio del borde.
+
+| Fotograma | Etiquetas leídas |
+|---|---|
+| Rápido | 48 de 72 — ninguna fina fuera del centro |
+| Completo, solo lineales | 64 de 72 |
+| Los dos alternados | 64 de 72 — las 8 que faltan son el Code 39 más corto, por debajo de dos píxeles por módulo |
+
+Por eso la cámara alterna: un fotograma rápido y uno que revisa todas las filas
+buscando solo códigos lineales. Los matriciales ya se leían igual en el modo
+rápido; con ellos, el fotograma completo sin código costaba 25,5 ms en una
+medición aparte.
+
+Coste por fotograma, medido en la misma prueba:
+
+| Imágenes | Rápido (mediana) | Completo (mediana) |
+|---|---|---|
+| Banco de 225, con código | 1,0 ms | 1,5 ms |
+| 40 sin código, con texto y recuadros | 7,5 ms | 15,0 ms |
+
+La cámara casi siempre mira algo sin código, así que esa es la fila que cuenta:
+alternando, el fotograma medio pasa de 7,5 a unos 11 ms, lejos de los 33 ms de
+un fotograma.
+
+Lo que la alternancia no arregla es la resolución: un código largo que cruza
+el visor de lado a lado, con el teléfono en vertical, dispone solo del lado
+corto del sensor, 720 píxeles. Para eso está el zoom: pellizcar acerca, un
+doble toque alterna entre 1× y 2× y un toque enfoca en ese punto.
 
 ## Arranque en frío
 
