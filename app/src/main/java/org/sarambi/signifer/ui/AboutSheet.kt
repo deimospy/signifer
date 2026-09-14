@@ -73,7 +73,7 @@ class AboutSheet : BottomSheetDialogFragment() {
     private fun showLicenses() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.about_licenses)
-            .setMessage(getString(R.string.about_licenses_body))
+            .setMessage(resources.openRawResource(R.raw.third_party_licenses).bufferedReader().use { it.readText() })
             .setPositiveButton(android.R.string.ok, null)
             .show()
     }

@@ -241,9 +241,7 @@
     <string name="about_author_name" translatable="false">Luis Roche</string>
     <string name="about_license">Licencia</string>
     <string name="about_license_name" translatable="false">Apache License 2.0</string>
-    <string name="about_licenses">Software de terceros</string>
-    <string name="about_licenses_body" translatable="false">zxing-cpp — Apache-2.0\nZXing Core — Apache-2.0\nAndroidX y CameraX — Apache-2.0\nMaterial Components — Apache-2.0\nKotlin y kotlinx.coroutines — Apache-2.0
-Iconos Lucide — ISC. © Lucide Contributors; partes © Cole Bemis (Feather, MIT)</string>
+    <string name="about_licenses">Licencias de código abierto</string>
 
     <string name="wifi_enterprise">De empresa, con usuario y contraseña</string>
     <string name="problem_lowercase">%1$s solo admite mayúsculas: las minúsculas casi ningún lector las entiende</string>

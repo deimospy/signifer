@@ -68,11 +68,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/licenses"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/about_licenses" />
+                style="@style/Widget.Signifer.SettingsRow"
+                android:layout_marginTop="8dp"
+                android:text="@string/about_licenses"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:icon="@drawable/ic_document" />
 
         </LinearLayout>
 

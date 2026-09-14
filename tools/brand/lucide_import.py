@@ -14,7 +14,7 @@ USED = [
     "scan-line", "qr-code", "history", "flashlight", "image", "settings", "copy",
     "share-2", "external-link", "folder-open", "star", "search", "trash-2", "check",
     "triangle-alert", "ban", "download", "barcode", "x", "wifi", "user-plus", "mail",
-    "phone", "message-square", "map-pin", "calendar-plus", "user", "scale",
+    "phone", "message-square", "map-pin", "calendar-plus", "user", "scale", "file-text",
 ]
 
 NODE = re.compile(r'\[\s*"(\w+)",\s*\{(.*?)\}\s*\]', re.S)

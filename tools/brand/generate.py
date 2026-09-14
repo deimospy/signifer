@@ -99,6 +99,7 @@ ICON_MAP = {
     "event": "calendar-plus",
     "author": "user",
     "license": "scale",
+    "document": "file-text",
 }
 
 

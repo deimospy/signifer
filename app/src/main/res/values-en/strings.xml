@@ -238,7 +238,7 @@
     <string name="about_no_storage_body">When you read from an image, you pick it yourself in the system picker and the app only receives that one.</string>
     <string name="about_author">Created by</string>
     <string name="about_license">Licence</string>
-    <string name="about_licenses">Third-party software</string>
+    <string name="about_licenses">Open source licenses</string>
 
     <string name="wifi_enterprise">Business, with username and password</string>
     <string name="problem_lowercase">%1$s only takes capital letters: almost no scanner understands lowercase</string>

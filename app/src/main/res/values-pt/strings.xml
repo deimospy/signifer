@@ -240,7 +240,7 @@
     <string name="about_no_storage_body">Quando você lê de uma imagem, escolhe você mesmo no seletor do sistema e o aplicativo recebe só aquela.</string>
     <string name="about_author">Criado por</string>
     <string name="about_license">Licença</string>
-    <string name="about_licenses">Software de terceiros</string>
+    <string name="about_licenses">Licenças de código aberto</string>
 
     <string name="wifi_enterprise">De empresa, com usuário e senha</string>
     <string name="problem_lowercase">%1$s só aceita maiúsculas: quase nenhum leitor entende minúsculas</string>
