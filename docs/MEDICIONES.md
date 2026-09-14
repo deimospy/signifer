@@ -43,6 +43,7 @@ arquitectura. Cifras en KB.
 | Etiquetas finas, zoom y enfoque al tocar | 2667 | 2589 | 2721 | 2700 |
 | Lectura dentro del marco | 2669 | 2591 | 2723 | 2702 |
 | Esquinas posadas sobre el código leído | 2671 | 2593 | 2725 | 2704 |
+| Relleno verde sobre el código leído | 2671 | 2594 | 2726 | 2704 |
 
 ## Lo que descarga un teléfono desde la tienda
 

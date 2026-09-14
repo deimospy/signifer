@@ -77,6 +77,9 @@
     <color name="dark_surface_container_lowest">#FF120D0C</color>
 
     <color name="risk_none">#FF2E6B4F</color>
+
+    <!-- Relleno del codigo leido sobre la camara; igual en los dos temas. -->
+    <color name="scan_highlight">#FF34C759</color>
     <color name="risk_none_container">#FFCDEEDA</color>
     <color name="risk_caution">#FF8A6A16</color>
     <color name="risk_caution_container">#FFFAECC4</color>

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.CornerPathEffect
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
@@ -12,9 +13,10 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.PathInterpolator
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.withScale
 import org.sarambi.signifer.R
 import org.sarambi.signifer.camera.ScanArea
-import org.sarambi.signifer.camera.orderLike
+import org.sarambi.signifer.camera.highlightOutline
 import kotlin.math.hypot
 
 /** El marco de lectura sobre la vista previa. */
@@ -38,13 +40,20 @@ class ScanFrameView @JvmOverloads constructor(
     private val cutout = Path()
     private val corners = Path()
 
-    /** Las esquinas del marco y las del codigo leido, en el sentido de las agujas del reloj. */
-    private val home = FloatArray(8)
-    private val target = FloatArray(8)
-    private val lockPath = Path()
+    private val highlightColor = ContextCompat.getColor(context, R.color.scan_highlight)
+    private val highlightFill = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val highlightStroke = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        strokeWidth = HIGHLIGHT_STROKE_DP * resources.displayMetrics.density
+    }
+    private val highlight = Path()
+    private var highlightCenterX = 0f
+    private var highlightCenterY = 0f
+    private var highlightProgress = 0f
+    private val entrance = PathInterpolator(0.23f, 1f, 0.32f, 1f)
     private var lock: ValueAnimator? = null
     private var locked = false
-    private var arm = 0f
 
     /** Lo que se lee: el marco y un margen alrededor. */
     var scanArea: ScanArea? = null
@@ -86,8 +95,7 @@ class ScanFrameView @JvmOverloads constructor(
         val r = window.right - inset
         val b = window.bottom - inset
         val curve = (radius - inset).coerceAtLeast(0f)
-        arm = side * ARM_FRACTION
-        floatArrayOf(l, t, r, t, r, b, l, b).copyInto(home)
+        val arm = side * ARM_FRACTION
         release()
 
         corners.reset()
@@ -115,20 +123,51 @@ class ScanFrameView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawPath(cutout, scrim)
-        canvas.drawPath(if (locked) lockPath else corners, corner)
+        canvas.drawPath(corners, corner)
+        if (locked) {
+            val alpha = (highlightProgress * 255).toInt()
+            highlightFill.color = highlightColor
+            highlightFill.alpha = alpha * HIGHLIGHT_FILL_ALPHA / 255
+            highlightStroke.color = highlightColor
+            highlightStroke.alpha = alpha
+            val scale = HIGHLIGHT_START_SCALE + (1f - HIGHLIGHT_START_SCALE) * highlightProgress
+            canvas.withScale(scale, scale, highlightCenterX, highlightCenterY) {
+                drawPath(highlight, highlightFill)
+                drawPath(highlight, highlightStroke)
+            }
+        }
     }
 
-    /** Las esquinas viajan hasta el codigo leido; [onLanded] llega cuando se posan. */
-    fun lockOn(outline: FloatArray, onLanded: () -> Unit) {
+    /**
+     * Rellena de verde el codigo leido, con las esquinas en fracciones de la vista; [onShown] llega
+     * cuando ya se vio, antes de abrir el resultado.
+     */
+    fun lockOn(outline: FloatArray, onShown: () -> Unit) {
         release()
+        val density = resources.displayMetrics.density
         val points = FloatArray(8) { outline[it] * if (it % 2 == 0) width else height }
-        orderLike(home, points).copyInto(target)
+        val length = hypot(points[2] - points[0], points[3] - points[1])
+        val shape = highlightOutline(
+            points,
+            maxOf(HIGHLIGHT_MIN_THICKNESS_DP * density, length * HIGHLIGHT_MIN_THICKNESS_FRACTION),
+            HIGHLIGHT_MARGIN_DP * density,
+        )
+        val rounding = CornerPathEffect(HIGHLIGHT_CORNER_DP * density)
+        highlightFill.pathEffect = rounding
+        highlightStroke.pathEffect = rounding
+        highlight.reset()
+        highlight.moveTo(shape[0], shape[1])
+        for (i in 1 until 4) highlight.lineTo(shape[i * 2], shape[i * 2 + 1])
+        highlight.close()
+        highlightCenterX = (shape[0] + shape[2] + shape[4] + shape[6]) / 4
+        highlightCenterY = (shape[1] + shape[3] + shape[5] + shape[7]) / 4
+        highlightProgress = 0f
         locked = true
-        buildLock(0f)
+
         val animator = ValueAnimator.ofFloat(0f, 1f).setDuration(LOCK_MILLIS)
-        animator.interpolator = PathInterpolator(0.23f, 1f, 0.32f, 1f)
         animator.addUpdateListener {
-            buildLock(it.animatedValue as Float)
+            val entered = (it.animatedFraction * LOCK_MILLIS / ENTRANCE_MILLIS).coerceAtMost(1f)
+            highlightProgress = entrance.getInterpolation(entered)
             invalidate()
         }
         animator.addListener(object : AnimatorListenerAdapter() {
@@ -139,14 +178,16 @@ class ScanFrameView @JvmOverloads constructor(
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                if (!cancelled) onLanded()
+                highlightProgress = 1f
+                invalidate()
+                if (!cancelled) onShown()
             }
         })
         lock = animator
         animator.start()
     }
 
-    /** Vuelve al marco. */
+    /** Quita el resaltado. */
     fun release() {
         lock?.cancel()
         lock = null
@@ -161,28 +202,6 @@ class ScanFrameView @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    private fun buildLock(progress: Float) {
-        val points = FloatArray(8) { home[it] + (target[it] - home[it]) * progress }
-        lockPath.reset()
-        for (i in 0 until 4) {
-            val x = points[i * 2]
-            val y = points[i * 2 + 1]
-            val previous = (i + 3) % 4
-            val next = (i + 1) % 4
-            lockPath.moveTo(towards(x, points[previous * 2], y, points[previous * 2 + 1], true), towards(x, points[previous * 2], y, points[previous * 2 + 1], false))
-            lockPath.lineTo(x, y)
-            lockPath.lineTo(towards(x, points[next * 2], y, points[next * 2 + 1], true), towards(x, points[next * 2], y, points[next * 2 + 1], false))
-        }
-    }
-
-    /** Un punto sobre el lado hacia otra esquina: el brazo o un tercio del lado, lo que sea menor. */
-    private fun towards(x: Float, toX: Float, y: Float, toY: Float, horizontal: Boolean): Float {
-        val length = hypot(toX - x, toY - y)
-        if (length == 0f) return if (horizontal) x else y
-        val reach = minOf(arm, length / 3f) / length
-        return if (horizontal) x + (toX - x) * reach else y + (toY - y) * reach
-    }
-
     private companion object {
         const val SCRIM_COLOR = 0x99000000.toInt()
         const val WINDOW_FRACTION = 0.84f
@@ -195,6 +214,16 @@ class ScanFrameView @JvmOverloads constructor(
         const val RADIUS_FRACTION = 0.077f
         const val STROKE_FRACTION = 0.026f
         const val ARM_FRACTION = 0.146f
-        const val LOCK_MILLIS = 180L
+
+        /** Lo que dura el resaltado antes de abrir el resultado, y cuanto de eso es la entrada. */
+        const val LOCK_MILLIS = 300L
+        const val ENTRANCE_MILLIS = 120L
+        const val HIGHLIGHT_START_SCALE = 0.94f
+        const val HIGHLIGHT_FILL_ALPHA = 107
+        const val HIGHLIGHT_STROKE_DP = 2f
+        const val HIGHLIGHT_MARGIN_DP = 4f
+        const val HIGHLIGHT_CORNER_DP = 4f
+        const val HIGHLIGHT_MIN_THICKNESS_DP = 14f
+        const val HIGHLIGHT_MIN_THICKNESS_FRACTION = 0.12f
     }
 }

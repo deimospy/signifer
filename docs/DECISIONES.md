@@ -76,11 +76,16 @@ Ahora el fotograma se recorta al marco, con un margen para la zona tranquila
 de un código que lo llena, y decodificar cuesta la mitad. El marco ocupa el
 84 % del ancho en vertical para que quepan los códigos largos.
 
-**Al leer, las esquinas del marco se posan sobre el código leído.** Con cinco
-códigos dentro del marco no se sabía cuál se había leído. No hace falta un
-detector de objetos como YOLO, que sumaría megas y milisegundos por fotograma:
-el decodificador ya devuelve las cuatro esquinas del código. La animación dura
-180 ms, solo ocurre al leer y el resultado se abre cuando las esquinas se posan.
+**Al leer, el código leído se rellena de verde.** Con cinco códigos dentro del
+marco no se sabía cuál se había leído. No hace falta un detector de objetos
+como YOLO, que sumaría megas y milisegundos por fotograma: el decodificador ya
+devuelve las cuatro esquinas del código. Se probó primero con las esquinas del
+marco posándose sobre el código, y en un código de barras quedaban como dos
+guiones sin significado. El relleno semitransparente es lo que usan los
+lectores de almacén, se ve sobre etiquetas blancas y fondos oscuros, y sigue la
+inclinación del código. Un código de barras leído en una sola fila llega sin
+alto, así que el relleno recibe un alto mínimo. Dura 300 ms antes de abrir el
+resultado, porque la hoja tapa la mitad inferior del marco.
 
 **El permiso `VIBRATE` se declara.** No estaba previsto. Es un permiso normal
 —el sistema lo concede sin preguntar y no da acceso a ningún dato— y sin él la

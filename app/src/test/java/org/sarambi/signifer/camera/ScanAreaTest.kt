@@ -2,6 +2,8 @@ package org.sarambi.signifer.camera
 
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
+import kotlin.math.abs
+import kotlin.math.sqrt
 import org.junit.Test
 
 class ScanAreaTest {
@@ -57,18 +59,25 @@ class ScanAreaTest {
     }
 
     @Test
-    fun unCodigoBocaAbajoNoGiraElMarco() {
-        val frame = floatArrayOf(0f, 0f, 100f, 0f, 100f, 100f, 0f, 100f)
-        // Leido boca abajo: su esquina superior izquierda esta abajo a la derecha.
-        val upsideDown = floatArrayOf(60f, 60f, 40f, 60f, 40f, 40f, 60f, 40f)
-        assertArrayEquals(floatArrayOf(40f, 40f, 60f, 40f, 60f, 60f, 40f, 60f), orderLike(frame, upsideDown), 1e-6f)
+    fun unCodigoDeBarrasSinAltoRecibeElMinimo() {
+        val line = floatArrayOf(10f, 50f, 110f, 50f, 110f, 50f, 10f, 50f)
+        assertArrayEquals(floatArrayOf(10f, 40f, 110f, 40f, 110f, 60f, 10f, 60f), highlightOutline(line, 20f, 0f), 1e-4f)
     }
 
     @Test
-    fun unCodigoEspejadoConservaElSentido() {
-        val frame = floatArrayOf(0f, 0f, 100f, 0f, 100f, 100f, 0f, 100f)
-        val mirrored = floatArrayOf(40f, 40f, 40f, 60f, 60f, 60f, 60f, 40f)
-        assertArrayEquals(floatArrayOf(40f, 40f, 60f, 40f, 60f, 60f, 40f, 60f), orderLike(frame, mirrored), 1e-6f)
+    fun unCodigoDeBarrasVerticalCreceHaciaLosLados() {
+        val line = floatArrayOf(50f, 10f, 50f, 110f, 50f, 110f, 50f, 10f)
+        val outline = highlightOutline(line, 20f, 0f)
+        assertEquals(20f, abs(outline[0] - outline[6]), 1e-4f)
+        assertEquals(10f, outline[1], 1e-4f)
+        assertEquals(110f, outline[3], 1e-4f)
+    }
+
+    @Test
+    fun unQrConservaSuFormaYSeAgrandaElMargen() {
+        val square = floatArrayOf(0f, 0f, 10f, 0f, 10f, 10f, 0f, 10f)
+        val outline = highlightOutline(square, 4f, sqrt(2f))
+        assertArrayEquals(floatArrayOf(-1f, -1f, 11f, -1f, 11f, 11f, -1f, 11f), outline, 1e-4f)
     }
 
     @Test

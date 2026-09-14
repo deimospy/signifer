@@ -1,5 +1,7 @@
 package org.sarambi.signifer.camera
 
+import kotlin.math.abs
+import kotlin.math.hypot
 import kotlin.math.roundToInt
 
 /** Un rectangulo en pixeles, con los bordes derecho e inferior excluidos. */
@@ -56,35 +58,45 @@ data class ScanArea(val left: Float, val top: Float, val right: Float, val botto
 }
 
 /**
- * Reordena un cuadrilatero [points] para que cada esquina quede frente a la de [reference] mas
- * cercana, sin cruzarse: un codigo leido boca abajo no hace girar el marco al posarse.
+ * El cuadrilatero que se rellena sobre un codigo leido, en pixeles de la vista. Un codigo de barras
+ * leido en una sola fila llega sin alto: se le da [minThickness] perpendicular a su largo. Cada
+ * esquina se aleja [margin] del centro para cubrir el codigo entero.
  */
-fun orderLike(reference: FloatArray, points: FloatArray): FloatArray {
-    val clockwise = shoelace(points) * shoelace(reference) >= 0f
-    val ordered = if (clockwise) points else FloatArray(8) { points[(if (it % 2 == 0) 6 - it else 8 - it)] }
-    var best = ordered
-    var bestDistance = Float.MAX_VALUE
-    for (shift in 0 until 4) {
-        val candidate = FloatArray(8) { ordered[(it + shift * 2) % 8] }
-        var distance = 0f
-        for (i in 0 until 4) {
-            val dx = candidate[i * 2] - reference[i * 2]
-            val dy = candidate[i * 2 + 1] - reference[i * 2 + 1]
-            distance += dx * dx + dy * dy
-        }
-        if (distance < bestDistance) {
-            bestDistance = distance
-            best = candidate
+fun highlightOutline(points: FloatArray, minThickness: Float, margin: Float): FloatArray {
+    val leftX = (points[0] + points[6]) / 2
+    val leftY = (points[1] + points[7]) / 2
+    val rightX = (points[2] + points[4]) / 2
+    val rightY = (points[3] + points[5]) / 2
+    val length = hypot(rightX - leftX, rightY - leftY)
+    var out = points.copyOf()
+    if (length > 0f) {
+        val ux = (rightX - leftX) / length
+        val uy = (rightY - leftY) / length
+        val acrossX = (points[6] + points[4] - points[0] - points[2]) / 2
+        val acrossY = (points[7] + points[5] - points[1] - points[3]) / 2
+        val thickness = acrossX * -uy + acrossY * ux
+        if (abs(thickness) < minThickness) {
+            val sign = if (thickness < 0f) -1f else 1f
+            val nx = -uy * sign * minThickness / 2
+            val ny = ux * sign * minThickness / 2
+            out = floatArrayOf(
+                leftX - nx, leftY - ny,
+                rightX - nx, rightY - ny,
+                rightX + nx, rightY + ny,
+                leftX + nx, leftY + ny,
+            )
         }
     }
-    return best
-}
-
-private fun shoelace(points: FloatArray): Float {
-    var sum = 0f
+    val centerX = (out[0] + out[2] + out[4] + out[6]) / 4
+    val centerY = (out[1] + out[3] + out[5] + out[7]) / 4
     for (i in 0 until 4) {
-        val j = (i + 1) % 4
-        sum += points[i * 2] * points[j * 2 + 1] - points[j * 2] * points[i * 2 + 1]
+        val dx = out[i * 2] - centerX
+        val dy = out[i * 2 + 1] - centerY
+        val distance = hypot(dx, dy)
+        if (distance > 0f) {
+            out[i * 2] += dx / distance * margin
+            out[i * 2 + 1] += dy / distance * margin
+        }
     }
-    return sum
+    return out
 }
