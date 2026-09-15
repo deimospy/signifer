@@ -229,7 +229,7 @@
     <string name="logo_unreadable">O logo cobre demais e o código deixa de ser lido. Tente um menor.</string>
 
     <string name="about_title">Sobre o Signifer</string>
-    <string name="about_version">Versão %1$s (%2$d)</string>
+    <string name="about_version">Versão %1$s</string>
     <string name="about_what">QR e códigos de barras: lê 20 tipos e cria 13. Instantâneo, leve e privado.</string>
     <string name="about_offline">Funciona sem internet</string>
     <string name="about_offline_body">O aplicativo não pede permissão de rede, então o Android não o deixa conectar nem se quisesse. Não é uma promessa: é o sistema que impede.</string>

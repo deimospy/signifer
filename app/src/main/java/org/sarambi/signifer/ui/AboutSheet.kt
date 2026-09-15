@@ -2,7 +2,6 @@ package org.sarambi.signifer.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +38,7 @@ class AboutSheet : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         val views = binding ?: return
 
-        views.version.text = getString(R.string.about_version, versionName(), versionCode())
+        views.version.text = getString(R.string.about_version, versionName())
 
         for (promise in PROMISES) {
             views.promises.addView(row(views.promises, promise.first, promise.second, R.drawable.ic_check))
@@ -99,17 +98,6 @@ class AboutSheet : BottomSheetDialogFragment() {
             .versionName
             .orEmpty()
     }.getOrDefault("")
-
-    private fun versionCode(): Long = runCatching {
-        val info = requireContext().packageManager
-            .getPackageInfo(requireContext().packageName, 0)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            info.longVersionCode
-        } else {
-            @Suppress("DEPRECATION")
-            info.versionCode.toLong()
-        }
-    }.getOrDefault(0L)
 
     companion object {
         const val TAG = "about"

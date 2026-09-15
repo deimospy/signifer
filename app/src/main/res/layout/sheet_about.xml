@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceLabelMedium"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="Versión 1.0.0 (1)" />
+                tools:text="Versión 1.0.0" />
 
             <TextView
                 android:layout_width="match_parent"
