@@ -1,21 +1,16 @@
-"""Capturas reproducibles de la aplicacion.
+"""Capturas del README, en espanol y con contenido de ejemplo.
 
     python tools/screenshots.py
+
+Necesita un emulador o telefono conectado; instala la aplicacion con las pruebas de dispositivo.
 """
 import os
 import subprocess
 import sys
-import time
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 OUTPUT = os.path.join(ROOT, "docs", "capturas")
-PACKAGE = "org.sarambi.signifer"
-
-SCREENS = (
-    ("lectura", f"{PACKAGE}.action.SCAN"),
-    ("creacion", f"{PACKAGE}.action.CREATE"),
-    ("historial", f"{PACKAGE}.action.HISTORY"),
-)
+SCREENS = ("lectura", "creacion", "historial", "resultado")
 
 
 def adb_path():
@@ -26,7 +21,7 @@ def adb_path():
             with open(properties, encoding="utf-8") as handle:
                 for line in handle:
                     if line.startswith("sdk.dir="):
-                        sdk = line.split("=", 1)[1].strip().replace("\\\\", "\\")
+                        sdk = line.split("=", 1)[1].strip().replace("\\\\", "\\").replace("\:", ":")
     if not sdk:
         raise SystemExit("no se encuentra el SDK de Android")
     for name in ("adb.exe", "adb"):
@@ -36,45 +31,28 @@ def adb_path():
     raise SystemExit("no se encuentra adb")
 
 
-ADB = adb_path()
-
-
-def adb(*arguments, capture=True):
-    return subprocess.run(
-        [ADB, *arguments], capture_output=capture, text=True, errors="replace"
-    )
-
-
-def capture(name):
-    raw = os.path.join(OUTPUT, f"{name}-completa.png")
-    with open(raw, "wb") as handle:
-        result = subprocess.run([ADB, "exec-out", "screencap", "-p"], stdout=handle)
-    if result.returncode != 0:
-        raise SystemExit(f"no se pudo capturar {name}")
-
-    target = os.path.join(OUTPUT, f"{name}.png")
+def main():
+    adb = adb_path()
+    gradle = os.path.join(ROOT, "gradlew.bat" if os.name == "nt" else "gradlew")
     subprocess.run(
-        [sys.executable, os.path.join(ROOT, "tools", "shrink_png.py"), raw, target, "3"],
+        [
+            gradle,
+            ":app:connectedDebugAndroidTest",
+            "-Pandroid.testInstrumentationRunnerArguments.class=org.sarambi.signifer.ui.ReadmeScreenshots",
+            "-Pandroid.testInstrumentationRunnerArguments.capturas=1",
+        ],
+        cwd=ROOT,
         check=True,
     )
-    os.remove(raw)
-    print(f"  {name}.png")
-
-
-def main():
     os.makedirs(OUTPUT, exist_ok=True)
-    if PACKAGE not in adb("shell", "pm", "list", "packages", PACKAGE).stdout:
-        raise SystemExit(f"{PACKAGE} no esta instalado")
-
-    print("capturando")
-    for name, action in SCREENS:
-        adb("shell", "am", "force-stop", PACKAGE)
-        time.sleep(1)
-        adb("shell", "am", "start", "-a", action, "-p", PACKAGE)
-        time.sleep(5 if name == "lectura" else 3)
-        capture(name)
-
-    print(f"\nen {OUTPUT}")
+    for name in SCREENS:
+        raw = os.path.join(OUTPUT, f"{name}-completa.png")
+        with open(raw, "wb") as handle:
+            subprocess.run([adb, "exec-out", "cat", f"/sdcard/readme_{name}.png"], stdout=handle, check=True)
+        target = os.path.join(OUTPUT, f"{name}.png")
+        subprocess.run([sys.executable, os.path.join(ROOT, "tools", "shrink_png.py"), raw, target, "3"], check=True)
+        os.remove(raw)
+        print(f"  {name}.png")
 
 
 if __name__ == "__main__":
