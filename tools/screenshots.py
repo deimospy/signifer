@@ -1,4 +1,4 @@
-"""Capturas del README, en espanol y con contenido de ejemplo.
+"""Capturas de los README, en cada idioma y con contenido de ejemplo.
 
     python tools/screenshots.py
 
@@ -11,6 +11,7 @@ import sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 OUTPUT = os.path.join(ROOT, "docs", "capturas")
 SCREENS = ("lectura", "creacion", "historial", "resultado")
+LANGUAGES = ("en", "es", "pt", "de", "fr", "it", "nl", "pl", "tr", "fi", "ja", "ko", "zh-CN", "zh-TW")
 
 
 def adb_path():
@@ -44,15 +45,17 @@ def main():
         cwd=ROOT,
         check=True,
     )
-    os.makedirs(OUTPUT, exist_ok=True)
-    for name in SCREENS:
-        raw = os.path.join(OUTPUT, f"{name}-completa.png")
-        with open(raw, "wb") as handle:
-            subprocess.run([adb, "exec-out", "cat", f"/sdcard/readme_{name}.png"], stdout=handle, check=True)
-        target = os.path.join(OUTPUT, f"{name}.png")
-        subprocess.run([sys.executable, os.path.join(ROOT, "tools", "shrink_png.py"), raw, target, "3"], check=True)
-        os.remove(raw)
-        print(f"  {name}.png")
+    for language in LANGUAGES:
+        folder = os.path.join(OUTPUT, language)
+        os.makedirs(folder, exist_ok=True)
+        for name in SCREENS:
+            raw = os.path.join(folder, f"{name}-completa.png")
+            with open(raw, "wb") as handle:
+                subprocess.run([adb, "exec-out", "cat", f"/sdcard/readme_{language}_{name}.png"], stdout=handle, check=True)
+            target = os.path.join(folder, f"{name}.png")
+            subprocess.run([sys.executable, os.path.join(ROOT, "tools", "shrink_png.py"), raw, target, "3"], check=True)
+            os.remove(raw)
+        print(f"  {language}")
 
 
 if __name__ == "__main__":
