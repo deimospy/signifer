@@ -58,14 +58,20 @@ la persona ya está esperando.
 
 ## 5. Idiomas
 
-**Cerrada en tres: español, inglés y portugués.** Las 223 cadenas traducibles
-están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
-estático falla la compilación si falta una traducción. El paquete solo incluye
-esos tres, así que ninguna dependencia cuela los suyos.
+**Catorce: inglés, español, portugués, alemán, francés, italiano, neerlandés,
+polaco, turco, finés, japonés, coreano, chino simplificado y chino de Taiwán.**
+La lista siguió a los mercados con más gasto en Google Play y más cultura de
+código abierto, además del alcance del chino. Las 225 cadenas traducibles están
+al 100 % en todos, y la sincronía no se vigila a mano: el análisis estático
+falla la compilación si falta una traducción o una forma de plural. El paquete
+solo incluye esos catorce, así que ninguna dependencia cuela los suyos.
 
-No hay más idiomas previstos. Añadir uno es añadir un archivo y mantenerlo al
-día para siempre; se hará cuando haya una razón concreta y alguien que hable
-el idioma, no por tener más banderas en la ficha.
+**El inglés es el idioma base.** Un teléfono en un idioma sin traducción, ruso
+o hindi por ejemplo, ve la aplicación en inglés y no en español.
+
+**El idioma se elige a mano en los ajustes** y la elección se recuerda. De
+fábrica sigue al teléfono. Desde Android 13 la lista también aparece en los
+ajustes del sistema para la aplicación. Cada idioma suma unos 15 KB al paquete.
 
 ## Decisiones que no estaban abiertas y aun así hubo que tomar
 

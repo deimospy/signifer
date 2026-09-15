@@ -46,12 +46,13 @@ arquitectura. Cifras en KB.
 | Relleno verde sobre el código leído | 2671 | 2594 | 2726 | 2704 |
 | Marca en la pantalla de lectura y bip | 2673 | 2595 | 2727 | 2706 |
 | Acerca de con lo que la distingue | 2676 | 2598 | 2730 | 2709 |
+| Catorce idiomas y selector de idioma | 2859 | 2781 | 2913 | 2892 |
 
 ## Lo que descarga un teléfono desde la tienda
 
 El paquete que se sube a Google Play es un App Bundle, y la tienda entrega a
 cada teléfono solo su arquitectura, su densidad de pantalla y su idioma. Eso es
-menos que el APK dividido, que lleva todas las densidades y los tres idiomas.
+menos que el APK dividido, que lleva todas las densidades y los catorce idiomas.
 
 Medido con `bundletool get-size total` sobre `app-release.aab`:
 

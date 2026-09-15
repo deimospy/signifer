@@ -24,6 +24,9 @@
     <string name="settings_retention_value">Por quanto tempo se guarda: %1$s</string>
     <string name="action_close">Fechar</string>
     <string name="settings_title">Ajustes</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_value">Idioma: %1$s</string>
+    <string name="settings_language_system">Idioma do telefone</string>
     <string name="settings_formats_note">Quanto menos formatos procurar, mais rápido lê. Se você só escaneia QR, desligue o resto.</string>
     <string name="settings_try_harder">Insistir mais em cada tentativa</string>
     <string name="settings_try_harder_note">Fica mais lento. Nos nossos testes leu um código a mais entre 225, mas pode ajudar com códigos muito danificados.</string>
@@ -230,21 +233,20 @@
 
     <string name="about_title">Sobre o Signifer</string>
     <string name="about_version">Versão</string>
-    <string name="about_what">Lê 20 tipos de códigos, cria 13 e avisa sobre links suspeitos.</string>
-    <string name="about_distinct">O que a torna diferente</string>
+    <string name="about_what">Lê 20 tipos de códigos QR e de barras, e cria 13. Completo, rápido e leve.</string>
     <string name="about_links">Avisa sobre links suspeitos</string>
     <string name="about_links_body">Letras disfarçadas, encurtadores ou instaladores.</string>
-    <string name="about_no_ads">Sem anúncios nem compras</string>
-    <string name="about_no_ads_body">Sem versão paga nem recursos bloqueados.</string>
+    <string name="about_no_ads">Não mostra anúncios</string>
+    <string name="about_no_ads_body">Também não tem compras nem recursos bloqueados.</string>
     <string name="about_offline">Funciona sem internet</string>
-    <string name="about_offline_body">Não tem permissão de rede: o Android não o deixa conectar.</string>
+    <string name="about_offline_body">Não tem permissão de rede.</string>
     <string name="about_no_tracking">Não rastreia você</string>
-    <string name="about_no_tracking_body">O que você escaneia não sai do telefone.</string>
-    <string name="about_open_source">Código aberto</string>
+    <string name="about_no_tracking_body">O que você lê não sai do telefone.</string>
+    <string name="about_open_source">É de código aberto</string>
     <string name="about_open_source_body">Qualquer pessoa pode verificar o que ele faz.</string>
     <string name="about_source">Código-fonte</string>
     <string name="about_author">Criado por</string>
-    <string name="about_licenses">Licenças de código aberto</string>
+    <string name="about_licenses">Licenças de terceiros</string>
 
     <string name="wifi_enterprise">De empresa, com usuário e senha</string>
     <string name="problem_lowercase">%1$s só aceita maiúsculas: quase nenhum leitor entende minúsculas</string>

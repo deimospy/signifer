@@ -103,6 +103,7 @@ ICON_MAP = {
     "no_tracking": "eye-off",
     "open_source": "code-xml",
     "chevron": "chevron-right",
+    "language": "languages",
 }
 
 

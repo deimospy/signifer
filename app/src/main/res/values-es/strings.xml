@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="yes">Sí</string>
+
+    <string name="nav_scan">Leer</string>
+    <string name="nav_create">Crear</string>
+    <string name="nav_history">Historial</string>
+
+    <string name="scan_hint">Apuntar la cámara al código</string>
+    <string name="scan_permission_title">Signifer necesita la cámara</string>
+    <string name="scan_permission_body">Solo para leer códigos. Nada sale del teléfono: la aplicación no declara permiso de red, así que el sistema le impide abrir una conexión.</string>
+    <string name="scan_permission_denied">Sin permiso de cámara no se puede leer en vivo. Se activa desde los ajustes del sistema. Mientras tanto, se puede leer desde una imagen.</string>
+    <string name="scan_permission_grant">Permitir la cámara</string>
+    <string name="action_torch">Linterna</string>
+    <string name="action_pick_image">Leer desde una imagen</string>
+    <string name="camera_unavailable">No se pudo abrir la cámara</string>
+    <string name="image_unreadable">No se pudo abrir la imagen</string>
+    <string name="image_without_code">No hay ningún código en esa imagen</string>
+
+    <string name="settings_section_reading">Lectura</string>
+    <string name="settings_section_history">Historial</string>
+    <string name="settings_formats_summary">Formatos que se leen: %1$d de %2$d</string>
+    <string name="settings_retention_value">Cuánto se conserva: %1$s</string>
+    <string name="action_close">Cerrar</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_value">Idioma: %1$s</string>
+    <string name="settings_language_system">Idioma del teléfono</string>
+    <string name="settings_formats_note">Cuantos menos formatos busque, más rápido lee. Si solo escaneas códigos QR, apaga el resto.</string>
+    <string name="settings_try_harder">Insistir más en cada intento</string>
+    <string name="settings_try_harder_note">Va más lento. En nuestras pruebas leyó un código de más entre 225, pero puede ayudar con códigos muy dañados.</string>
+    <string name="settings_try_invert">Leer códigos en negativo</string>
+    <string name="settings_try_invert_note">Códigos claros sobre fondo oscuro.</string>
+    <string name="settings_vibrate">Vibrar al leer</string>
+    <string name="settings_beep">Sonido al leer</string>
+    <string name="settings_beep_note">Por el volumen multimedia. No suena con el teléfono en silencio o vibración.</string>
+    <string name="settings_save_history">Guardar en el historial</string>
+    <string name="settings_save_sensitive">Guardar también las contraseñas</string>
+    <string name="settings_save_sensitive_note">Apagado, una red Wi-Fi con contraseña no queda guardada salvo que se pida en la propia pantalla de resultado.</string>
+    <string name="settings_preset_all">Todos</string>
+    <string name="settings_preset_matrix">Cuadrados</string>
+    <string name="settings_preset_qr">Solo QR</string>
+
+    <string name="family_matrix">Cuadrados, tipo QR</string>
+    <string name="family_retail">Productos de tienda</string>
+    <string name="family_industrial">Industria y envíos</string>
+
+    <string name="kind_text">Texto</string>
+    <string name="kind_website">Sitio web</string>
+    <string name="kind_wifi">Red Wi-Fi</string>
+    <string name="kind_contact">Contacto</string>
+    <string name="kind_email">Correo</string>
+    <string name="kind_phone">Teléfono</string>
+    <string name="kind_sms">SMS</string>
+    <string name="kind_location">Ubicación</string>
+    <string name="kind_event">Evento</string>
+
+    <string name="result_destination">Destino</string>
+    <string name="level_none">Todo en orden</string>
+    <string name="level_caution">Conviene mirarlo</string>
+    <string name="level_warning">Revisar antes de actuar</string>
+    <string name="level_blocked">Bloqueado por seguridad</string>
+
+    <string name="action_open_website">Abrir el sitio</string>
+    <string name="action_connect_wifi">Añadir la red</string>
+    <string name="action_add_contact">Guardar el contacto</string>
+    <string name="action_send_email">Escribir el correo</string>
+    <string name="action_dial">Marcar el número</string>
+    <string name="action_send_sms">Escribir el SMS</string>
+    <string name="action_open_map">Ver en el mapa</string>
+    <string name="action_add_event">Añadir al calendario</string>
+    <string name="action_search_web">Buscar el texto</string>
+    <string name="action_copy">Copiar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_copied">Copiado</string>
+    <string name="action_no_handler">No hay ninguna aplicación que pueda hacerlo</string>
+    <string name="action_refused">El destino dejó de ser seguro: no se hizo nada</string>
+    <string name="action_save_sensitive">Guardar en el historial</string>
+    <string name="action_saved">Guardado</string>
+
+    <string name="field_network">Red</string>
+    <string name="field_security">Seguridad</string>
+    <string name="field_password">Contraseña</string>
+    <string name="field_password_hidden">Va dentro del código</string>
+    <string name="field_hidden">Red oculta</string>
+    <string name="field_name">Nombre</string>
+    <string name="field_organization">Organización</string>
+    <string name="field_title">Cargo</string>
+    <string name="field_mobile">Móvil</string>
+    <string name="field_phone">Teléfono</string>
+    <string name="field_email">Correo</string>
+    <string name="field_address">Dirección</string>
+    <string name="field_note">Nota</string>
+    <string name="field_subject">Asunto</string>
+    <string name="field_body">Mensaje</string>
+    <string name="field_coordinates">Coordenadas</string>
+    <string name="field_place">Lugar</string>
+    <string name="field_summary">Título</string>
+    <string name="field_starts">Empieza</string>
+    <string name="field_ends">Termina</string>
+
+    <string name="wifi_open">Abierta</string>
+    <string name="wifi_wep">WEP</string>
+    <string name="wifi_wpa">WPA / WPA2</string>
+    <string name="wifi_sae">WPA3</string>
+
+    <string name="risk_blocked_scheme">El esquema puede ejecutar código</string>
+    <string name="risk_blocked_scheme_body">Esta dirección no abre una página: le pide al sistema que ejecute algo. Signifer no la entrega; se puede copiar y mirar.</string>
+    <string name="risk_unknown_scheme">Esquema fuera de la lista</string>
+    <string name="risk_unknown_scheme_body">La lista de esquemas que se pueden abrir es cerrada. Lo que no figura en ella se bloquea, en vez de mantener una lista de prohibidos que siempre va por detrás de lo que aparezca mañana.</string>
+    <string name="risk_insecure_transport">Viaja sin cifrar</string>
+    <string name="risk_insecure_transport_body">Empieza por http, no por https. Quien comparta la red puede leer y cambiar lo que se envíe.</string>
+    <string name="risk_embedded_credentials">Lleva usuario y contraseña dentro</string>
+    <string name="risk_embedded_credentials_body">La dirección incluye credenciales antes del servidor. Es la forma clásica de disfrazarlo: lo que va antes de la arroba no es adónde se llega.</string>
+    <string name="risk_missing_host">No dice a qué servidor va</string>
+    <string name="risk_missing_host_body">La dirección no tiene servidor, así que no hay destino que comprobar.</string>
+    <string name="risk_loopback_host">Apunta a este mismo teléfono</string>
+    <string name="risk_loopback_host_body">El destino es el propio dispositivo. Un código pegado en la calle no tiene motivo para pedir eso.</string>
+    <string name="risk_private_network">Apunta a la red local</string>
+    <string name="risk_private_network_body">Lleva a un equipo de la red a la que se esté conectado ahora mismo: un router, una cámara, un panel de administración.</string>
+    <string name="risk_raw_ip">El servidor es un número, no un nombre</string>
+    <string name="risk_raw_ip_body">Una dirección IP en lugar de un dominio impide saber de quién es el servidor.</string>
+    <string name="risk_confusable_host">El nombre del servidor puede estar disfrazado</string>
+    <string name="risk_confusable_host_body">Usa punycode o mezcla alfabetos. Hay letras de otros alfabetos idénticas a las latinas: una «а» cirílica en apple.com se ve igual y lleva a otro sitio.</string>
+    <string name="risk_excessive_subdomains">Encadena subdominios</string>
+    <string name="risk_excessive_subdomains_body">Un nombre largo con muchos puntos sirve para que el principio parezca el dominio real. El que decide es el del final.</string>
+    <string name="risk_shortened">El destino real está escondido</string>
+    <string name="risk_shortened_body">Es un acortador: la dirección que se ve no es a la que se llega. Signifer no la resuelve porque no tiene red, así que el destino solo se ve al abrirlo.</string>
+    <string name="risk_executable">Descarga algo que se instala o se ejecuta</string>
+    <string name="risk_executable_body">El enlace termina en un archivo de instalación. Un código pegado en la calle que instala una aplicación es el fraude más barato que existe.</string>
+    <string name="risk_bidirectional">Lleva caracteres que invierten el texto</string>
+    <string name="risk_bidirectional_body">Hay caracteres invisibles que cambian el orden en que se lee lo escrito. Sirven para que un archivo que se instala parezca una imagen.</string>
+    <string name="risk_unusual_port">Escucha en un puerto poco común</string>
+    <string name="risk_unusual_port_body">El servidor no atiende en el puerto habitual del protocolo.</string>
+    <string name="risk_malformed">La dirección está mal formada</string>
+    <string name="risk_malformed_body">El servidor o el puerto no son válidos, así que ningún navegador podría abrirla. Suele ser un código roto o preparado para confundir.</string>
+
+    <string name="warning_risky_destination">El destino tiene hallazgos</string>
+    <string name="warning_risky_destination_body">Debajo está cada uno explicado.</string>
+    <string name="warning_unknown_network">Es una red ajena</string>
+    <string name="warning_unknown_network_body">Quien administra una red ve el tráfico que no va cifrado y puede desviarlo a otro sitio.</string>
+    <string name="warning_weak_network">El cifrado es débil o no hay</string>
+    <string name="warning_weak_network_body">Una red abierta o con WEP no protege nada: cualquiera cerca puede leer lo que pase por ella.</string>
+    <string name="warning_contact_url">El contacto trae una dirección con hallazgos</string>
+    <string name="warning_contact_url_body">Guardar el contacto guarda también esa dirección.</string>
+    <string name="warning_prepared_message">El mensaje ya viene escrito</string>
+    <string name="warning_prepared_message_body">El texto del SMS estaba dentro del código. Enviarlo puede costar dinero, y el número puede ser de tarificación especial.</string>
+
+    <string name="create_preview">Vista previa del código</string>
+    <string name="create_preview_empty">Se dibuja al completar el formulario</string>
+    <string name="create_format">Formato</string>
+    <string name="create_correction">Resistencia a daños</string>
+    <string name="create_incomplete">Falta completar el formulario</string>
+    <string name="create_failed">No se pudo generar el código</string>
+    <string name="correction_low">Mínima</string>
+    <string name="correction_low_note">El código más simple. Solo para pantalla.</string>
+    <string name="correction_medium">Normal</string>
+    <string name="correction_medium_note">Para pantalla y papel limpio.</string>
+    <string name="correction_quartile">Alta</string>
+    <string name="correction_quartile_note">Para etiquetas, cajas y exteriores.</string>
+    <string name="correction_high">Máxima</string>
+    <string name="correction_high_note">Aguanta manchas, roturas y un logo encima.</string>
+    <string name="action_export">Exportar</string>
+    <string name="export_png">PNG de %1$d px</string>
+    <string name="export_svg">SVG · para imprimir a cualquier tamaño</string>
+    <string name="export_done">Archivo guardado</string>
+    <string name="export_failed">No se pudo guardar el archivo</string>
+    <string name="list_or"> o </string>
+
+    <string name="problem_not_numeric">%1$s solo admite dígitos</string>
+    <string name="problem_wrong_length">%1$s necesita %2$s dígitos</string>
+    <string name="problem_odd_length">ITF codifica los dígitos de dos en dos: hace falta un número par</string>
+    <string name="problem_unsupported_character">%1$s no admite alguno de esos caracteres</string>
+    <string name="problem_check_digit">El dígito de control no cuadra con el resto</string>
+    <string name="problem_too_long">Eso no cabe en un %1$s que se pueda leer</string>
+
+    <string name="form_text">Texto</string>
+    <string name="form_url">Dirección</string>
+    <string name="form_first_name">Nombre</string>
+    <string name="form_last_name">Apellido</string>
+    <string name="form_latitude">Latitud</string>
+    <string name="form_longitude">Longitud</string>
+    <string name="form_all_day">Todo el día</string>
+    <string name="form_start_date">Empieza el</string>
+    <string name="form_start_time">A las</string>
+    <string name="form_end_date">Termina el</string>
+    <string name="form_end_time">A las</string>
+
+    <string name="history_search">Buscar en el historial</string>
+    <string name="history_favorite">Favorito</string>
+    <string name="history_only_favorites">Favoritos</string>
+    <string name="history_empty">Todavía no hay nada leído</string>
+    <string name="history_no_matches">Nada coincide con esa búsqueda</string>
+    <string name="history_delete_one">¿Borrar esta entrada?</string>
+    <string name="history_delete">Borrar</string>
+    <string name="history_clear">Vaciar el historial</string>
+    <string name="history_clear_note">Se borra todo menos los favoritos.</string>
+    <string name="history_export">Exportar un respaldo</string>
+    <string name="history_import">Importar un respaldo</string>
+    <string name="history_retention">Cuánto se conserva</string>
+    <plurals name="history_imported">
+        <item quantity="one">Se añadió %1$d entrada</item>
+        <item quantity="many">Se añadieron %1$d entradas</item>
+        <item quantity="other">Se añadieron %1$d entradas</item>
+    </plurals>
+    <plurals name="history_imported_altered">
+        <item quantity="one">Se añadió %1$d entrada, pero la huella del archivo no cuadra con su contenido</item>
+        <item quantity="many">Se añadieron %1$d entradas, pero la huella del archivo no cuadra con su contenido</item>
+        <item quantity="other">Se añadieron %1$d entradas, pero la huella del archivo no cuadra con su contenido</item>
+    </plurals>
+    <string name="history_import_failed">Ese archivo no es un respaldo de Signifer</string>
+    <string name="retention_thirty">30 días</string>
+    <string name="retention_ninety">90 días</string>
+    <string name="retention_forever">Siempre</string>
+    <string name="retention_note">Los favoritos no caducan nunca, sea cual sea el plazo.</string>
+
+    <string name="shortcut_scan_long">Leer un código</string>
+    <string name="shortcut_create_long">Crear un código</string>
+    <string name="shortcut_history_long">Ver el historial</string>
+
+    <string name="history_only_scanned">Leídos</string>
+    <string name="history_only_created">Creados</string>
+
+    <string name="logo_add">Poner un logo en el centro</string>
+    <string name="logo_added">Logo en el centro</string>
+    <string name="logo_remove">Quitar el logo</string>
+    <string name="logo_small">Pequeño</string>
+    <string name="logo_medium">Mediano</string>
+    <string name="logo_large">Grande</string>
+    <string name="logo_note">La resistencia se puso al máximo para que el código siga leyéndose con el logo encima. Signifer lo comprueba leyéndolo.</string>
+    <string name="logo_unreadable">El logo tapa demasiado y el código deja de leerse. Prueba con uno más pequeño.</string>
+
+    <string name="about_title">Acerca de Signifer</string>
+    <string name="about_version">Versión</string>
+    <string name="about_what">Lee 20 tipos de códigos QR y de barras, y crea 13. Completa, rápida y liviana.</string>
+    <string name="about_links">Avisa de enlaces sospechosos</string>
+    <string name="about_links_body">Letras disfrazadas, acortadores o instaladores.</string>
+    <string name="about_no_ads">No muestra anuncios</string>
+    <string name="about_no_ads_body">Tampoco tiene compras ni funciones bloqueadas.</string>
+    <string name="about_offline">Funciona sin internet</string>
+    <string name="about_offline_body">No tiene permiso de red.</string>
+    <string name="about_no_tracking">No te rastrea</string>
+    <string name="about_no_tracking_body">Lo que lees no sale del teléfono.</string>
+    <string name="about_open_source">Es de código abierto</string>
+    <string name="about_open_source_body">Cualquiera puede revisar lo que hace.</string>
+    <string name="about_source">Código fuente</string>
+    <string name="about_author">Creado por</string>
+    <string name="about_licenses">Licencias de terceros</string>
+
+    <string name="wifi_enterprise">De empresa, con usuario y contraseña</string>
+    <string name="problem_lowercase">%1$s solo admite mayúsculas: las minúsculas casi ningún lector las entiende</string>
+    <string name="problem_number_system">Un UPC-E empieza siempre por 0 o por 1</string>
+    <string name="problem_emoji">%1$s no admite emojis. En un código QR sí caben.</string>
+    <string name="problem_unsupported_matrix">%1$s no puede escribir este texto. En un código QR sí cabe.</string>
+    <string name="settings_min_one_format">Tiene que quedar al menos un formato</string>
+
+</resources>

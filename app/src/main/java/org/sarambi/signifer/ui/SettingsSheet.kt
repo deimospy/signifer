@@ -28,6 +28,7 @@ import org.sarambi.signifer.history.HistoryBackup
 import org.sarambi.signifer.history.HistoryFilter
 import org.sarambi.signifer.history.HistoryStore
 import org.sarambi.signifer.history.Retention
+import org.sarambi.signifer.settings.AppLanguage
 import org.sarambi.signifer.settings.ScanPreferences
 
 /** Todos los ajustes, en un solo lugar. */
@@ -96,6 +97,8 @@ class SettingsSheet : BottomSheetDialogFragment() {
         }
         views.clearHistory.setOnClickListener { confirmClear() }
 
+        paintLanguage()
+        views.language.setOnClickListener { chooseLanguage() }
         views.about.setOnClickListener { AboutSheet().show(parentFragmentManager, AboutSheet.TAG) }
     }
 
@@ -199,6 +202,27 @@ class SettingsSheet : BottomSheetDialogFragment() {
                 dialog.dismiss()
                 paintRetention()
                 changeHistory { store -> store.applyRetention(days[index]) }
+            }
+            .show()
+    }
+
+    private fun paintLanguage() {
+        val views = binding ?: return
+        val tag = AppLanguage.current()
+        val name = AppLanguage.ALL.firstOrNull { it.first == tag }?.second ?: getString(R.string.settings_language_system)
+        views.language.text = getString(R.string.settings_language_value, name)
+    }
+
+    private fun chooseLanguage() {
+        val options = arrayOf(getString(R.string.settings_language_system)) + AppLanguage.ALL.map { it.second }
+        val tag = AppLanguage.current()
+        val selected = AppLanguage.ALL.indexOfFirst { it.first == tag } + 1
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.settings_language)
+            .setSingleChoiceItems(options, selected) { dialog, index ->
+                dialog.dismiss()
+                if (index != selected) AppLanguage.choose(if (index == 0) null else AppLanguage.ALL[index - 1].first)
             }
             .show()
     }

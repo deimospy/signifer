@@ -208,6 +208,11 @@
             <View style="@style/Widget.Signifer.SettingsDivider" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/language"
+                style="@style/Widget.Signifer.SettingsRow"
+                app:icon="@drawable/ic_language" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/about"
                 style="@style/Widget.Signifer.SettingsRow"
                 android:text="@string/about_title"
