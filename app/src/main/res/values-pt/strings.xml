@@ -229,18 +229,21 @@
     <string name="logo_unreadable">O logo cobre demais e o código deixa de ser lido. Tente um menor.</string>
 
     <string name="about_title">Sobre o Signifer</string>
-    <string name="about_version">Versão %1$s</string>
-    <string name="about_what">QR e códigos de barras: lê 20 tipos e cria 13. Instantâneo, leve e privado.</string>
-    <string name="about_offline">Funciona sem internet</string>
-    <string name="about_offline_body">O aplicativo não pede permissão de rede, então o Android não o deixa conectar nem se quisesse. Não é uma promessa: é o sistema que impede.</string>
-    <string name="about_no_tracking">Não te segue</string>
-    <string name="about_no_tracking_body">Nada do que você escaneia sai do telefone. Não há estatísticas, nem anônimas.</string>
+    <string name="about_version">Versão</string>
+    <string name="about_what">Lê 20 tipos de códigos, cria 13 e avisa sobre links suspeitos.</string>
+    <string name="about_distinct">O que a torna diferente</string>
+    <string name="about_links">Avisa sobre links suspeitos</string>
+    <string name="about_links_body">Letras disfarçadas, encurtadores ou instaladores.</string>
     <string name="about_no_ads">Sem anúncios nem compras</string>
-    <string name="about_no_ads_body">Não há versão paga nem recursos bloqueados.</string>
-    <string name="about_no_storage">Não olha suas fotos</string>
-    <string name="about_no_storage_body">Quando você lê de uma imagem, escolhe você mesmo no seletor do sistema e o aplicativo recebe só aquela.</string>
+    <string name="about_no_ads_body">Sem versão paga nem recursos bloqueados.</string>
+    <string name="about_offline">Funciona sem internet</string>
+    <string name="about_offline_body">Não tem permissão de rede: o Android não o deixa conectar.</string>
+    <string name="about_no_tracking">Não rastreia você</string>
+    <string name="about_no_tracking_body">O que você escaneia não sai do telefone.</string>
+    <string name="about_open_source">Código aberto</string>
+    <string name="about_open_source_body">Qualquer pessoa pode verificar o que ele faz.</string>
+    <string name="about_source">Código-fonte</string>
     <string name="about_author">Criado por</string>
-    <string name="about_license">Licença</string>
     <string name="about_licenses">Licenças de código aberto</string>
 
     <string name="wifi_enterprise">De empresa, com usuário e senha</string>

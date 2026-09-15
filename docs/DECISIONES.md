@@ -58,7 +58,7 @@ la persona ya está esperando.
 
 ## 5. Idiomas
 
-**Cerrada en tres: español, inglés y portugués.** Las 220 cadenas traducibles
+**Cerrada en tres: español, inglés y portugués.** Las 223 cadenas traducibles
 están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
 estático falla la compilación si falta una traducción. El paquete solo incluye
 esos tres, así que ninguna dependencia cuela los suyos.

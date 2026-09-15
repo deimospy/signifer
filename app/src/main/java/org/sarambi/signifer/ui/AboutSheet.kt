@@ -14,6 +14,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.view.updateLayoutParams
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.sarambi.signifer.R
@@ -38,13 +39,13 @@ class AboutSheet : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         val views = binding ?: return
 
-        views.version.text = getString(R.string.about_version, versionName())
+        views.version.text = versionName()
 
         for (promise in PROMISES) {
-            views.promises.addView(row(views.promises, promise.first, promise.second, R.drawable.ic_check))
+            views.promises.addView(row(views.promises, promise.title, promise.body, promise.icon))
         }
-        for (fact in FACTS) {
-            views.facts.addView(row(views.facts, fact.title, fact.body, fact.icon))
+        views.promises.getChildAt(views.promises.childCount - 1)?.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            bottomMargin = 0
         }
 
         views.github.setOnClickListener { openGitHub() }
@@ -56,7 +57,7 @@ class AboutSheet : BottomSheetDialogFragment() {
         binding = null
     }
 
-    private data class Fact(@StringRes val title: Int, @StringRes val body: Int, @DrawableRes val icon: Int)
+    private data class Promise(@StringRes val title: Int, @StringRes val body: Int, @DrawableRes val icon: Int)
 
     private fun row(
         host: LinearLayout,
@@ -102,18 +103,13 @@ class AboutSheet : BottomSheetDialogFragment() {
     companion object {
         const val TAG = "about"
 
-        /** Lo que la aplicacion promete, con el motivo por el que se comprueba. */
+        /** Lo que la distingue, de lo mas valioso a lo menos. */
         private val PROMISES = listOf(
-            R.string.about_offline to R.string.about_offline_body,
-            R.string.about_no_tracking to R.string.about_no_tracking_body,
-            R.string.about_no_ads to R.string.about_no_ads_body,
-            R.string.about_no_storage to R.string.about_no_storage_body,
-        )
-
-        /** Quien la hizo y bajo que licencia. */
-        private val FACTS = listOf(
-            Fact(R.string.about_author, R.string.about_author_name, R.drawable.ic_author),
-            Fact(R.string.about_license, R.string.about_license_name, R.drawable.ic_license),
+            Promise(R.string.about_links, R.string.about_links_body, R.drawable.ic_link_check),
+            Promise(R.string.about_no_ads, R.string.about_no_ads_body, R.drawable.ic_no_ads),
+            Promise(R.string.about_offline, R.string.about_offline_body, R.drawable.ic_offline),
+            Promise(R.string.about_no_tracking, R.string.about_no_tracking_body, R.drawable.ic_no_tracking),
+            Promise(R.string.about_open_source, R.string.about_open_source_body, R.drawable.ic_open_source),
         )
     }
 }

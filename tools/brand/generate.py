@@ -97,9 +97,12 @@ ICON_MAP = {
     "sms": "message-square",
     "map": "map-pin",
     "event": "calendar-plus",
-    "author": "user",
-    "license": "scale",
-    "document": "file-text",
+    "link_check": "shield-check",
+    "no_ads": "megaphone-off",
+    "offline": "wifi-off",
+    "no_tracking": "eye-off",
+    "open_source": "code-xml",
+    "chevron": "chevron-right",
 }
 
 

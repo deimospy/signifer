@@ -26,7 +26,7 @@
     <string name="settings_retention_value">Cuánto se conserva: %1$s</string>
     <string name="action_close">Cerrar</string>
     <string name="settings_title">Ajustes</string>
-    <string name="settings_formats_note">Cuantos menos formatos busque, más rápido lee. Si solo escaneás códigos QR, apagá el resto.</string>
+    <string name="settings_formats_note">Cuantos menos formatos busque, más rápido lee. Si solo escaneas códigos QR, apaga el resto.</string>
     <string name="settings_try_harder">Insistir más en cada intento</string>
     <string name="settings_try_harder_note">Va más lento. En nuestras pruebas leyó un código de más entre 225, pero puede ayudar con códigos muy dañados.</string>
     <string name="settings_try_invert">Leer códigos en negativo</string>
@@ -229,21 +229,23 @@
     <string name="logo_unreadable">El logo tapa demasiado y el código deja de leerse. Probá con uno más chico.</string>
 
     <string name="about_title">Acerca de Signifer</string>
-    <string name="about_version">Versión %1$s</string>
-    <string name="about_what">QR y códigos de barras: lee 20 tipos y crea 13. Instantáneo, liviano y privado.</string>
-    <string name="about_offline">Funciona sin internet</string>
-    <string name="about_offline_body">La aplicación no pide permiso de red, así que Android no la deja conectarse aunque quisiera. No es una promesa: es el sistema el que lo impide.</string>
-    <string name="about_no_tracking">No te sigue</string>
-    <string name="about_no_tracking_body">Nada de lo que escaneás sale del teléfono. No hay estadísticas, ni siquiera anónimas.</string>
+    <string name="about_version">Versión</string>
+    <string name="about_what">Lee 20 tipos de códigos, crea 13 y te avisa de enlaces sospechosos.</string>
+    <string name="about_distinct">Lo que la hace distinta</string>
+    <string name="about_links">Avisa de enlaces sospechosos</string>
+    <string name="about_links_body">Letras disfrazadas, acortadores o instaladores.</string>
     <string name="about_no_ads">Sin anuncios ni compras</string>
-    <string name="about_no_ads_body">No hay versión de pago ni funciones bloqueadas.</string>
-    <string name="about_no_storage">No mira tus fotos</string>
-    <string name="about_no_storage_body">Cuando leés desde una imagen, la elegís vos en el selector del sistema y la aplicación solo recibe esa.</string>
+    <string name="about_no_ads_body">Sin versión de pago ni funciones bloqueadas.</string>
+    <string name="about_offline">Funciona sin internet</string>
+    <string name="about_offline_body">No tiene permiso de red: Android no la deja conectarse.</string>
+    <string name="about_no_tracking">No te rastrea</string>
+    <string name="about_no_tracking_body">Lo que escaneas no sale del teléfono.</string>
+    <string name="about_open_source">Código abierto</string>
+    <string name="about_open_source_body">Cualquiera puede revisar lo que hace.</string>
+    <string name="about_source">Código fuente</string>
     <string name="about_author">Creado por</string>
     <string name="about_author_name" translatable="false">Luis Roche</string>
-    <string name="about_license">Licencia</string>
-    <string name="about_license_name" translatable="false">Apache License 2.0</string>
-    <string name="about_github" translatable="false">GitHub · deimospy</string>
+    <string name="about_github" translatable="false">GitHub</string>
     <string name="about_github_url" translatable="false">https://github.com/deimospy</string>
     <string name="about_licenses">Licencias de código abierto</string>
 

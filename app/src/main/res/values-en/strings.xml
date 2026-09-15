@@ -227,18 +227,21 @@
     <string name="logo_unreadable">The logo covers too much and the code stops reading. Try a smaller one.</string>
 
     <string name="about_title">About Signifer</string>
-    <string name="about_version">Version %1$s</string>
-    <string name="about_what">QR and barcodes: reads 20 types, creates 13. Instant, lightweight, private.</string>
-    <string name="about_offline">Works without internet</string>
-    <string name="about_offline_body">The app asks for no network permission, so Android will not let it connect even if it wanted to. It is not a promise: the system enforces it.</string>
-    <string name="about_no_tracking">It does not follow you</string>
-    <string name="about_no_tracking_body">Nothing you scan leaves the phone. There are no statistics, not even anonymous ones.</string>
+    <string name="about_version">Version</string>
+    <string name="about_what">Reads 20 code types, creates 13 and warns you about suspicious links.</string>
+    <string name="about_distinct">What sets it apart</string>
+    <string name="about_links">Flags suspicious links</string>
+    <string name="about_links_body">Disguised letters, shorteners or installers.</string>
     <string name="about_no_ads">No ads, no purchases</string>
-    <string name="about_no_ads_body">There is no paid version and no locked features.</string>
-    <string name="about_no_storage">It does not look at your photos</string>
-    <string name="about_no_storage_body">When you read from an image, you pick it yourself in the system picker and the app only receives that one.</string>
+    <string name="about_no_ads_body">No paid version and no locked features.</string>
+    <string name="about_offline">Works without internet</string>
+    <string name="about_offline_body">It has no network permission: Android will not let it connect.</string>
+    <string name="about_no_tracking">Does not track you</string>
+    <string name="about_no_tracking_body">What you scan never leaves the phone.</string>
+    <string name="about_open_source">Open source</string>
+    <string name="about_open_source_body">Anyone can check what it does.</string>
+    <string name="about_source">Source code</string>
     <string name="about_author">Created by</string>
-    <string name="about_license">Licence</string>
     <string name="about_licenses">Open source licenses</string>
 
     <string name="wifi_enterprise">Business, with username and password</string>
