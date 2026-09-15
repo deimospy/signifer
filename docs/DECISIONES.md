@@ -58,7 +58,7 @@ la persona ya está esperando.
 
 ## 5. Idiomas
 
-**Cerrada en tres: español, inglés y portugués.** Las 219 cadenas traducibles
+**Cerrada en tres: español, inglés y portugués.** Las 220 cadenas traducibles
 están al 100 % en los tres, y la sincronía no se vigila a mano: el análisis
 estático falla la compilación si falta una traducción. El paquete solo incluye
 esos tres, así que ninguna dependencia cuela los suyos.
@@ -86,6 +86,21 @@ lectores de almacén, se ve sobre etiquetas blancas y fondos oscuros, y sigue la
 inclinación del código. Un código de barras leído en una sola fila llega sin
 alto, así que el relleno recibe un alto mínimo. Dura 300 ms antes de abrir el
 resultado, porque la hoja tapa la mitad inferior del marco.
+
+**La pantalla de lectura lleva la marca arriba, no en el marco.** Es la
+pantalla que más se ve y no decía de qué aplicación se trataba. Se descartó
+convertir el marco en el estandarte, con travesaño y mástil: competía con lo
+que se apunta y se leía como controles de más. Como en Google Lens, el nombre
+va en una píldora pequeña arriba, con el estandarte que ya existe como vector;
+tocarla abre «Acerca de». Desde Android 15 la cámara llega bajo la barra de
+estado, así que la píldora baja lo que esta ocupe; en horizontal va arriba a la
+izquierda, lejos del marco.
+
+**El aviso sonoro es un bip por el volumen multimedia.** Antes sonaba el clic de
+obturador del sistema, que va por el volumen de sonidos del sistema y en muchos
+teléfonos no se oye. Como en ZXing Barcode Scanner, el bip lo genera el propio
+Android, sin archivo de audio, y calla con el teléfono en silencio o vibración.
+Se prepara al abrir la aplicación para que la primera lectura no espere.
 
 **El permiso `VIBRATE` se declara.** No estaba previsto. Es un permiso normal
 —el sistema lo concede sin preguntar y no da acceso a ningún dato— y sin él la

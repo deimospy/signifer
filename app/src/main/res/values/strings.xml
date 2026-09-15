@@ -33,6 +33,7 @@
     <string name="settings_try_invert_note">Códigos claros sobre fondo oscuro.</string>
     <string name="settings_vibrate">Vibrar al leer</string>
     <string name="settings_beep">Sonido al leer</string>
+    <string name="settings_beep_note">Por el volumen multimedia. No suena con el teléfono en silencio o vibración.</string>
     <string name="settings_save_history">Guardar en el historial</string>
     <string name="settings_save_sensitive">Guardar también las contraseñas</string>
     <string name="settings_save_sensitive_note">Apagado, una red Wi-Fi con clave no queda guardada salvo que se pida en la propia pantalla de resultado.</string>

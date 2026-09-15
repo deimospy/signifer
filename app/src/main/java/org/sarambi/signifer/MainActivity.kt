@@ -1,7 +1,8 @@
 package org.sarambi.signifer
 
 import android.content.Intent
-import android.media.MediaActionSound
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -44,6 +45,9 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
     override var requestedFormats: Set<CodeFormat>? = null
         private set
 
+    /** Preparado de antemano: crearlo en la lectura retrasa el primer bip. */
+    private var tone: ToneGenerator? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -68,6 +72,16 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         } else if (LegacyScanIntent.matches(intent)) {
             enterLegacyMode(intent)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (preferences.beepOnRead) prepareTone()
+    }
+
+    override fun onStop() {
+        releaseTone()
+        super.onStop()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -182,6 +196,7 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
 
     /** El panel de ajustes es uno solo: la camara y la lista se enteran igual. */
     override fun onSettingsChanged() {
+        if (preferences.beepOnRead) prepareTone() else releaseTone()
         scanFragment()?.reloadOptions()
         historyFragment()?.onSettingsChanged()
     }
@@ -209,13 +224,21 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         runCatching { doVibrate() }
     }
 
-    /** Un chasquido corto al leer. */
+    /** Un bip corto por el volumen multimedia; con el telefono en silencio o vibracion, calla. */
     private fun beep() {
-        runCatching {
-            val sound = MediaActionSound()
-            sound.play(MediaActionSound.SHUTTER_CLICK)
-            binding.root.postDelayed({ sound.release() }, SOUND_RELEASE_MILLIS)
-        }
+        val audio = getSystemService(AUDIO_SERVICE) as? AudioManager ?: return
+        if (audio.ringerMode != AudioManager.RINGER_MODE_NORMAL) return
+        prepareTone()
+        tone?.startTone(ToneGenerator.TONE_PROP_BEEP, BEEP_MILLIS)
+    }
+
+    private fun prepareTone() {
+        if (tone == null) tone = runCatching { ToneGenerator(AudioManager.STREAM_MUSIC, BEEP_VOLUME) }.getOrNull()
+    }
+
+    private fun releaseTone() {
+        tone?.release()
+        tone = null
     }
 
     private fun doVibrate() {
@@ -252,6 +275,7 @@ class MainActivity : AppCompatActivity(), ScanFragment.CodeSink, ResultSheet.Lis
         private const val STATE_TAG = "destination"
 
         private const val HAPTIC_MILLIS = 40L
-        private const val SOUND_RELEASE_MILLIS = 1_000L
+        private const val BEEP_MILLIS = 150
+        private const val BEEP_VOLUME = 80
     }
 }

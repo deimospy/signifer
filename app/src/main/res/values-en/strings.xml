@@ -31,6 +31,7 @@
     <string name="settings_try_invert_note">Light codes on a dark background.</string>
     <string name="settings_vibrate">Vibrate on read</string>
     <string name="settings_beep">Sound on read</string>
+    <string name="settings_beep_note">Uses media volume. Stays quiet when the phone is on silent or vibrate.</string>
     <string name="settings_save_history">Save to history</string>
     <string name="settings_save_sensitive">Also save passwords</string>
     <string name="settings_save_sensitive_note">While off, a Wi-Fi network with a password is not stored unless you ask for it on the result screen itself.</string>

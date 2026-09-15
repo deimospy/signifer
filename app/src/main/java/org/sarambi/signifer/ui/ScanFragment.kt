@@ -15,6 +15,9 @@ import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -69,11 +72,29 @@ class ScanFragment : Fragment() {
         views.pickImage.setOnClickListener { launchPicker() }
         views.permissionPickImage.setOnClickListener { launchPicker() }
         views.settings.setOnClickListener { SettingsSheet().show(parentFragmentManager, SettingsSheet.TAG) }
+        views.brand.setOnClickListener { AboutSheet().show(parentFragmentManager, AboutSheet.TAG) }
+        keepClearOfSystemBars(views.brand)
         views.permissionGrant.setOnClickListener {
             requestCamera.launch(Manifest.permission.CAMERA)
         }
         views.frame.onScanAreaChanged = { area -> session?.scanArea = area }
         attachGestures(views)
+    }
+
+    /** Desde Android 15 la camara llega bajo la barra de estado: la marca baja lo que esta ocupe. */
+    private fun keepClearOfSystemBars(view: View) {
+        val params = view.layoutParams as ViewGroup.MarginLayoutParams
+        val top = params.topMargin
+        val start = params.marginStart
+        ViewCompat.setOnApplyWindowInsetsListener(view) { target, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            val rtl = target.layoutDirection == View.LAYOUT_DIRECTION_RTL
+            target.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = top + bars.top
+                marginStart = start + if (rtl) bars.right else bars.left
+            }
+            insets
+        }
     }
 
     /** Pellizcar acerca, doble toque alterna entre 1x y 2x, un toque enfoca. */

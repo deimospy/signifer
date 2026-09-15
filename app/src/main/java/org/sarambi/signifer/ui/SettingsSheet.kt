@@ -96,7 +96,7 @@ class SettingsSheet : BottomSheetDialogFragment() {
         }
         views.clearHistory.setOnClickListener { confirmClear() }
 
-        views.about.setOnClickListener { AboutSheet().show(parentFragmentManager, "about") }
+        views.about.setOnClickListener { AboutSheet().show(parentFragmentManager, AboutSheet.TAG) }
     }
 
     override fun onDismiss(dialog: android.content.DialogInterface) {

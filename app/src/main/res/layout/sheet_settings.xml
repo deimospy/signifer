@@ -46,6 +46,13 @@
                 android:minHeight="48dp"
                 android:text="@string/settings_beep" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_beep_note"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/try_invert"
                 android:layout_width="match_parent"

@@ -44,6 +44,7 @@ arquitectura. Cifras en KB.
 | Lectura dentro del marco | 2669 | 2591 | 2723 | 2702 |
 | Esquinas posadas sobre el código leído | 2671 | 2593 | 2725 | 2704 |
 | Relleno verde sobre el código leído | 2671 | 2594 | 2726 | 2704 |
+| Marca en la pantalla de lectura y bip | 2673 | 2595 | 2727 | 2706 |
 
 ## Lo que descarga un teléfono desde la tienda
 

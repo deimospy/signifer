@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Widget.Signifer.ScanBrand" parent="Widget.Material3.Button.TextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:textColor">@color/signum_bone</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+        <item name="backgroundTint">#80000000</item>
+        <item name="rippleColor">#33F4EFE6</item>
+        <item name="icon">@drawable/ic_signum</item>
+        <item name="iconTint">@color/signum_bone</item>
+        <item name="iconSize">22dp</item>
+        <item name="iconPadding">6dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Signifer.Pill</item>
+    </style>
+
     <style name="Widget.Signifer.ScanAction" parent="Widget.Material3.Button.IconButton">
         <item name="android:layout_width">56dp</item>
         <item name="android:layout_height">56dp</item>

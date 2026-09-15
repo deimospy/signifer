@@ -111,9 +111,11 @@ class AboutSheet : BottomSheetDialogFragment() {
         }
     }.getOrDefault(0L)
 
-    private companion object {
+    companion object {
+        const val TAG = "about"
+
         /** Lo que la aplicacion promete, con el motivo por el que se comprueba. */
-        val PROMISES = listOf(
+        private val PROMISES = listOf(
             R.string.about_offline to R.string.about_offline_body,
             R.string.about_no_tracking to R.string.about_no_tracking_body,
             R.string.about_no_ads to R.string.about_no_ads_body,
@@ -121,7 +123,7 @@ class AboutSheet : BottomSheetDialogFragment() {
         )
 
         /** Quien la hizo y bajo que licencia. */
-        val FACTS = listOf(
+        private val FACTS = listOf(
             Fact(R.string.about_author, R.string.about_author_name, R.drawable.ic_author),
             Fact(R.string.about_license, R.string.about_license_name, R.drawable.ic_license),
         )
