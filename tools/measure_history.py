@@ -6,10 +6,12 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import zipfile
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-WORKTREES = os.path.join(ROOT, ".scratch", "measure")
+# Las copias de cada commit se compilan fuera del repositorio.
+WORKTREES = os.path.join(tempfile.gettempdir(), "signifer-measure")
 
 
 def run(command, cwd, check=True):

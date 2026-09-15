@@ -248,7 +248,7 @@
     <string name="about_author">Created by</string>
     <string name="about_author_name" translatable="false">Luis Roche</string>
     <string name="about_github" translatable="false">GitHub</string>
-    <string name="about_github_url" translatable="false">https://github.com/deimospy</string>
+    <string name="about_github_url" translatable="false">https://github.com/deimospy/signifer</string>
     <string name="about_licenses">Third-party licenses</string>
 
     <string name="wifi_enterprise">Business, with username and password</string>
