@@ -212,7 +212,7 @@
     <string name="logo_unreadable">Logo peittää liikaa, eikä koodia voi enää lukea. Kokeile pienempää.</string>
     <string name="about_title">Tietoja Signiferistä</string>
     <string name="about_version">Versio</string>
-    <string name="about_what">Lukee 20 QR- ja viivakoodityyppiä ja luo 13. Kattava, nopea ja kevyt.</string>
+    <string name="about_what">Pieni, nopea ja kattava. Lukee ja luo QR- ja viivakoodeja. Toimii ilman verkkoa, monella kielellä.</string>
     <string name="about_links">Varoittaa epäilyttävistä linkeistä</string>
     <string name="about_links_body">Naamioidut kirjaimet, lyhytlinkit tai asennustiedostot.</string>
     <string name="about_no_ads">Ei näytä mainoksia</string>

@@ -210,7 +210,7 @@
     <string name="logo_unreadable">ロゴが覆う範囲が広すぎて、コードを読み取れません。小さいロゴをお試しください。</string>
     <string name="about_title">Signifer について</string>
     <string name="about_version">バージョン</string>
-    <string name="about_what">20 種類の QR コードとバーコードを読み取り、13 種類を作成できます。多機能で、速く、軽量です。</string>
+    <string name="about_what">小さくて速く、機能も充実。QR コードとバーコードの読み取りと作成に対応。オフラインで、多言語対応です。</string>
     <string name="about_links">不審なリンクを警告します</string>
     <string name="about_links_body">偽装された文字、短縮 URL、インストール用ファイル。</string>
     <string name="about_no_ads">広告を表示しません</string>

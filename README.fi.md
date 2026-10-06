@@ -4,7 +4,7 @@
 
 <img src="docs/marca/signifer-icono.svg" alt="Signifer" width="112" align="right">
 
-QR- ja viivakoodien lukija ja luoja Androidille. Lukee 20 koodityyppiä, luo 13 ja varoittaa epäilyttävistä linkeistä. Kattava, nopea ja kevyt.
+QR- ja viivakoodien lukija ja luoja Androidille. Lukee 20 koodityyppiä, luo 13 ja varoittaa epäilyttävistä linkeistä. Pieni, nopea ja kattava.
 
 *Signifer* oli roomalaisen legioonan lipunkantaja: se, joka kantoi **signumia**, merkkiä jota muut seurasivat. Koodinlukija tekee saman: se ottaa merkin, jota kukaan ei pysty lukemaan paljain silmin, ja näyttää sen.
 

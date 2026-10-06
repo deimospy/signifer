@@ -50,4 +50,4 @@ If this policy changes, the new version will be published at this same address w
 
 ## Contact
 
-Questions about this policy: [open an issue on GitHub](https://github.com/deimospy/signifer/issues).
+Questions about this policy: [signifer@sarambi.org](mailto:signifer@sarambi.org) or [open an issue on GitHub](https://github.com/deimospy/signifer/issues).

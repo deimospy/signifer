@@ -212,7 +212,7 @@
     <string name="logo_unreadable">Het logo bedekt te veel en de code is niet meer leesbaar. Probeer een kleiner logo.</string>
     <string name="about_title">Over Signifer</string>
     <string name="about_version">Versie</string>
-    <string name="about_what">Leest 20 soorten QR-codes en barcodes en maakt er 13. Compleet, snel en licht.</string>
+    <string name="about_what">Klein, snel en compleet. Leest en maakt QR-codes en barcodes. Offline, in meerdere talen.</string>
     <string name="about_links">Waarschuwt voor verdachte links</string>
     <string name="about_links_body">Vermomde letters, verkorte links of installatiebestanden.</string>
     <string name="about_no_ads">Toont geen advertenties</string>

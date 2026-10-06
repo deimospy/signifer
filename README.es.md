@@ -4,7 +4,7 @@
 
 <img src="docs/marca/signifer-icono.svg" alt="Signifer" width="112" align="right">
 
-Lector y creador de códigos QR y de barras para Android. Lee 20 tipos de códigos, crea 13 y avisa de enlaces sospechosos. Completa, rápida y liviana.
+Lector y creador de códigos QR y de barras para Android. Lee 20 tipos de códigos, crea 13 y avisa de enlaces sospechosos. Pequeña, rápida y completa.
 
 *Signifer* era el portaestandarte de la legión romana: el que lleva el **signum**, la señal que el resto sigue. Un lector de códigos hace lo mismo: toma una señal que nadie puede leer a simple vista y la enseña.
 

@@ -212,7 +212,7 @@
     <string name="logo_unreadable">Logo çok fazla alanı kaplıyor ve kod okunamıyor. Daha küçük bir logo deneyin.</string>
     <string name="about_title">Signifer hakkında</string>
     <string name="about_version">Sürüm</string>
-    <string name="about_what">20 tür QR kodu ve barkodu okur, 13 türünü oluşturur. Eksiksiz, hızlı ve hafif.</string>
+    <string name="about_what">Küçük, hızlı ve eksiksiz. QR kodu ve barkodu okur, oluşturur. Çevrimdışı, birden çok dilde.</string>
     <string name="about_links">Şüpheli bağlantılara karşı uyarır</string>
     <string name="about_links_body">Gizlenmiş harfler, kısaltılmış bağlantılar veya kurulum dosyaları.</string>
     <string name="about_no_ads">Reklam göstermez</string>

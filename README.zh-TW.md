@@ -4,7 +4,7 @@
 
 <img src="docs/marca/signifer-icono.svg" alt="Signifer" width="112" align="right">
 
-適用於 Android 的 QR Code 與條碼讀取及產生工具。可讀取 20 種條碼、產生 13 種，並提醒可疑連結。功能齊全，快速輕巧。
+適用於 Android 的 QR Code 與條碼讀取及產生工具。可讀取 20 種條碼、產生 13 種，並提醒可疑連結。小巧、快速、功能齊全。
 
 *Signifer* 是羅馬軍團的掌旗手：手持 **signum** 的人，其他人都跟隨這個標誌。條碼讀取器做的是同一件事：把肉眼讀不懂的標誌讀出來，展示給你看。
 

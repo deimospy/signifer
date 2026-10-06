@@ -214,7 +214,7 @@
     <string name="logo_unreadable">Il logo copre troppo e il codice non si legge più. Prova con uno più piccolo.</string>
     <string name="about_title">Informazioni su Signifer</string>
     <string name="about_version">Versione</string>
-    <string name="about_what">Legge 20 tipi di codici QR e a barre, e ne crea 13. Completa, veloce e leggera.</string>
+    <string name="about_what">Piccola, veloce e completa. Legge e crea codici QR e a barre. Offline, in più lingue.</string>
     <string name="about_links">Avvisa dei link sospetti</string>
     <string name="about_links_body">Lettere camuffate, link accorciati o file di installazione.</string>
     <string name="about_no_ads">Non mostra pubblicità</string>

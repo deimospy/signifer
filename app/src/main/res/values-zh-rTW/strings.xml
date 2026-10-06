@@ -210,7 +210,7 @@
     <string name="logo_unreadable">Logo 遮住太多，條碼已無法讀取。請改用較小的 Logo。</string>
     <string name="about_title">關於 Signifer</string>
     <string name="about_version">版本</string>
-    <string name="about_what">可讀取 20 種 QR Code 與條碼，並能產生 13 種。功能齊全，快速輕巧。</string>
+    <string name="about_what">小巧、快速、功能齊全。可讀取並產生 QR Code 與條碼。離線使用，支援多種語言。</string>
     <string name="about_links">提醒可疑連結</string>
     <string name="about_links_body">偽裝字母、短網址或安裝檔。</string>
     <string name="about_no_ads">不顯示廣告</string>

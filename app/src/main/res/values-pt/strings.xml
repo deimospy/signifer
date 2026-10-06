@@ -233,7 +233,7 @@
 
     <string name="about_title">Sobre o Signifer</string>
     <string name="about_version">Versão</string>
-    <string name="about_what">Lê 20 tipos de códigos QR e de barras, e cria 13. Completo, rápido e leve.</string>
+    <string name="about_what">Pequeno, rápido e completo. Lê e cria códigos QR e de barras. Offline, em vários idiomas.</string>
     <string name="about_links">Avisa sobre links suspeitos</string>
     <string name="about_links_body">Letras disfarçadas, encurtadores ou instaladores.</string>
     <string name="about_no_ads">Não mostra anúncios</string>

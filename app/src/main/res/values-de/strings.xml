@@ -212,7 +212,7 @@
     <string name="logo_unreadable">Das Logo verdeckt zu viel und der Code ist nicht mehr lesbar. Versuche ein kleineres.</string>
     <string name="about_title">Über Signifer</string>
     <string name="about_version">Version</string>
-    <string name="about_what">Liest 20 Arten von QR-Codes und Barcodes und erstellt 13. Vollständig, schnell und leicht.</string>
+    <string name="about_what">Klein, schnell und vollständig. Liest und erstellt QR-Codes und Barcodes. Offline, in mehreren Sprachen.</string>
     <string name="about_links">Warnt vor verdächtigen Links</string>
     <string name="about_links_body">Getarnte Buchstaben, Kurzlinks oder Installationsdateien.</string>
     <string name="about_no_ads">Zeigt keine Werbung</string>

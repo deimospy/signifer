@@ -4,7 +4,7 @@
 
 <img src="docs/marca/signifer-icono.svg" alt="Signifer" width="112" align="right">
 
-QR-Code- und Barcode-Scanner und -Generator für Android. Liest 20 Codearten, erstellt 13 und warnt vor verdächtigen Links. Vollständig, schnell und leicht.
+QR-Code- und Barcode-Scanner und -Generator für Android. Liest 20 Codearten, erstellt 13 und warnt vor verdächtigen Links. Klein, schnell und vollständig.
 
 *Signifer* war der Feldzeichenträger der römischen Legion: der, der das **Signum** trug, das Zeichen, dem die anderen folgten. Ein Codeleser tut dasselbe: Er nimmt ein Zeichen, das niemand mit bloßem Auge lesen kann, und macht es sichtbar.
 

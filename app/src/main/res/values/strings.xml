@@ -233,7 +233,7 @@
 
     <string name="about_title">About Signifer</string>
     <string name="about_version">Version</string>
-    <string name="about_what">Scans 20 types of QR codes and barcodes, and creates 13. Complete, fast and lightweight.</string>
+    <string name="about_what">Tiny, fast and complete. Scans and creates QR codes and barcodes, offline, in multiple languages.</string>
     <string name="about_links">Warns about suspicious links</string>
     <string name="about_links_body">Disguised letters, shorteners or installers.</string>
     <string name="about_no_ads">Shows no ads</string>

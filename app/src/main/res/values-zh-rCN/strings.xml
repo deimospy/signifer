@@ -210,7 +210,7 @@
     <string name="logo_unreadable">Logo 遮挡过多，码已无法识别。请尝试更小的 Logo。</string>
     <string name="about_title">关于 Signifer</string>
     <string name="about_version">版本</string>
-    <string name="about_what">可识别 20 种二维码和条形码，可生成 13 种。功能齐全，快速轻巧。</string>
+    <string name="about_what">小巧、快速、功能齐全。可识别并生成二维码和条形码。离线使用，支持多种语言。</string>
     <string name="about_links">提醒可疑链接</string>
     <string name="about_links_body">伪装字母、短链接或安装文件。</string>
     <string name="about_no_ads">不显示广告</string>

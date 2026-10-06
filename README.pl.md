@@ -4,7 +4,7 @@
 
 <img src="docs/marca/signifer-icono.svg" alt="Signifer" width="112" align="right">
 
-Czytnik i generator kodów QR i kreskowych na Androida. Odczytuje 20 rodzajów kodów, tworzy 13 i ostrzega przed podejrzanymi linkami. Kompletna, szybka i lekka.
+Czytnik i generator kodów QR i kreskowych na Androida. Odczytuje 20 rodzajów kodów, tworzy 13 i ostrzega przed podejrzanymi linkami. Mała, szybka i kompletna.
 
 *Signifer* był chorążym rzymskiego legionu: tym, który niósł **signum**, znak, za którym podążała reszta. Czytnik kodów robi to samo: bierze znak, którego nikt nie odczyta gołym okiem, i go pokazuje.
 

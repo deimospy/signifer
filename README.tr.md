@@ -4,7 +4,7 @@
 
 <img src="docs/marca/signifer-icono.svg" alt="Signifer" width="112" align="right">
 
-Android için QR kod ve barkod okuyucu ve oluşturucu. 20 tür kodu okur, 13 türünü oluşturur ve şüpheli bağlantılara karşı uyarır. Eksiksiz, hızlı ve hafif.
+Android için QR kod ve barkod okuyucu ve oluşturucu. 20 tür kodu okur, 13 türünü oluşturur ve şüpheli bağlantılara karşı uyarır. Küçük, hızlı ve eksiksiz.
 
 *Signifer*, Roma lejyonunun sancaktarıydı: diğerlerinin takip ettiği işaret olan **signum**'u taşıyan kişi. Bir kod okuyucu da aynısını yapar: kimsenin çıplak gözle okuyamadığı bir işareti alır ve gösterir.
 

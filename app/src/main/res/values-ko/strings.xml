@@ -210,7 +210,7 @@
     <string name="logo_unreadable">로고가 너무 많이 가려서 코드를 읽을 수 없어요. 더 작은 로고로 해 보세요.</string>
     <string name="about_title">Signifer 정보</string>
     <string name="about_version">버전</string>
-    <string name="about_what">QR 코드와 바코드 20종을 읽고 13종을 만들 수 있어요. 기능은 완벽하고, 빠르고 가벼워요.</string>
+    <string name="about_what">작고 빠르고 알찬 앱이에요. QR 코드와 바코드를 읽고 만들어요. 오프라인으로, 여러 언어로 사용할 수 있어요.</string>
     <string name="about_links">의심스러운 링크를 알려 줘요</string>
     <string name="about_links_body">위장된 글자, 단축 URL, 설치 파일.</string>
     <string name="about_no_ads">광고를 보여 주지 않아요</string>

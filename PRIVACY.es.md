@@ -50,4 +50,4 @@ Si esta política cambia, la nueva versión se publicará en esta misma direcci�
 
 ## Contacto
 
-Dudas sobre esta política: [abre un issue en GitHub](https://github.com/deimospy/signifer/issues).
+Dudas sobre esta política: [signifer@sarambi.org](mailto:signifer@sarambi.org) o [abre un issue en GitHub](https://github.com/deimospy/signifer/issues).

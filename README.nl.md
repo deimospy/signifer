@@ -4,7 +4,7 @@
 
 <img src="docs/marca/signifer-icono.svg" alt="Signifer" width="112" align="right">
 
-QR-code- en barcodescanner en -maker voor Android. Leest 20 soorten codes, maakt er 13 en waarschuwt voor verdachte links. Compleet, snel en licht.
+QR-code- en barcodescanner en -maker voor Android. Leest 20 soorten codes, maakt er 13 en waarschuwt voor verdachte links. Klein, snel en compleet.
 
 *Signifer* was de vaandeldrager van het Romeinse legioen: degene die het **signum** droeg, het teken dat de rest volgde. Een codelezer doet hetzelfde: hij neemt een teken dat niemand met het blote oog kan lezen en laat het zien.
 

@@ -216,7 +216,7 @@
     <string name="logo_unreadable">Logo zasłania za dużo i kodu nie da się odczytać. Spróbuj mniejszego.</string>
     <string name="about_title">O aplikacji Signifer</string>
     <string name="about_version">Wersja</string>
-    <string name="about_what">Odczytuje 20 rodzajów kodów QR i kreskowych, a tworzy 13. Kompletna, szybka i lekka.</string>
+    <string name="about_what">Mała, szybka i kompletna. Odczytuje i tworzy kody QR oraz kreskowe. Działa offline, w wielu językach.</string>
     <string name="about_links">Ostrzega przed podejrzanymi linkami</string>
     <string name="about_links_body">Zamaskowane litery, skrócone linki lub pliki instalacyjne.</string>
     <string name="about_no_ads">Nie wyświetla reklam</string>
