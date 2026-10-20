@@ -6,6 +6,8 @@
 
 适用于 Android 的二维码和条形码识别与生成应用。可识别 20 种码，可生成 13 种，并提醒可疑链接。小巧、快速、功能齐全。
 
+[![下载应用，请到 Google Play](https://img.shields.io/badge/%E4%B8%8B%E8%BD%BD%E5%BA%94%E7%94%A8%EF%BC%8C%E8%AF%B7%E5%88%B0%20Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* 是罗马军团的旗手：手持 **signum** 的人，其他人都追随这个标志。识码器做的也是同一件事：把肉眼无法读懂的标志读出来，展示给你。
 
 | 扫码 | 生成 | 历史记录 | 结果 |

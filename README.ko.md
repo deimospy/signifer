@@ -6,6 +6,8 @@
 
 Android용 QR 코드·바코드 스캐너 겸 생성기. 20종의 코드를 읽고 13종을 만들며, 의심스러운 링크를 알려 줍니다. 작고 빠르며 알찹니다.
 
+[![Google Play에서 다운로드](https://img.shields.io/badge/Google%20Play%EC%97%90%EC%84%9C%20%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer*는 로마 군단의 기수였습니다. 다른 병사들이 따르는 표식인 **signum**을 든 사람이었죠. 코드 리더도 같은 일을 합니다. 맨눈으로는 읽을 수 없는 표식을 받아 보여 줍니다.
 
 | 스캔 | 만들기 | 기록 | 결과 |

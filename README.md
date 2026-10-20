@@ -6,6 +6,8 @@
 
 QR code and barcode scanner and creator for Android. Scans 20 code types, creates 13 and warns about suspicious links. Tiny, fast and complete.
 
+[![Get it on Google Play](https://img.shields.io/badge/Get%20it%20on%20Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* was the standard-bearer of the Roman legion: the one who carried the **signum**, the sign the rest followed. A code reader does the same: it takes a sign nobody can read with the naked eye and shows it.
 
 | Scan | Create | History | Result |

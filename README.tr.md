@@ -6,6 +6,8 @@
 
 Android için QR kod ve barkod okuyucu ve oluşturucu. 20 tür kodu okur, 13 türünü oluşturur ve şüpheli bağlantılara karşı uyarır. Küçük, hızlı ve eksiksiz.
 
+[![Google Play'den alın](https://img.shields.io/badge/Google%20Play%27den%20al%C4%B1n-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer*, Roma lejyonunun sancaktarıydı: diğerlerinin takip ettiği işaret olan **signum**'u taşıyan kişi. Bir kod okuyucu da aynısını yapar: kimsenin çıplak gözle okuyamadığı bir işareti alır ve gösterir.
 
 | Tara | Oluştur | Geçmiş | Sonuç |

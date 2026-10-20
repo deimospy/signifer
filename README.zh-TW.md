@@ -6,6 +6,8 @@
 
 適用於 Android 的 QR Code 與條碼讀取及產生工具。可讀取 20 種條碼、產生 13 種，並提醒可疑連結。小巧、快速、功能齊全。
 
+[![立即前往 Google Play 下載](https://img.shields.io/badge/%E7%AB%8B%E5%8D%B3%E5%89%8D%E5%BE%80%20Google%20Play%20%E4%B8%8B%E8%BC%89-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* 是羅馬軍團的掌旗手：手持 **signum** 的人，其他人都跟隨這個標誌。條碼讀取器做的是同一件事：把肉眼讀不懂的標誌讀出來，展示給你看。
 
 | 掃描 | 產生 | 紀錄 | 結果 |

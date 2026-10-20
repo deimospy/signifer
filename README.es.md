@@ -6,6 +6,8 @@
 
 Lector y creador de códigos QR y de barras para Android. Lee 20 tipos de códigos, crea 13 y avisa de enlaces sospechosos. Pequeña, rápida y completa.
 
+[![Disponible en Google Play](https://img.shields.io/badge/Disponible%20en%20Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* era el portaestandarte de la legión romana: el que lleva el **signum**, la señal que el resto sigue. Un lector de códigos hace lo mismo: toma una señal que nadie puede leer a simple vista y la enseña.
 
 | Leer | Crear | Historial | Resultado |

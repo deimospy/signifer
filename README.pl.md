@@ -6,6 +6,8 @@
 
 Czytnik i generator kodów QR i kreskowych na Androida. Odczytuje 20 rodzajów kodów, tworzy 13 i ostrzega przed podejrzanymi linkami. Mała, szybka i kompletna.
 
+[![Pobierz z Google Play](https://img.shields.io/badge/Pobierz%20z%20Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* był chorążym rzymskiego legionu: tym, który niósł **signum**, znak, za którym podążała reszta. Czytnik kodów robi to samo: bierze znak, którego nikt nie odczyta gołym okiem, i go pokazuje.
 
 | Skanuj | Utwórz | Historia | Wynik |

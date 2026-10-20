@@ -6,6 +6,8 @@
 
 QR-code- en barcodescanner en -maker voor Android. Leest 20 soorten codes, maakt er 13 en waarschuwt voor verdachte links. Klein, snel en compleet.
 
+[![Ontdek het op Google Play](https://img.shields.io/badge/Ontdek%20het%20op%20Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* was de vaandeldrager van het Romeinse legioen: degene die het **signum** droeg, het teken dat de rest volgde. Een codelezer doet hetzelfde: hij neemt een teken dat niemand met het blote oog kan lezen en laat het zien.
 
 | Scannen | Maken | Geschiedenis | Resultaat |

@@ -6,6 +6,8 @@
 
 QR-Code- und Barcode-Scanner und -Generator für Android. Liest 20 Codearten, erstellt 13 und warnt vor verdächtigen Links. Klein, schnell und vollständig.
 
+[![Jetzt bei Google Play](https://img.shields.io/badge/Jetzt%20bei%20Google%20Play-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* war der Feldzeichenträger der römischen Legion: der, der das **Signum** trug, das Zeichen, dem die anderen folgten. Ein Codeleser tut dasselbe: Er nimmt ein Zeichen, das niemand mit bloßem Auge lesen kann, und macht es sichtbar.
 
 | Scannen | Erstellen | Verlauf | Ergebnis |

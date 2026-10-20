@@ -6,6 +6,8 @@
 
 QR- ja viivakoodien lukija ja luoja Androidille. Lukee 20 koodityyppiä, luo 13 ja varoittaa epäilyttävistä linkeistä. Pieni, nopea ja kattava.
 
+[![Saatavilla Google Playssa](https://img.shields.io/badge/Saatavilla%20Google%20Playssa-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* oli roomalaisen legioonan lipunkantaja: se, joka kantoi **signumia**, merkkiä jota muut seurasivat. Koodinlukija tekee saman: se ottaa merkin, jota kukaan ei pysty lukemaan paljain silmin, ja näyttää sen.
 
 | Skannaa | Luo | Historia | Tulos |

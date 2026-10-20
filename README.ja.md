@@ -6,6 +6,8 @@
 
 Android 向けの QR コード・バーコードの読み取り／作成アプリ。20 種類のコードを読み取り、13 種類を作成し、不審なリンクを警告します。小さくて速く、機能も充実。
 
+[![Google Play で手に入れよう](https://img.shields.io/badge/Google%20Play%20%E3%81%A7%E6%89%8B%E3%81%AB%E5%85%A5%E3%82%8C%E3%82%88%E3%81%86-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=org.sarambi.signifer)
+
 *Signifer* とは、ローマ軍団の旗手のことです。ほかの兵士が従う印、**signum** を掲げる者でした。コードリーダーも同じことをします。肉眼では読めない印を受け取り、それを見せるのです。
 
 | 読み取り | 作成 | 履歴 | 結果 |
